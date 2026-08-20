@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - raematch_cv_storage:/app/storage/cvs
+    environment:
+      - DATABASE_URL=sqlite:///./raematch.db
+      - CV_UPLOAD_DIR=/app/storage/cvs
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  raematch_cv_storage:
