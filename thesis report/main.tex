@@ -177,7 +177,7 @@ Several figures in this thesis were generated with the assistance of AI tools (C
 \begin{itemize}
   \item the conceptual architecture and process diagrams (\cref{fig:problem,fig:architecture,fig:pdfocr,fig:structuredparsing,fig:assessmentreranking,fig:reviewworkflow,fig:evaluationworkflow}) were generated from the researcher's own design descriptions and iteratively corrected for technical accuracy against the actual implementation -- for example, an earlier version of \cref{fig:pdfocr} depicted a text-cleaning step mislabeled in a way that implied personal-data anonymization the implemented system does not perform, and was regenerated to describe the step correctly;
   \item the quantitative result charts (Figures~\ref{fig:ranking-effectiveness-chart}, \ref{fig:robustness-chart}, \ref{fig:ocr-chart}, \ref{fig:performance-chart}, \ref{fig:dataset-chart}, \ref{fig:case-study-chart}) were produced by Python plotting scripts written with AI assistance, but every value plotted was computed directly from this thesis's own recorded experimental results, not generated or estimated by the AI tool;
-  \item the six application screenshots in Chapters 3--4 (\cref{fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype (\cref{sec:pending-checklist}).
+  \item the six application screenshots in Chapters 3--4 (\cref{fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype.
 \end{itemize}
 All analytical content, experimental design, quantitative results, and written discussion are the researcher's own work; AI assistance was confined to the visual generation and correction of the figures listed above.
 
@@ -503,7 +503,7 @@ Approximately 1,000 English IT CVs are generated from structured candidate profi
   \item keep synthetic records separate from real-data effectiveness conclusions.
 \end{enumerate}
 
-The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final distribution is reported in Appendix~\ref{app:synthetic}.
+The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final role and seniority distribution across the 1,000 generated CVs was not recorded and remains \texttt{Pending external input} (\cref{sec:limitations-list}).
 
 \section{Requirement Decomposition}
 Each JD is converted into a set of atomic requirements:
@@ -946,6 +946,8 @@ Responsibility evidence & 15\% & Verify that important JD responsibilities have 
 \end{table}
 
 The percentages guide reviewer attention; they are not used as the proposed ranking formula.
+
+Reviewers work from anonymized candidate identifiers, the target JD, and the requirement-level evidence sentences and structured fields, and are instructed not to use names, demographic attributes, photographs, or exact addresses in forming a judgment. Because the current build's CV viewer displays the original, unredacted PDF (\cref{sec:security}; Chapter 5, Limitations), this is currently a manual reviewer discipline rather than an enforced UI redaction; a redacted export would be needed to make it a technical control rather than a procedural one.
 
 \Cref{fig:app-labeling} shows a candidate card's \emph{Reviewer relevance label} control with one of the four levels selected, a short note entered, and the \emph{Saved} confirmation visible on the button -- demonstrating that the labels used for Table~\ref{tab:ranking-results} are collected in-product rather than through an external spreadsheet.
 
@@ -1553,58 +1555,6 @@ The following items are not generic possibilities; each is a direct response to 
   \item integrate fairness auditing, role-based access control, audit logging, and production monitoring;
   \item add the PII masking control identified in Chapter 5, Limitations, as a prerequisite for any deployment beyond this controlled evaluation.
 \end{itemize}
-
-\appendix
-\chapter{Evaluation Artifacts}
-
-\section{Final Dataset Record}
-\label{app:dataset}
-Dataset title, URL, and license are recorded: \emph{Resume Dataset PDF} \citep{hadikpresumepdf}, \url{https://www.kaggle.com/datasets/hadikp/resume-data-pdf}, CC0: Public Domain. Final real corpus size (2,986), JD list (EVAL\_JD\_01--05; \cref{tab:dataset-fields}), and labeled-pair count (246 across 5 JDs; Table~\ref{tab:dataset-composition}) are likewise already reported in Chapter 4 rather than repeated here. The original pre-filter scanned-PDF count, filtering script version, OCR success and failure counts, and duplicate-removal results remain \texttt{Pending external input or final corpus audit}: the current pipeline only logs successfully imported records, so these upstream funnel counts cannot be reconstructed retroactively for a corpus that was imported before this limitation was identified (\cref{sec:limitations-list}).
-
-\section{Synthetic Generation Protocol}
-\label{app:synthetic}
-The final appendix includes:
-\begin{itemize}
-  \item generator model: ChatGPT (GPT-4/GPT-4o family); exact model version and generation date: \texttt{Pending} (not recorded at generation time);
-  \item prompt template and prompt version: \texttt{Pending};
-  \item role and seniority distributions: \texttt{Pending};
-  \item accepted and rejected generations: \texttt{Pending};
-  \item quality checks and duplicate-detection rules;
-  \item a sample manifest containing role, seniority, years, evidenced skills, unsupported skills, responsibilities, and scenario type;
-  \item the rule that target evaluation JDs are not copied into generation prompts.
-\end{itemize}
-
-\section{Labeling Instructions}
-Reviewers receive the rubric in Table~\ref{tab:label-rubric}, anonymized candidate identifiers, the target JD, and a comment field. They do not use names, demographic attributes, photographs, or exact addresses. Because the current build's built-in CV viewer displays the original, unredacted PDF (Chapter 5, Limitations), this instruction is currently a manual reviewer discipline rather than an enforced UI redaction; reviewers should judge from the requirement-level evidence sentences and structured fields rather than opening the raw PDF, or the researcher should prepare a redacted export for the labeling session. The final appendix includes one example for each relevance level and records reviewer profile and agreement statistics.
-
-\section{Experiment Configuration}
-The final configuration records the exact SBERT checkpoint, $\tau_l$, $\tau_h$, skill dictionary version, parsing-rule version, software versions, random seed, development/evaluation split, hardware, metric implementation, and commands used to reproduce ranking and metric calculation. The current build's environment and default thresholds are already recorded in Tables~\ref{tab:environment} and~\ref{tab:assessment-rules} ($\tau_l{=}0.35$, $\tau_h{=}0.55$); a calibrated pair, $(\tau_l,\tau_h)=(0.50,0.70)$, was selected on a held-out development split and is recorded in Table~\ref{tab:threshold-calibration} (\cref{sec:discussion}), though the shipped build still runs with the uncalibrated default -- the calibration run identifies a better setting but was not fed back into the production configuration used for the rest of this thesis's results. The skill-dictionary/parsing-rule version and random seed remain \texttt{Pending final experiment}.
-
-\section{Pending Completion Checklist}
-\label{sec:pending-checklist}
-\begin{table}[htbp]
-\centering
-\caption{Items requiring external input or experiment execution}
-\begin{tabularx}{\textwidth}{X p{0.25\textwidth}}
-\toprule
-Item & Status \\
-\midrule
-Kaggle dataset name, URL, license, and audited counts & Done for name/URL/license (\emph{Resume Dataset PDF} \citep{hadikpresumepdf}, CC0: Public Domain; Table~\ref{tab:dataset-fields}); current indexed size (2,986 real) is recorded, but the pre-filter audit (original file count, OCR failure count, duplicates removed) cannot be reconstructed retroactively (\cref{sec:limitations-list}) \\
-Synthetic generator, prompts, distributions, and quality-control results & Partially done -- 1,000 accepted synthetic CVs are recorded, and the generator (ChatGPT, GPT-4/GPT-4o family) is now recorded (\cref{app:synthetic}); exact model version, prompt template, and role/seniority distributions remain \texttt{Pending} \\
-Final evidence thresholds and sensitivity analysis & Done (Tables~\ref{tab:threshold-sensitivity}--\ref{tab:threshold-calibration}); \emph{finding: proper dev/test calibration selects $(\tau_l,\tau_h){=}(0.50,0.70)$, a $\sim$52\% relative improvement in held-out NDCG@10 over the shipped default -- still far below the SBERT baseline, and the exact optimum is somewhat sensitive to the dev/test split with only 23--25 pairs per JD per half} \\
-Human-labeled CV--JD pairs and reviewer agreement & 246 pairs labeled across 5 JDs (Table~\ref{tab:dataset-composition}); single reviewer, so Cohen's kappa is not applicable (see Construct Validity) \\
-OCR and latency results & Done (Tables~\ref{tab:ocr-results}--\ref{tab:performance-results}), pending only a larger OCR timing sample \\
-Ranking effectiveness results & Done (Table~\ref{tab:ranking-results}); \emph{finding: similarity-only baselines outperform the requirement-decomposition family on this run -- see Discussion} \\
-Constraint violation rate@10 and unsupported-claim rate@10 & Done (Table~\ref{tab:violation-rates}); \emph{finding: 100\% constraint violation rate@10 for both M5 and M6 on all 5 JDs, confirming the hard-pass gate never discriminates; M6 unsupported-claim rate@10 is low (1.20\% macro-avg), isolating the evidence-verification component as not the dominant cause} \\
-Robustness results (seniority mismatch, keyword stuffing, missing mandatory requirement, role confusion) & Done for all 5 of 5 controlled-set categories, each expanded to $n{=}3$ constructed instances (Tables~\ref{tab:robustness-results}, \ref{tab:missing-mandatory-case}, \ref{tab:role-confusion-case}, \ref{tab:battery-summary}); \emph{finding: seniority mismatch, missing mandatory requirement, and keyword stuffing replicate cleanly (2/3--3/3), but role confusion is caught in only 1/3 instances -- a genuine downward revision of the original single-instance finding, not a stable rate but no longer an anecdote either -- see Discussion} \\
-Case-study ranks and explanations & Done for all 4 case studies (Tables~\ref{tab:seniority-case}--\ref{tab:role-confusion-case}) \\
-Explanation-usability participants and ratings & Pending \\
-Application screenshots & Done -- all 6 slots now hold real screenshots of the running prototype, placed alongside the feature/result they illustrate (\cref{fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) \\
-Final environment versions & Done (Table~\ref{tab:environment}) \\
-Abstract and conclusion quantitative result sentences & Done -- both now report the real finding (baselines outperform the full proposed model on the labeled pool; the model is nonetheless the only one that separates genuine evidence from stuffing) \\
-\bottomrule
-\end{tabularx}
-\end{table}
 
 \clearpage
 \renewcommand{\bibname}{References}
