@@ -860,10 +860,10 @@ function App() {
         <section className="hero">
           <div>
             <span className="hero-eyebrow"><Sparkles size={13} /> AI-assisted screening</span>
-            <h1>Evidence-first CV ranking</h1>
+            <h1>Requirement-aware, evidence-aware CV ranking</h1>
             <p>Manage real scanned CVs and job descriptions, select an active JD, and rank candidates with hard constraints, seniority alignment, and traceable evidence.</p>
           </div>
-          <div className="status"><ShieldCheck /> Auditable · Deterministic · Privacy-aware</div>
+          <div className="status"><ShieldCheck /> Auditable · Deterministic · Human-in-the-loop</div>
         </section>
 
         <nav className="workspace-tabs">
