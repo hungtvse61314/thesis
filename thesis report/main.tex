@@ -238,7 +238,7 @@ The objectives are:
 \end{enumerate}
 
 \section{Research Questions}
-\begin{description}[style=nextline,leftmargin=0cm]
+\begin{description}[style=nextline,leftmargin=0cm,labelsep=0pt]
   \item[RQ1] How effective are TF--IDF, SBERT full-document similarity, and section-level SBERT as baseline methods for English IT CV--JD ranking?
   \item[RQ2] Does requirement-aware matching improve ranking quality compared with similarity-only ranking?
   \item[RQ3] Does evidence-aware verification reduce false positives caused by unsupported skill claims and keyword stuffing?
@@ -403,12 +403,12 @@ The main user-facing input is PDF. Direct extraction is attempted first because 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[height=0.68\textheight,keepaspectratio]{figures/figure_3_2_pdf_ingestion_and_ocr_fallback_process.png}
+\includegraphics[width=0.68\textwidth,keepaspectratio]{figures/figure_3_2_pdf_ingestion_and_ocr_fallback_process.png}
 \caption{PDF ingestion and OCR fallback process}
 \label{fig:pdfocr}
 \end{figure}
 
-Each upload returns a per-file status: \texttt{pdf\_text\_extracted} or \texttt{pdf\_ocr\_extracted} on success, or one of \texttt{pdf\_only} (non-PDF file), \texttt{empty\_file}, \texttt{ocr\_empty}, or \texttt{ocr\_unavailable\_or\_failed} on failure. Unreadable files are excluded from ranking rather than silently assigned low relevance; the current build does not, however, persist a count of rejected files (see Limitations, Chapter 5).
+Each upload returns a per-file status: \texttt{pdf\_\allowbreak text\_\allowbreak extracted} or \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted} on success, or one of \texttt{pdf\_\allowbreak only} (non-PDF file), \texttt{empty\_\allowbreak file}, \texttt{ocr\_\allowbreak empty}, or \texttt{ocr\_\allowbreak unavailable\_\allowbreak or\_\allowbreak failed} on failure. Unreadable files are excluded from ranking rather than silently assigned low relevance; the current build does not, however, persist a count of rejected files (see Limitations, Chapter 5).
 
 \Cref{fig:app-upload} shows the Ranking tab's \emph{Import CVs} card after uploading a batch of real scanned PDFs, together with the CV Management table's \emph{Extraction} column for those records, making the direct-extraction/OCR-fallback distinction above visible for a mixed batch.
 
@@ -480,9 +480,9 @@ Every CV record retains a source type (\texttt{real} or \texttt{synthetic}) and 
 \toprule
 Field & Real PDF example & Synthetic example & Status \\
 \midrule
-CV identifier & \texttt{REAL\_<hex10>} & \texttt{SYN\_<hex10>} & Implemented \\
-Source type & \texttt{real} & \texttt{synthetic} & Implemented (\texttt{CV.source\_type}) \\
-Extraction status & \texttt{pdf\_ocr\_extracted} & \texttt{pdf\_text\_extracted} & Implemented (\texttt{CV.parse\_status}); also used as a document-type proxy (OCR implies a scanned source, direct extraction implies a text-layer source) \\
+CV identifier & \texttt{REAL\_\allowbreak <hex10>} & \texttt{SYN\_\allowbreak <hex10>} & Implemented \\
+Source type & \texttt{real} & \texttt{synthetic} & Implemented (\texttt{CV.\allowbreak source\_\allowbreak type}) \\
+Extraction status & \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted} & \texttt{pdf\_\allowbreak text\_\allowbreak extracted} & Implemented (\texttt{CV.\allowbreak parse\_\allowbreak status}); also used as a document-type proxy (OCR implies a scanned source, direct extraction implies a text-layer source) \\
 Role / seniority & Parsed from CV & Parsed from CV & Implemented \\
 Experience years & Parsed from CV & Parsed from CV & Implemented \\
 Evidenced / unsupported skills & Computed against a given JD at ranking time & Computed against a given JD at ranking time & Implemented, but computed dynamically per JD--CV pair, not stored as a static per-CV field \\
@@ -775,18 +775,18 @@ Evaluation service & Reviewer labels (with a labeling UI) and NDCG/MAP/MRR/Recal
 \toprule
 Endpoint & Method & Purpose \\
 \midrule
-\texttt{/api/health} & GET & Health check; also reports the active $\tau_l$/$\tau_h$ evidence thresholds \\
-\texttt{/api/cvs/upload-pdfs} & POST & Upload PDF CVs, extract text, apply OCR fallback, and index valid records \\
-\texttt{/api/cvs} & GET & List indexed CV profiles and parsing status \\
-\texttt{/api/jds} & POST & Create a JD from an explicit requirement list \\
-\texttt{/api/jds/upload-pdfs} & POST & Create JD(s) from PDF, auto-decomposed into mandatory/optional skills, responsibilities, education, and certifications \\
-\texttt{/api/jds/\{id\}} & GET & Retrieve a JD, including its decomposed requirements \\
-\texttt{/api/jds/\{id\}/rank} & POST & Run one baseline from the M1--M6 catalogue (\texttt{method} query parameter) or the full proposed mechanism (default); requirement-level assessments are returned inline per candidate rather than through a separate explanation endpoint \\
-\texttt{/api/labels} & POST & Save a reviewer relevance label (0--3) and note for a CV--JD pair \\
-\texttt{/api/jds/\{id\}/labels} & GET & Retrieve saved reviewer labels for a JD \\
-\texttt{/api/experiments/methods} & GET & List the M1--M6 baseline catalogue \\
-\texttt{/api/jds/\{id\}/experiments/compare} & POST & Run every M1--M6 baseline against the same CV pool and score each against saved reviewer labels \\
-\texttt{/api/experiments/\{id\}/metrics} & GET & Return NDCG/MAP/MRR/Recall for the full model against saved labels \\
+\texttt{/api/\allowbreak health} & GET & Health check; also reports the active $\tau_l$/$\tau_h$ evidence thresholds \\
+\texttt{/api/\allowbreak cvs/\allowbreak upload-pdfs} & POST & Upload PDF CVs, extract text, apply OCR fallback, and index valid records \\
+\texttt{/api/\allowbreak cvs} & GET & List indexed CV profiles and parsing status \\
+\texttt{/api/\allowbreak jds} & POST & Create a JD from an explicit requirement list \\
+\texttt{/api/\allowbreak jds/\allowbreak upload-pdfs} & POST & Create JD(s) from PDF, auto-decomposed into mandatory/optional skills, responsibilities, education, and certifications \\
+\texttt{/api/\allowbreak jds/\allowbreak \{id\}} & GET & Retrieve a JD, including its decomposed requirements \\
+\texttt{/api/\allowbreak jds/\allowbreak \{id\}/\allowbreak rank} & POST & Run one baseline from the M1--M6 catalogue (\texttt{method} query parameter) or the full proposed mechanism (default); requirement-level assessments are returned inline per candidate rather than through a separate explanation endpoint \\
+\texttt{/api/\allowbreak labels} & POST & Save a reviewer relevance label (0--3) and note for a CV--JD pair \\
+\texttt{/api/\allowbreak jds/\allowbreak \{id\}/\allowbreak labels} & GET & Retrieve saved reviewer labels for a JD \\
+\texttt{/api/\allowbreak experiments/\allowbreak methods} & GET & List the M1--M6 baseline catalogue \\
+\texttt{/api/\allowbreak jds/\allowbreak \{id\}/\allowbreak experiments/\allowbreak compare} & POST & Run every M1--M6 baseline against the same CV pool and score each against saved reviewer labels \\
+\texttt{/api/\allowbreak experiments/\allowbreak \{id\}/\allowbreak metrics} & GET & Return NDCG/MAP/MRR/Recall for the full model against saved labels \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -814,7 +814,7 @@ The evaluation is designed to answer whether the proposed mechanism improves CV-
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[height=0.68\textheight,keepaspectratio]{figures/figure_4_1_evaluation_workflow_for_effectiveness_robustness_and_data_quality.png}
+\includegraphics[width=0.85\textwidth,keepaspectratio]{figures/figure_4_1_evaluation_workflow_for_effectiveness_robustness_and_data_quality.png}
 \caption{Evaluation workflow for effectiveness, robustness, and data quality}
 \label{fig:evaluationworkflow}
 \end{figure}
@@ -869,10 +869,10 @@ Real scanned PDF corpus & Kaggle & 2,986 indexed (100\% OCR-extracted; raw pre-f
 Synthetic CV corpus & AI-generated & 1,000 & Controlled robustness and scalability \\
 Combined retrieval corpus & Mixed & 3,986 & Indexing and ranking latency \\
 Human-labeled evaluation pool & All real CVs (single reviewer) & 246 labeled pairs across the 5 EVAL\_JD JDs (46--50 each; target 150--250 met) & NDCG, MAP, MRR, Recall (Table~\ref{tab:ranking-results}) \\
-Seniority robustness set & Purpose-built synthetic pairs & 3 constructed pairs (Senior/Fresher CVs against 3 purpose-built JDs: Java backend, React frontend, data engineer; all 5 declared categories built, \cref{sec:robustness-sets}) & Hard-constraint violation analysis (Tables~\ref{tab:robustness-results}, \ref{tab:battery-summary}) \\
-Keyword-stuffing set & Controlled paired variants & 3 constructed triples (Original/Stuffed/Supported CVs against EVAL\_JD\_01, a Vue frontend JD, and a data-engineer JD) & Unsupported-claim and rank-change analysis (Tables~\ref{tab:robustness-results}, \ref{tab:battery-summary}) \\
-Missing-mandatory-requirement set & Purpose-built synthetic pairs & 3 constructed pairs against 3 purpose-built JDs (Python backend, DevOps, QA automation) & Broad-similarity-vs-hard-gate analysis (Tables~\ref{tab:missing-mandatory-case}, \ref{tab:battery-summary}) \\
-Role-confusion set & Purpose-built synthetic pairs & 3 constructed pairs (genuine developer vs.\ confused PM/BA/QA tester) against 3 purpose-built JDs (Java backend, data engineer, DevOps) & Requirement-level role discrimination (Tables~\ref{tab:role-confusion-case}, \ref{tab:battery-summary}) \\
+Seniority robustness set & Purpose-built synthetic pairs & 3 pairs, 3 JDs (Java, React, data engineer) & Hard-constraint violation analysis (Tables~\ref{tab:robustness-results}, \ref{tab:battery-summary}); all 5 declared categories built, \cref{sec:robustness-sets} \\
+Keyword-stuffing set & Controlled paired variants & 3 triples, 3 JDs (EVAL\_JD\_01, Vue, data engineer) & Unsupported-claim and rank-change analysis (Tables~\ref{tab:robustness-results}, \ref{tab:battery-summary}) \\
+Missing-mandatory-requirement set & Purpose-built synthetic pairs & 3 pairs, 3 JDs (Python, DevOps, QA) & Broad-similarity-vs-hard-gate analysis (Tables~\ref{tab:missing-mandatory-case}, \ref{tab:battery-summary}) \\
+Role-confusion set & Purpose-built synthetic pairs & 3 pairs, 3 JDs (Java, data, DevOps) & Requirement-level role discrimination vs.\ confused PM/BA/QA tester (Tables~\ref{tab:role-confusion-case}, \ref{tab:battery-summary}) \\
 \bottomrule
 \end{tabularx}
 \end{table}
