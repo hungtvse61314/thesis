@@ -379,6 +379,15 @@ The proposed system, named \systemname{}, is a recruiter-facing decision-support
 \label{fig:architecture}
 \end{figure}
 
+\Cref{fig:app-overview} shows the running prototype's Ranking-tab landing view, the concrete counterpart to the architecture diagram above: the \emph{Import CVs} card (source-type selector, PDF drop zone, and the live indexed-CV count) and the \emph{Create JD} card (Upload PDF vs.\ Manual form) side by side, the two entry points into every subsequent pipeline stage described in this chapter.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/figure_3_2_app_overview_import_cvs_and_create_jd.png}
+\caption{Application overview: Import CVs and Create JD}
+\label{fig:app-overview}
+\end{figure}
+
 \section{Functional Requirements}
 The system shall:
 \begin{enumerate}
@@ -403,7 +412,7 @@ The main user-facing input is PDF. Direct extraction is attempted first because 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.68\textwidth,keepaspectratio]{figures/figure_3_2_pdf_ingestion_and_ocr_fallback_process.png}
+\includegraphics[width=0.68\textwidth,keepaspectratio]{figures/figure_3_3_pdf_ingestion_and_ocr_fallback_process.png}
 \caption{PDF ingestion and OCR fallback process}
 \label{fig:pdfocr}
 \end{figure}
@@ -414,7 +423,7 @@ Each upload returns a per-file status: \texttt{pdf\_\allowbreak text\_\allowbrea
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/figure_3_3_pdf_upload_and_extraction_status.png}
+\includegraphics[width=0.92\textwidth]{figures/figure_3_4_pdf_upload_and_extraction_status.png}
 \caption{PDF upload and per-file extraction status}
 \label{fig:app-upload}
 \end{figure}
@@ -436,7 +445,7 @@ The JD parser extracts job title, mandatory skills, optional skills, minimum yea
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figures/figure_3_4_structured_parsing_output_for_cv_and_jd_documents.png}
+\includegraphics[width=0.98\textwidth]{figures/figure_3_5_structured_parsing_output_for_cv_and_jd_documents.png}
 \caption{Structured parsing output for CV and JD documents}
 \label{fig:structuredparsing}
 \end{figure}
@@ -445,7 +454,7 @@ The JD parser extracts job title, mandatory skills, optional skills, minimum yea
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/figure_3_5_jd_requirement_decomposition.png}
+\includegraphics[width=0.92\textwidth]{figures/figure_3_6_jd_requirement_decomposition.png}
 \caption{Parsed JD requirement decomposition}
 \label{fig:app-jd-parse}
 \end{figure}
@@ -537,7 +546,7 @@ A skill listed only in the Skills section is considered \emph{declared}. It beco
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{figures/figure_3_6_requirement_level_assessment_and_constraint_based_reranking.png}
+\includegraphics[width=0.98\textwidth]{figures/figure_3_7_requirement_level_assessment_and_constraint_based_reranking.png}
 \caption{Requirement-level assessment and constraint-based reranking}
 \label{fig:assessmentreranking}
 \end{figure}
@@ -672,7 +681,7 @@ Output: ranked candidates with explanations
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/figure_3_7_topk_ranking_results.png}
+\includegraphics[width=0.92\textwidth]{figures/figure_3_8_topk_ranking_results.png}
 \caption{Top-$k$ ranking results}
 \label{fig:app-ranking}
 \end{figure}
@@ -705,14 +714,14 @@ For each candidate, the explanation page displays:
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/figure_3_8_candidate_requirement_explanation.png}
+\includegraphics[width=0.92\textwidth]{figures/figure_3_9_candidate_requirement_explanation.png}
 \caption{Candidate requirement-level explanation}
 \label{fig:app-explanation}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[height=0.68\textheight,keepaspectratio]{figures/figure_3_9_human_in_the_loop_recruiter_review_workflow.png}
+\includegraphics[height=0.68\textheight,keepaspectratio]{figures/figure_3_10_human_in_the_loop_recruiter_review_workflow.png}
 \caption{Human-in-the-loop recruiter review workflow}
 \label{fig:reviewworkflow}
 \end{figure}
