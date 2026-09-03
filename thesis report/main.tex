@@ -880,7 +880,7 @@ Role-confusion set & Purpose-built synthetic pairs & 3 pairs, 3 JDs (Java, data,
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_6_dataset_composition.png}
-\caption{Dataset composition. Left: the 3,986-CV combined retrieval corpus is 74.9\% real scanned PDFs and 25.1\% synthetic AI-generated CVs. Right: the 246-pair human-labeled evaluation pool is a small subset (8.2\%) of the 2,986-CV real corpus, drawn from 5 evaluation JDs at 46--50 labeled candidates each.}
+\caption[Dataset composition breakdown]{Dataset composition. Left: the 3,986-CV combined retrieval corpus is 74.9\% real scanned PDFs and 25.1\% synthetic AI-generated CVs. Right: the 246-pair human-labeled evaluation pool is a small subset (8.2\%) of the 2,986-CV real corpus, drawn from 5 evaluation JDs at 46--50 labeled candidates each.}
 \label{fig:dataset-chart}
 \end{figure}
 
@@ -1208,7 +1208,7 @@ The bootstrap CIs above are computed by resampling the 5 JDs with replacement (t
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_2_ranking_effectiveness_comparison.png}
-\caption{Real-data ranking effectiveness by model, all six metrics from Table~\ref{tab:ranking-results}. The best-performing model on each metric is outlined in black; the three similarity-only baselines (M1--M3) visibly dominate the requirement-decomposition family (M4--M6) on every metric except MRR.}
+\caption[Real-data ranking effectiveness by model]{Real-data ranking effectiveness by model, all six metrics from Table~\ref{tab:ranking-results}. The best-performing model on each metric is outlined in black; the three similarity-only baselines (M1--M3) visibly dominate the requirement-decomposition family (M4--M6) on every metric except MRR.}
 \label{fig:ranking-effectiveness-chart}
 \end{figure}
 
@@ -1241,7 +1241,7 @@ For the stuffing columns, all six requirement-decomposition assessments were als
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_3_robustness_rank_changes.png}
-\caption{Controlled robustness results, visualized from Table~\ref{tab:robustness-results}. Left: Senior vs Fresher CV rank per model for the seniority-mismatch test (log scale; only M5 gates correctly). Right: rank by CV version (Original/Stuffed/Supported) per model for the keyword-stuffing test (log scale); M4--M6 all improve from added declared skills, but only M6 (Full proposed model) improves more from genuine evidence (Supported) than from unevidenced stuffing.}
+\caption[Controlled robustness results by model]{Controlled robustness results, visualized from Table~\ref{tab:robustness-results}. Left: Senior vs Fresher CV rank per model for the seniority-mismatch test (log scale; only M5 gates correctly). Right: rank by CV version (Original/Stuffed/Supported) per model for the keyword-stuffing test (log scale); M4--M6 all improve from added declared skills, but only M6 (Full proposed model) improves more from genuine evidence (Supported) than from unevidenced stuffing.}
 \label{fig:robustness-chart}
 \end{figure}
 
@@ -1267,7 +1267,7 @@ Seniority correctness on inspected sample & Pending -- requires manual inspectio
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{figures/figure_4_4_ocr_parsing_detection_rates.png}
-\caption{OCR success rate and section-detection coverage across the 2,986-CV real corpus (Table~\ref{tab:ocr-results}). The gap between OCR success (100\%) and Skills/Experience-section detection (69.3\%/56.4\%) reflects real scanned resumes whose text was recovered but whose layout does not use a recognizable section heading (see Limitations, Chapter 5).}
+\caption[OCR success rate and section-detection coverage]{OCR success rate and section-detection coverage across the 2,986-CV real corpus (Table~\ref{tab:ocr-results}). The gap between OCR success (100\%) and Skills/Experience-section detection (69.3\%/56.4\%) reflects real scanned resumes whose text was recovered but whose layout does not use a recognizable section heading (see Limitations, Chapter 5).}
 \label{fig:ocr-chart}
 \end{figure}
 
@@ -1293,7 +1293,7 @@ Top-$k$ API response & combined corpus (3,986 CVs), warm cache & Same as warm ra
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_5_operational_performance.png}
-\caption{Operational performance from Table~\ref{tab:performance-results} (log-scale time axes). Left: per-document pipeline stage cost, dominated by OCR extraction (8.08\,s/page vs low-single-digit milliseconds for parsing). Right: per-JD ranking latency by model on the warm 3,986-CV corpus; M5 and M6 cost roughly 17--18$\times$ more than the SBERT-only baselines (M2/M3) because they evaluate every JD requirement against every candidate's evidence pool.}
+\caption[Combined-corpus operational performance]{Operational performance from Table~\ref{tab:performance-results} (log-scale time axes). Left: per-document pipeline stage cost, dominated by OCR extraction (8.08\,s/page vs low-single-digit milliseconds for parsing). Right: per-JD ranking latency by model on the warm 3,986-CV corpus; M5 and M6 cost roughly 17--18$\times$ more than the SBERT-only baselines (M2/M3) because they evaluate every JD requirement against every candidate's evidence pool.}
 \label{fig:performance-chart}
 \end{figure}
 
@@ -1362,7 +1362,7 @@ Two baseline-column values are affected by a construction detail specific to the
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_7_case_study_rank_comparison.png}
-\caption{Baseline (SBERT full text) vs proposed (full model) rank for all four case studies (log scale, lower is better; Tables~\ref{tab:seniority-case}--\ref{tab:role-confusion-case}). Top-left: the proposed model separates the Senior and Fresher CV by a much larger margin than the baseline. Top-right: the proposed model is the only one of the two to rank the Evidence-supported CV above the Stuffed CV; the baseline ranks both modified versions below the Original. Bottom-left: the proposed model gates out the CV missing PostgreSQL far more sharply than the baseline does. Bottom-right: the proposed model separates the genuine developer from the role-confused project manager more sharply than the baseline despite the PM's partial term overlap.}
+\caption[Case-study rank comparison: baseline vs.\ proposed model]{Baseline (SBERT full text) vs proposed (full model) rank for all four case studies (log scale, lower is better; Tables~\ref{tab:seniority-case}--\ref{tab:role-confusion-case}). Top-left: the proposed model separates the Senior and Fresher CV by a much larger margin than the baseline. Top-right: the proposed model is the only one of the two to rank the Evidence-supported CV above the Stuffed CV; the baseline ranks both modified versions below the Original. Bottom-left: the proposed model gates out the CV missing PostgreSQL far more sharply than the baseline does. Bottom-right: the proposed model separates the genuine developer from the role-confused project manager more sharply than the baseline despite the PM's partial term overlap.}
 \label{fig:case-study-chart}
 \end{figure}
 
