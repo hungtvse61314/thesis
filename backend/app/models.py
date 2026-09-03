@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Float, Boolean, DateTime, ForeignKey
 from sqlalchemy.sql import func
 from .database import Base
 
@@ -17,8 +17,10 @@ class CV(Base):
     sections_json = Column(Text, default="{}")
     skills_json = Column(Text, default="[]")
     years_experience = Column(Float, default=0)
+    years_detected = Column(Boolean, default=True)
     seniority = Column(String(30), default="unknown")
     parse_status = Column(String(80), default="ok")
+    content_hash = Column(String(64), index=True)
     created_at = Column(DateTime, server_default=func.now())
 
 

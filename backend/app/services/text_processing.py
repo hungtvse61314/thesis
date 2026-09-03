@@ -14,9 +14,21 @@ def loads(v, default):
     try: return json.loads(v or '')
     except Exception: return default
 
+CONTROL_CHAR_RE=re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
+# Boilerplate lines appended by the synthetic CV/JD generator (e.g. "Synthetic
+# CV generated for academic evaluation. All names and contact details are
+# fictional." / "Synthetic JD generated for academic evaluation. It does not
+# represent an active vacancy."). These describe the dataset, not the
+# candidate or role, so they must not be parsed as a skill, section, or
+# requirement.
+DISCLAIMER_RE=re.compile(
+    r'(?i)\bsynthetic\s+(?:cv|jd)\s+generated for academic evaluation\.[^.]*\.'
+)
+
 def clean_text(text:str)->str:
     text=unicodedata.normalize('NFKC', text or '')
-    text=text.replace('\x00',' ')
+    text=CONTROL_CHAR_RE.sub(' ', text)
+    text=DISCLAIMER_RE.sub(' ', text)
     text=re.sub(r'[ \t]+',' ',text)
     text=re.sub(r'\n{3,}','\n\n',text)
     return text.strip()
