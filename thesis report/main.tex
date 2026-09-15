@@ -158,7 +158,7 @@ This thesis proposes an AI-driven recruitment screening system that formulates E
 
 The experimental design combines 2,986 real scanned PDF CVs -- filtered to IT/software roles from the public Kaggle \emph{Resume Dataset PDF} \citep{hadikpresumepdf}, a general, multi-industry resume collection -- with 1,000 controlled AI-generated English IT CVs. The real corpus is used for OCR and parsing evaluation and is the majority (but not exclusive) source for the human-labeled ranking pool, while the synthetic corpus additionally supports controlled seniority-mismatch, unsupported-claim, keyword-stuffing, and scalability experiments. The primary ranking conclusions are based on a manually judged pool of 246 CV--JD pairs (138 real, 108 synthetic) across five representative Senior/Junior IT job descriptions.
 
-The proposed approach is compared with TF--IDF, SBERT full-document similarity, and section-level SBERT baselines. Evaluation uses NDCG@5, NDCG@10, MAP, MRR, Recall@10, Recall@20, hard-constraint gating behavior, keyword-stuffing rank change, OCR reliability, and operational latency, together with bootstrap confidence intervals and a paired significance test. Against the human-labeled pool, the three similarity-only baselines rank ahead of the proposed requirement-aware, evidence-aware model on every ranking metric except MRR; this thesis reports that result directly rather than only the cases where the proposed mechanism wins, and traces it to two causes -- an auto-parsed hard-requirement list that no candidate in the top-10 ever fully satisfies (a 100\% constraint-violation rate at $k{=}10$), and evidence-similarity thresholds that a proper held-out calibration shows were left too lenient by default (calibrating them yields a genuine, held-out-validated $\sim$52\% relative improvement in NDCG@10, but closes less than a quarter of the absolute gap to the strongest baseline). A battery of controlled robustness tests, each category built as three constructed instances rather than one, shows the mechanism reliably does what it was designed to do for seniority mismatch, missing mandatory requirements, and keyword stuffing, but is fooled by descriptor-language role confusion in the majority of tested instances -- a genuine weakness the single-instance version of the same test did not reveal. The intended outcome is a practical and auditable decision-support prototype that makes requirement coverage and evidence explicit to a reviewer, improving initial CV screening while keeping final hiring decisions under human control; redesigning the JD parser's hard/optional classification and scoping declared-skill extraction to genuine personal-skill statements are identified as the two most concrete next steps rather than resolved contributions of this thesis.
+The proposed approach is compared with TF--IDF, SBERT full-document similarity, and section-level SBERT baselines. Evaluation uses NDCG@5, NDCG@10, MAP, MRR, Recall@10, Recall@20, hard-constraint gating behavior, keyword-stuffing rank change, OCR reliability, and operational latency, together with bootstrap confidence intervals and a paired significance test. Against the human-labeled pool, the three similarity-only baselines rank ahead of the proposed requirement-aware, evidence-aware model on every ranking metric except MRR (NDCG@10 0.96 vs 0.64); this thesis reports that result directly rather than only the cases where the proposed mechanism wins. Direct inspection of the assessment pipeline attributes the gap mainly to one confirmed cause: JD "Key Responsibilities" sentences are hard-gated unconditionally and assessed against the same semantic-similarity threshold used for short skill terms, a bar full sentences rarely clear, so no candidate in the top-10 for any of the five evaluated jobs fully satisfies every hard requirement (a 100\% constraint-violation rate at $k{=}10$). A separate held-out calibration of the evidence thresholds shows the shipped default is slightly too lenient and that a stricter setting yields a genuine, held-out-validated $\sim$52\% relative improvement in NDCG@10, though this was not evaluated together with the responsibility-threshold finding in one combined run. A battery of controlled robustness tests, each category built as three constructed instances rather than one, shows the mechanism reliably does what it was designed to do for seniority mismatch, missing mandatory requirements, and keyword stuffing, but is fooled by descriptor-language role confusion in the majority of tested instances -- a genuine weakness the single-instance version of the same test did not reveal. Because the evaluated prototype does not yet outperform similarity-only ranking on the human-labeled pool, this thesis's contribution is best read as the design and validation of an \emph{auditable} mechanism -- one whose every ranking decision can be traced to a specific requirement, threshold, and evidence sentence, a property none of the three baselines provide -- rather than as a demonstrated accuracy improvement; the intended practical outcome is a decision-support prototype that makes requirement coverage and evidence explicit to a reviewer, improving the auditability of initial CV screening while keeping final hiring decisions under human control. Loosening the hard gate on full-sentence responsibility requirements and scoping declared-skill extraction to genuine personal-skill statements are identified as the two most concrete next steps rather than resolved contributions of this thesis, and the explanation-usability question (RQ3) was outside this thesis's schedule and remains open.
 
 \textbf{Keywords:} recruitment screening, CV--JD matching, semantic information retrieval, requirement decomposition, evidence-aware matching, constraint-based reranking, SBERT, OCR, explainable AI.
 
@@ -202,24 +202,13 @@ Recruitment screening is one of the earliest and most time-consuming stages in t
 
 Traditional applicant tracking systems generally support keyword search, Boolean rules, and manual filters. These tools are efficient for exact matching but are sensitive to vocabulary mismatch and keyword stuffing. Semantic retrieval models reduce vocabulary mismatch by representing CVs and JDs as dense vectors. However, semantic similarity alone does not guarantee actual suitability. Two documents can be semantically related even when the candidate fails a critical requirement. A junior candidate may use the same technology stack as a senior candidate, but the depth, duration, ownership, and context of experience are different.
 
-Therefore, the central problem is not only to calculate text similarity, but to determine whether the candidate satisfies the individual requirements of the JD and whether the CV contains supporting evidence for those requirements.
-
-\section{Problem Statement}
-Given a JD $q$ and a CV collection $D=\{d_1,d_2,\ldots,d_n\}$, a conventional ranking system calculates a relevance score $s(q,d_i)$ and returns an ordered list. This formulation is useful, but a single similarity score can hide important mismatches. For example:
-
-\begin{itemize}
-  \item a candidate may match the required skills but not the minimum years of experience;
-  \item a CV may list a technology in the Skills section without evidence in Work Experience or Projects;
-  \item an intern or fresher may be ranked highly for a senior role because of lexical or semantic overlap;
-  \item scanned PDF extraction errors may remove important evidence and produce incorrect rankings.
-\end{itemize}
+Therefore, the central problem is not only to calculate text similarity, but to determine whether the candidate satisfies the individual requirements of the JD and whether the CV contains supporting evidence for those requirements. Formally, given a JD $q$ and a CV collection $D=\{d_1,d_2,\ldots,d_n\}$, a conventional ranking system calculates a relevance score $s(q,d_i)$ and returns an ordered list; this formulation is useful, but a single similarity score can hide important mismatches. For example, a candidate may match the required skills but not the minimum years of experience; a CV may list a technology in the Skills section without evidence in Work Experience or Projects; an intern or fresher may be ranked highly for a senior role because of lexical or semantic overlap; or scanned PDF extraction errors may remove important evidence and produce incorrect rankings.
 
 The problem addressed in this thesis is therefore:
 
 \begin{quote}
 How can an AI-driven recruitment screening system rank English IT CVs for a JD by considering not only semantic similarity, but also requirement satisfaction, mandatory constraints, seniority alignment, and supporting evidence?
 \end{quote}
-
 
 \begin{figure}[htbp]
 \centering
@@ -231,26 +220,18 @@ How can an AI-driven recruitment screening system rank English IT CVs for a JD b
 \section{Research Aim and Objectives}
 The aim is to design and evaluate a practical recruitment screening system that performs requirement-aware and evidence-aware CV--JD matching.
 
-The objectives are:
+The objectives are organized around three research thrusts:
 \begin{enumerate}
-  \item Formulate English IT CV--JD matching as a ranking and information retrieval problem.
-  \item Build a PDF-first CV ingestion pipeline with OCR fallback for scanned PDFs.
-  \item Parse CVs and JDs into structured sections and requirements.
-  \item Decompose JDs into mandatory and optional requirements.
-  \item Retrieve evidence from CV Work Experience and Projects for each requirement.
-  \item Validate hard constraints, including minimum experience and seniority level.
-  \item Rerank candidates using verified requirement coverage rather than overall similarity alone.
-  \item Evaluate the proposed mechanism using ranking metrics, robustness tests, and error analysis.
-  \item Provide recruiter-facing explanations while preserving human control over hiring decisions.
+  \item \textbf{Design a requirement-aware, evidence-aware matching mechanism.} Formulate English IT CV--JD matching as a ranking and information retrieval problem; decompose JDs into mandatory and optional requirements; retrieve evidence from CV Work Experience and Projects for each requirement; validate hard constraints, including minimum experience and seniority level; and rerank candidates using verified requirement coverage rather than overall similarity alone.
+  \item \textbf{Build a robust document-processing pipeline.} Build a PDF-first CV ingestion pipeline with OCR fallback for scanned PDFs, and parse CVs and JDs into structured sections and requirements.
+  \item \textbf{Evaluate the mechanism and its explanations.} Evaluate the proposed mechanism using ranking metrics, robustness tests, and error analysis, and provide recruiter-facing explanations while preserving human control over hiring decisions.
 \end{enumerate}
 
 \section{Research Questions}
 \begin{description}[style=nextline,leftmargin=0cm,labelsep=0pt]
-  \item[RQ1] How effective are TF--IDF, SBERT full-document similarity, and section-level SBERT as baseline methods for English IT CV--JD ranking?
-  \item[RQ2] Does requirement-aware matching improve ranking quality compared with similarity-only ranking?
-  \item[RQ3] Does evidence-aware verification reduce false positives caused by unsupported skill claims and keyword stuffing?
-  \item[RQ4] Does constraint-based reranking reduce false positives caused by experience and seniority mismatch?
-  \item[RQ5] How useful and understandable are the requirement-level explanations to recruiters or technical reviewers during candidate review?
+  \item[RQ1] Relative to lexical and semantic similarity baselines (TF--IDF, SBERT full-document similarity, and section-level SBERT), does requirement-aware matching improve ranking quality for English IT CV--JD ranking?
+  \item[RQ2] Does evidence-aware verification and constraint-based reranking reduce false positives caused by unsupported skill claims, keyword stuffing, and experience or seniority mismatch?
+  \item[RQ3] How useful and understandable are the requirement-level explanations to recruiters or technical reviewers during candidate review?
 \end{description}
 
 \section{Scope and Exclusions}
@@ -299,42 +280,36 @@ The remainder of the thesis is organized into four chapters. Chapter 2 reviews r
 \chapter{Literature Review}
 % ==================================================
 
-\section{Recruitment Screening and Applicant Tracking Systems}
-Applicant tracking systems support CV storage, filtering, keyword search, and workflow management. Keyword and Boolean filters are efficient and interpretable, but they are vulnerable to vocabulary mismatch and keyword stuffing. A candidate may be relevant without using the exact terms in the JD, while another candidate may list many keywords without demonstrating practical experience. Comparative studies of semantic resume-to-job matching report similar vocabulary-mismatch and evidence-verification gaps in existing CV--JD systems \citep{alderham2022}.
+\section{Requirement-Aware Matching}
+Automated CV--JD matching has developed through three generations of increasingly sophisticated text representation, and each generation resolves the previous one's main weakness while exposing a new one that motivates the next.
 
-\section{Information Retrieval for CV--JD Matching}
-In information retrieval, the JD is treated as a query and the CV collection as documents. TF--IDF remains a useful lexical baseline because exact technical terms often matter in IT recruitment \citep{salton1988}. Cosine similarity between TF--IDF vectors is efficient and transparent. BM25 improves lexical retrieval through term saturation and document-length normalization, but it is not the main implementation in this thesis and remains a future extension \citep{manning2008,robertson2009}.
+The first generation, applicant tracking systems built on keyword search, Boolean rules, and manual filters, supports CV storage and workflow management efficiently and remains interpretable, but it is brittle to vocabulary mismatch: a candidate may be relevant without using the JD's exact terms, while another may list many keywords without demonstrating practical experience. Comparative studies of semantic resume-to-job matching report the same vocabulary-mismatch and evidence-verification gaps in deployed CV--JD systems \citep{alderham2022}. Weighted lexical retrieval, such as TF--IDF cosine similarity, sharpens this paradigm rather than replacing it: exact technical terms still matter in IT recruitment \citep{salton1988}, and BM25 further improves lexical retrieval through term saturation and document-length normalization \citep{manning2008,robertson2009}, but the underlying limitation, that a candidate must still share the JD's vocabulary to be found, persists.
 
-\section{Semantic Retrieval and SBERT}
-Transformer-based embeddings capture semantic relationships beyond exact words, building on the self-attention architecture introduced for sequence modeling \citep{vaswani2017}. BERT introduced contextual bidirectional representations \citep{devlin2019}, while Sentence-BERT enables efficient sentence and document similarity by producing comparable embeddings \citep{reimers2019}. SBERT is suitable for first-stage retrieval because CV and JD embeddings can be precomputed and compared efficiently.
+Dense semantic retrieval addresses vocabulary mismatch directly. Transformer-based embeddings capture semantic relationships beyond exact words, building on the self-attention architecture introduced for sequence modeling \citep{vaswani2017}; BERT introduced contextual bidirectional representations \citep{devlin2019}, and Sentence-BERT (SBERT) produces comparable sentence and document embeddings efficiently enough for CVs and JDs to be precomputed and compared at scale \citep{reimers2019}. This solves vocabulary mismatch but introduces a new failure mode: a high semantic score can be produced by broad topical overlap in a long CV that contains substantial unrelated content, so global similarity does not guarantee actual suitability. Section-level matching narrows the comparison to relevant sections, such as Skills and Work Experience, which reduces dilution but does not itself verify whether any individual requirement is met.
 
-However, full-document similarity has limitations. Long CVs may contain unrelated content, and a high semantic score can be produced by broad topical overlap. Section-level matching reduces this problem by comparing relevant sections, such as Skills and Work Experience, separately.
+Requirement decomposition responds to this residual gap by treating a JD as a heterogeneous set of conditions rather than a single text to embed. A JD contains mandatory skills, optional skills, minimum experience, seniority, responsibilities, education requirements, and certifications; representing these independently, with mandatory (hard) requirements determining whether a candidate meets critical conditions and optional (soft) requirements affecting preference without excluding a candidate, is closer to how recruiters actually screen. Seniority illustrates why this distinction matters even after adopting dense retrieval: semantic similarity between a senior JD and a junior CV can remain high purely because both mention the same technologies, a mismatch that only a dedicated, requirement-level seniority check can catch. This is the starting point for the requirement-aware mechanism developed in Chapter 3.
 
-\section{Cross-Encoder and Reranking Approaches}
-Two-stage retrieval architectures commonly use a fast bi-encoder to retrieve a candidate set and a more expensive reranker to refine ordering. Cross-encoders jointly process query-document pairs and often provide stronger interaction modeling than independent embeddings. Learning-to-rank methods such as LambdaMART can combine multiple relevance signals, but they require sufficient labeled data. Given the time and data limitations of this thesis, the proposed system uses deterministic requirement-level reranking and places trainable learning-to-rank in future work.
+\section{Evidence Verification, Reranking, and Explainability}
+\label{sec:evidence-aware}
+Once a JD is decomposed into individual requirements, two further questions arise: how to score a CV against each requirement more precisely than a single embedding comparison, and how to ensure that any resulting score, however it is computed, remains something a recruiter can trust and act on.
 
-\section{Requirement Decomposition and Constraint Matching}
-A JD is not a single homogeneous text. It contains mandatory skills, optional skills, minimum experience, seniority, responsibilities, education requirements, and certifications. Treating these requirements independently is closer to recruiter practice. Hard constraints determine whether a candidate satisfies critical conditions, while soft constraints affect preference without necessarily excluding the candidate.
-
-Constraint-aware matching is especially important for seniority. Semantic similarity between a senior JD and a junior CV may be high if both mention the same technologies. A dedicated seniority check can identify this mismatch directly.
-
-\section{Evidence-aware Matching and Unsupported Claims}
-A CV may declare skills without providing evidence. It is not possible to determine whether a CV is fraudulent using the document alone, but it is possible to identify \emph{unsupported claims}. Evidence-aware matching searches Work Experience and Project sections for sentences that support a declared skill or responsibility. This distinction reduces ranking inflation caused by keyword stuffing.
-
-The evidence problem can be represented as:
+Two-stage retrieval architectures address the first question by pairing a fast bi-encoder for candidate retrieval with a more expensive reranker for refining order. Cross-encoders jointly process query--document pairs and typically model interaction more precisely than independent embeddings, and learning-to-rank methods such as LambdaMART can combine multiple relevance signals into a single learned score. Both, however, trade away exactly what recruitment screening needs: cross-encoders raise inference latency and are difficult to audit without separate evidence extraction, since their score is a single opaque number, and learning-to-rank requires a volume of representative labeled query groups that is not available at this thesis's scale. Evidence-aware matching offers a lighter alternative that targets the same problem, unsupported or inflated relevance, without either cost. Rather than learning a richer joint scoring function, it searches Work Experience and Project sections directly for sentences that support a declared skill or responsibility, which is enough to distinguish a genuinely demonstrated skill from one that is merely declared and reduces the ranking inflation caused by keyword stuffing. The evidence problem can be represented as
 \begin{equation}
 E(r,d)=\max_{s\in \mathcal{S}(d)} \operatorname{sim}(r,s),
 \end{equation}
-where $r$ is a JD requirement, $\mathcal{S}(d)$ is the set of evidence sentences extracted from CV $d$, and $\operatorname{sim}$ is a semantic similarity function. If no sentence exceeds a threshold, the requirement is marked unsupported or not satisfied.
+where $r$ is a JD requirement, $\mathcal{S}(d)$ is the set of evidence sentences extracted from CV $d$, and $\operatorname{sim}$ is a semantic similarity function; if no sentence exceeds a threshold, the requirement is marked unsupported or not satisfied. Given the time and data limitations of this thesis, the proposed system adopts this evidence-aware, deterministic path rather than a trainable cross-encoder or learning-to-rank reranker, and treats the latter as future work.
 
-\section{Resume Parsing, PDF Extraction, and OCR}
-CV documents often contain multiple columns, icons, tables, and irregular headings. Text-based PDFs can be parsed using libraries such as PyPDF or pdfplumber. Scanned PDFs require OCR, for which Tesseract provides an established open-source engine architecture \citep{smith2007tesseract}. OCR may introduce character errors, broken lines, and section boundary problems, which can affect ranking quality. Therefore, the ingestion pipeline should record extraction status, text length, and parsing warnings.
+This choice also serves the second question, transparency. Recruitment systems require it because screening affects individuals, and a practical explanation must show job-relevant evidence that a recruiter can independently verify, not just a confidence score. Model-agnostic explanation techniques such as LIME show that post-hoc, locally faithful explanations can be produced without exposing internal model weights \citep{ribeiro2016}, but they are not a complete answer: attention heatmaps alone are insufficient because attention weights are not necessarily a faithful explanation of model behavior \citep{jacovi2020}, and the same caution would apply to a cross-encoder's internal attention if one were adopted here. An evidence-aware mechanism sidesteps this problem structurally rather than through a post-hoc explanation layer, because its output already \emph{is} a set of requirement statuses and supporting sentences. The proposed system explains ranking through exactly this: requirement status, missing constraints, seniority gaps, and supporting sentences.
 
-\section{Explainability and Human Control}
-Recruitment systems require transparency because screening affects individuals. Practical explanations should show job-relevant evidence that recruiters can verify. Model-agnostic explanation techniques such as LIME show that post-hoc, locally faithful explanations can be produced without exposing internal model weights \citep{ribeiro2016}, but attention heatmaps alone are not sufficient because attention is not necessarily a faithful explanation of model behavior \citep{jacovi2020}. The proposed system therefore explains ranking through requirement status, missing constraints, seniority gaps, and supporting sentences.
+\section{Document Processing and Synthetic Evaluation}
+The matching mechanism above assumes clean, structured CV and JD text. Two practical constraints determine whether that assumption holds in this thesis's experimental setting: the reliability of the document-ingestion pipeline, and the availability of sufficiently diverse and labeled evaluation data.
 
-\section{Comparison of Related Approaches}
-Table~\ref{tab:related-work} summarizes the main methodological families relevant to this thesis. Lexical and dense retrieval methods are effective for candidate discovery but do not directly verify requirement satisfaction. Cross-encoders and learning-to-rank methods improve interaction modeling, but they normally require additional computation or labeled training data. The proposed mechanism focuses on requirement decomposition, evidence verification, and explicit constraint handling while remaining deterministic and auditable.
+On ingestion, CV documents often contain multiple columns, icons, tables, and irregular headings, which complicates parsing even for text-based PDFs handled by libraries such as PyPDF or pdfplumber. Scanned PDFs require OCR, for which Tesseract provides an established open-source engine architecture \citep{smith2007tesseract}; OCR may introduce character errors, broken lines, and section-boundary problems that propagate into requirement decomposition and evidence retrieval and can therefore affect ranking quality. An ingestion pipeline for this mechanism should accordingly record extraction status, text length, and parsing warnings rather than silently passing degraded text downstream.
+
+On evaluation data, even a reliable pipeline still depends on a corpus that contains enough adversarial and edge cases, such as seniority mismatch or keyword stuffing, to test the mechanism's specific claims; real-world corpora rarely contain enough of these in controlled combinations. Synthetic data can supplement limited real-world corpora by generating controlled combinations of role, seniority, experience, skill evidence, and adversarial cases, but AI-generated text may carry stylistic artifacts, overly clean language, or patterns inherited from the generation prompt, so synthetic CVs are better suited to supporting robustness and scalability analysis than to replacing human judgment on real CVs. Recent work on LLM-driven synthetic data emphasizes the need for transparent generation protocols, quality controls, source separation, and careful interpretation of downstream results \citep{long2024synthetic,tan2024annotation}. Following this guidance, synthetic CVs in this thesis are generated from structured candidate profiles rather than copied from target JDs, and each record retains provenance and scenario metadata so that seniority mismatch, missing mandatory skills, unsupported claims, and keyword-stuffing cases can be tested in a controlled way, while primary claims about real-world matching remain grounded in manually judged CV--JD pairs.
+
+\section{Comparative Synthesis and Research Gap}
+Table~\ref{tab:related-work} places the method families discussed above side by side. Lexical and dense retrieval methods are effective for candidate discovery but do not directly verify requirement satisfaction; cross-encoders and learning-to-rank methods improve interaction modeling but normally require additional computation or labeled training data that this thesis's scale does not support. The proposed mechanism instead concentrates its added complexity on requirement decomposition, evidence verification, and explicit constraint handling, trading some of the accuracy headroom of a learned reranker for a ranking that remains deterministic and auditable end to end.
 
 \begin{table}[htbp]
 \centering
@@ -354,29 +329,16 @@ Proposed mechanism & Requirement states, evidence, constraints & Auditable rank 
 \end{tabularx}
 \end{table}
 
-\section{Synthetic Data for Controlled Evaluation}
-Synthetic data can supplement limited real-world corpora by creating controlled combinations of role, seniority, experience, skill evidence, and adversarial cases. However, AI-generated text may contain stylistic artifacts, overly clean language, or patterns inherited from the generation prompt. Therefore, synthetic CVs should support robustness and scalability analysis rather than replace human judgment on real CVs. Recent work on LLM-driven synthetic data emphasizes the need for transparent generation protocols, quality controls, source separation, and careful interpretation of downstream results \citep{long2024synthetic,tan2024annotation}.
-
-In this thesis, synthetic CVs are generated from structured candidate profiles rather than copied from target JDs. Each record retains provenance and scenario metadata, allowing controlled tests for seniority mismatch, missing mandatory skills, unsupported claims, and keyword stuffing. Primary claims about real-world matching remain grounded in manually judged CV--JD pairs.
-
-\section{Research Gap}
-The literature provides strong methods for lexical retrieval, semantic retrieval, and ranking. However, many CV--JD systems still optimize a global similarity score. They may not explicitly distinguish mandatory from optional requirements, validate seniority constraints, or verify whether claimed skills are supported by experience evidence.
-
-The gap addressed by this thesis is a practical multi-stage mechanism that:
-\begin{itemize}
-  \item decomposes the JD into explicit requirements;
-  \item retrieves evidence for each requirement from CV sections;
-  \item distinguishes declared skills from evidenced skills;
-  \item validates minimum experience and seniority constraints;
-  \item reranks candidates based on requirement coverage and constraint satisfaction;
-  \item explains each decision to the recruiter.
-\end{itemize}
+Reading across this table exposes a consistent pattern rather than a set of unrelated shortcomings: every method family that improves candidate discovery, from keyword search through dense retrieval to cross-encoders, does so by refining a single, still-global relevance score, and none of them makes mandatory-requirement satisfaction, seniority alignment, or evidence support an explicit, checkable part of that score. The gap addressed by this thesis is therefore not another way to compute relevance, but a practical multi-stage mechanism that decomposes the JD into explicit requirements, retrieves evidence for each requirement from CV sections, distinguishes declared skills from evidenced skills, validates minimum experience and seniority constraints, reranks candidates based on requirement coverage and constraint satisfaction, and explains each decision to the recruiter.
 
 % ==================================================
 \chapter{System Design and Implementation}
 % ==================================================
 
-\section{System Overview}
+\section{System Architecture and Requirements}
+This section introduces \systemname{} at the level of its overall workflow and the requirements that workflow is meant to satisfy, before the following sections describe each pipeline stage in detail.
+
+\subsection{System Overview}
 The proposed system, named \systemname{}, is a recruiter-facing decision-support prototype. Its main workflow is shown in \cref{fig:architecture}. The system separates document ingestion, structured parsing, matching, reranking, and explanation into independent modules.
 
 \begin{figure}[htbp]
@@ -395,7 +357,7 @@ The proposed system, named \systemname{}, is a recruiter-facing decision-support
 \label{fig:app-overview}
 \end{figure}
 
-\section{Functional Requirements}
+\subsection{Functional Requirements}
 The system shall:
 \begin{enumerate}
   \item upload one or more PDF CV files;
@@ -410,10 +372,13 @@ The system shall:
   \item store reviewer relevance labels and evaluation results.
 \end{enumerate}
 
-\subsection{Non-functional Requirements}
+\subsubsection{Non-functional Requirements}
 The prototype targets five non-functional requirements: traceability, deterministic behavior, privacy protection, acceptable response time, and modularity. Every ranking result retains the parsed requirements, requirement states, evidence sentences, constraint violations, and baseline tie-breaker, so a reviewer can reproduce why a candidate landed at a given rank. Parsing, evidence retrieval, constraint validation, reranking, and explanation generation are separate, independently testable modules. Privacy protection is currently a design goal rather than a delivered control: direct identifiers are not masked before ranking, and the built-in CV viewer displays the original, unredacted PDF (\cref{sec:security}; Chapter 5, Limitations).
 
-\section{PDF Ingestion and OCR Fallback}
+\section{Data Ingestion and Structured Parsing Pipeline}
+This section covers the path from a raw uploaded document to a structured, requirement-ready representation: PDF ingestion and OCR fallback, CV/JD parsing into sections and requirements, dataset provenance tracking, and the synthetic CV generation protocol used to extend the evaluation corpus.
+
+\subsection{PDF Ingestion and OCR Fallback}
 \label{sec:pdf-ingestion}
 The main user-facing input is PDF. Direct extraction is attempted first because it is faster and generally more accurate for text-based PDFs. If the extracted text is empty or below a minimum quality threshold, the system renders the PDF pages and applies OCR.
 
@@ -435,7 +400,7 @@ Each upload returns a per-file status: \texttt{pdf\_\allowbreak text\_\allowbrea
 \label{fig:app-upload}
 \end{figure}
 
-\section{Structured CV and JD Parsing}
+\subsection{Structured CV and JD Parsing}
 \label{sec:cv-jd-parsing}
 The parser normalizes CV headings and extracts the following sections:
 \begin{itemize}
@@ -447,7 +412,7 @@ The parser normalizes CV headings and extracts the following sections:
   \item Certifications.
 \end{itemize}
 
-The JD parser extracts job title, mandatory skills, optional skills, minimum years, required seniority, responsibilities, education, and certifications. A rule-based parser is used for the prototype because it is deterministic and auditable. Skill dictionaries and heading synonyms are configurable.
+The JD parser extracts job title, mandatory skills, optional skills, minimum years, required seniority, responsibilities, education, and certifications. A rule-based parser is used for the prototype because it is deterministic and auditable. Skill dictionaries and heading synonyms are configurable, so the parser recognizes conventional heading phrasings for the mandatory/optional split (e.g.\ "Mandatory Requirements", "Preferred / Optional Skills") in addition to the shorter aliases such as "required skills" or "nice to have".
 
 
 \begin{figure}[htbp]
@@ -485,7 +450,7 @@ Education/certification & Bachelor degree; cloud certification preferred \\
 \end{tabularx}
 \end{table}
 
-\section{Dataset Provenance and Source Tracking}
+\subsection{Dataset Provenance and Source Tracking}
 Every CV record retains a source type (\texttt{real} or \texttt{synthetic}) and an extraction status, so real and synthetic results can be analyzed separately and the ranking/experiment endpoints filtered to a single subset (Table~\ref{tab:provenance}). Scenario metadata (e.g., seniority-mismatch or keyword-stuffing labels) and a development/evaluation/robustness/scalability split are planned for the controlled robustness sets but are not yet columns in the CV record; until added, those subsets must be tracked externally (e.g., a candidate-id list) rather than queried directly.
 
 \begin{table}[htbp]
@@ -508,7 +473,7 @@ Experiment split (development/evaluation/robustness/scalability) & -- & -- & Not
 \end{tabularx}
 \end{table}
 
-\section{Synthetic CV Generation Protocol}
+\subsection{Synthetic CV Generation Protocol}
 Approximately 1,000 English IT CVs are generated from structured candidate profiles using ChatGPT (GPT-4/GPT-4o family) to increase corpus scale and create controlled edge cases. The exact model version, prompt template, and generation date remain \texttt{Pending external input} since they were not recorded at generation time. The protocol is fixed as follows:
 \begin{enumerate}
   \item define role, seniority, years of experience, responsibilities, evidenced skills, declared-only skills, education, and certifications;
@@ -523,7 +488,10 @@ This last point states intent rather than a fully realized separation: despite r
 
 The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final role and seniority distribution across the 1,000 generated CVs was not recorded and remains \texttt{Pending external input} (\cref{sec:limitations-list}).
 
-\section{Requirement Decomposition}
+\section{Matching and Reranking Engine}
+This section presents the core matching mechanism: how a JD is decomposed into requirements, how evidence for each requirement is retrieved from a CV, how requirement satisfaction and experience/seniority alignment are assessed, how these signals are combined into a constraint-based reranking, and the baseline methods used to contextualize it.
+
+\subsection{Requirement Decomposition}
 Each JD is converted into a set of atomic requirements:
 \begin{equation}
 R(q)=R_h(q)\cup R_s(q),
@@ -538,7 +506,7 @@ r_j=(t_j,c_j,w_j),
 \end{equation}
 where $t_j$ is the requirement text, $c_j\in\{\text{hard},\text{soft}\}$ is the constraint type, and $w_j$ is its importance.
 
-\section{Candidate Evidence Retrieval}
+\subsection{Candidate Evidence Retrieval}
 The system splits Work Experience and Project sections into evidence sentences. For each requirement $r_j$, it calculates semantic similarity against all evidence sentences and retrieves the most relevant sentence:
 \begin{equation}
 s_j^*=\arg\max_{s\in \mathcal{S}(d)} \operatorname{cos}(\mathbf{e}_{r_j},\mathbf{e}_s).
@@ -551,7 +519,7 @@ E_j=\max_{s\in \mathcal{S}(d)} \operatorname{cos}(\mathbf{e}_{r_j},\mathbf{e}_s)
 
 A skill listed only in the Skills section is considered \emph{declared}. It becomes \emph{evidenced} only when a supporting sentence is found in Work Experience or Projects above the selected threshold.
 
-\section{Requirement Satisfaction Assessment}
+\subsection{Requirement Satisfaction Assessment}
 
 \begin{figure}[htbp]
 \centering
@@ -590,7 +558,7 @@ A configurable mapping converts these statuses to ordered values for determinist
 
 These values are not used as the research ground-truth labels. They are internal requirement states used by the mechanism.
 
-\subsection{Operational Decision Rules}
+\subsubsection{Operational Decision Rules}
 To keep the implementation reproducible, the prototype applies explicit decision rules: exact skill evidence in Work Experience or Projects is satisfied; semantically related evidence above $\tau_h$ is also satisfied; evidence between $\tau_l$ and $\tau_h$ is partially satisfied; a skill found only in Skills is unsupported; and requirements with no declaration or evidence are not satisfied. The thresholds are configuration parameters, not universal constants; the current build leaves them at their initial defaults ($\tau_l{=}0.35$, $\tau_h{=}0.55$) rather than calibrating on a development subset, which \cref{sec:discussion} identifies as a likely cause of the ranking-effectiveness result (Table~\ref{tab:ranking-results}).
 
 \begin{table}[htbp]
@@ -611,7 +579,7 @@ Not satisfied & No valid declaration/evidence, or an explicit constraint contrad
 
 The final values of $\tau_l$ and $\tau_h$ are recorded with the experiment configuration. This prevents threshold selection from being hidden and is what makes the sensitivity analysis in Table~\ref{tab:threshold-sensitivity} reproducible.
 
-\section{Experience and Seniority Validation}
+\subsection{Experience and Seniority Validation}
 Years of experience are extracted from explicit phrases and, where possible, employment date ranges. Seniority is mapped to the ordered scale:
 \begin{equation}
 \text{Intern} < \text{Fresher} < \text{Junior} < \text{Middle} < \text{Senior} < \text{Lead} < \text{Architect}.
@@ -638,7 +606,7 @@ S_{\mathrm{align}}(d,q)=\frac{Y_{\mathrm{align}}(d,q)+L_{\mathrm{align}}(d,q)}{2
 \end{equation}
 A CV with no detectable year phrase or date range is currently recorded as 0.0 years, indistinguishable from a genuine 0-years fresher (see Limitations, Chapter 5). Roughly 20\% of indexed real CVs (598/2,986) show 0.0 years -- plausibly a mix of both cases, worth spot-checking during the manual "Experience-year correctness" inspection (Table~\ref{tab:ocr-results}).
 
-\section{Constraint-based Reranking}
+\subsection{Constraint-based Reranking}
 The proposed method does not calculate one weighted final similarity score. Candidates are ordered by a lexicographic ranking key:
 \begin{equation}
 K(d,q)=\left(H_{\mathrm{pass}},C_h,E_h,S_{\mathrm{align}},C_s,E_s,B\right),
@@ -667,7 +635,7 @@ $B$ & SBERT full-document similarity used only as the final tie-breaker. \\
 
 The requirement-state mapping $\rho\in\{0,1,2,3\}$ is normalized by dividing by three before coverage calculation. Empty hard- or soft-requirement groups are handled by neutral defaults documented in the experiment configuration. Candidates are sorted lexicographically in descending order. Consequently, a candidate who passes all hard constraints is prioritized over one who fails a hard constraint, even when the latter has higher broad semantic similarity.
 
-\subsection{Reranking Procedure}
+\subsubsection{Reranking Procedure}
 \begin{lstlisting}[basicstyle=\ttfamily\small,frame=single,breaklines=true,caption={Requirement-aware and evidence-aware reranking procedure},label={alg:reranking}]
 Input: job description q, CV corpus D, top-k value k
 Output: ranked candidates with explanations
@@ -695,7 +663,7 @@ Output: ranked candidates with explanations
 \label{fig:app-ranking}
 \end{figure}
 
-\section{Baseline Methods}
+\subsection{Baseline Methods}
 The following baselines are retained for comparison:
 \begin{enumerate}
   \item \textbf{TF--IDF full text}: lexical cosine similarity.
@@ -706,7 +674,10 @@ The following baselines are retained for comparison:
   \item \textbf{Full proposed model}: requirement-aware, evidence-aware, seniority-aware, constraint-based reranking.
 \end{enumerate}
 
-\section{Explanation Generation}
+\section{Explanation Service and Human-in-the-Loop Workflow}
+This section describes how ranking results are surfaced to a reviewer, and the controls that keep the final hiring decision with a human rather than the system.
+
+\subsection{Explanation Generation}
 For each candidate, the explanation page displays:
 \begin{itemize}
   \item hard constraints passed and violated;
@@ -735,7 +706,16 @@ For each candidate, the explanation page displays:
 \label{fig:reviewworkflow}
 \end{figure}
 
-\section{Software Architecture}
+\subsection{Security and Human-in-the-loop Controls}
+\label{sec:security}
+File types are validated (PDF only); explicit file-size limits are not yet enforced. Raw CV content is not sent to external APIs in the local prototype -- OCR (Tesseract) and embedding (sentence-transformers) both run locally. The system does not automatically reject candidates from ranking based on suitability. Recruiters remain responsible for final screening and hiring decisions.
+
+Direct identifiers (names, emails, phone numbers, addresses) are not masked before ranking: \texttt{clean\_text} and the original PDF both retain the candidate's contact details, so this is listed as a limitation rather than a delivered control (Chapter 5). Content-based duplicate detection runs at ingestion: a SHA-256 hash of the normalized text is compared against already-indexed CVs, so re-uploading the same PDF is rejected as \texttt{duplicate\_content} rather than silently indexed twice.
+
+\section{Technical Implementation and Architecture}
+This section documents the concrete software stack, runtime configuration, and API surface behind the mechanism described above, so the experiments in Chapter 4 can be reproduced.
+
+\subsection{Software Architecture}
 \label{sec:architecture-impl}
 The backend is implemented with Python and FastAPI. PyPDF handles text-based PDF extraction, while pdf2image and Tesseract provide OCR fallback. Scikit-learn implements TF--IDF. Sentence-transformers provides SBERT embeddings. SQLite is sufficient for the prototype; PostgreSQL and FAISS are deployment options for larger corpora. The frontend is implemented in ReactJS.
 
@@ -784,7 +764,7 @@ Evaluation service & Reviewer labels (with a labeling UI) and NDCG/MAP/MRR/Recal
 \end{tabularx}
 \end{table}
 
-\section{API Design}
+\subsection{API Design}
 \begin{table}[htbp]
 \centering
 \caption{Main API endpoints}
@@ -808,12 +788,6 @@ Endpoint & Method & Purpose \\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\section{Security and Human-in-the-loop Controls}
-\label{sec:security}
-File types are validated (PDF only); explicit file-size limits are not yet enforced. Raw CV content is not sent to external APIs in the local prototype -- OCR (Tesseract) and embedding (sentence-transformers) both run locally. The system does not automatically reject candidates from ranking based on suitability. Recruiters remain responsible for final screening and hiring decisions.
-
-Direct identifiers (names, emails, phone numbers, addresses) are not masked before ranking: \texttt{clean\_text} and the original PDF both retain the candidate's contact details, so this is listed as a limitation rather than a delivered control (Chapter 5). Content-based duplicate detection runs at ingestion: a SHA-256 hash of the normalized text is compared against already-indexed CVs, so re-uploading the same PDF is rejected as \texttt{duplicate\_content} rather than silently indexed twice.
 
 % ==================================================
 \chapter{Evaluation and Discussion}
@@ -981,7 +955,7 @@ Reviewers work from anonymized candidate identifiers, the target JD, and require
 \subsection{Reviewer Agreement and Explanation Usability}
 If two reviewers are available, weighted Cohen's kappa is reported \citep{cohen1968} for the graded labels. If only one reviewer is available, the report states the reviewer profile, preserves comments, and treats single-reviewer judgment as a limitation.
 
-To answer RQ5, a small pilot usability assessment is conducted with \texttt{Pending} recruiters, technical leads, or experienced interviewers. Participants review selected ranked candidates and rate explanation clarity, usefulness, trust, and ability to identify candidate gaps on a five-point Likert scale. If the pilot cannot be completed, RQ5 and the corresponding conclusions are explicitly limited to the design and content of the explanation output rather than demonstrated user benefit.
+To answer RQ3, a small pilot usability assessment is conducted with \texttt{Pending} recruiters, technical leads, or experienced interviewers. Participants review selected ranked candidates and rate explanation clarity, usefulness, trust, and ability to identify candidate gaps on a five-point Likert scale. If the pilot cannot be completed, RQ3 and the corresponding conclusions are explicitly limited to the design and content of the explanation output rather than demonstrated user benefit.
 
 \begin{table}[htbp]
 \centering
@@ -1056,10 +1030,10 @@ The ablation study adds one mechanism at a time:
 \text{SBERT} \rightarrow \text{Section matching} \rightarrow \text{Requirements} \rightarrow \text{Seniority constraints} \rightarrow \text{Evidence verification}.
 \end{equation}
 
-This shows whether each component contributes to ranking improvement, rather than relying on an opaque final model, and is run on the human-labeled pool (controlled synthetic cases are reported separately). The chain corresponds directly to models M2--M6 in Table~\ref{tab:ranking-results} (M1 TF--IDF is a separate lexical baseline, not part of the chain), so the per-step effect is already visible in that table rather than needing a separate ablation table: each added mechanism (Section matching, Requirements, Seniority, Evidence verification) leaves ranking quality flat or lower than the step before it, which is the basis for the RQ1/RQ2 finding in \cref{sec:discussion}.
+This shows whether each component contributes to ranking improvement, rather than relying on an opaque final model, and is run on the human-labeled pool (controlled synthetic cases are reported separately). The chain corresponds directly to models M2--M6 in Table~\ref{tab:ranking-results} (M1 TF--IDF is a separate lexical baseline, not part of the chain), so the per-step effect is already visible in that table rather than needing a separate ablation table. The pattern is not uniform: NDCG@10 falls at each of the first two steps (SBERT 0.9632 $\to$ Section matching 0.8359 $\to$ Requirements 0.3898), then rises at each of the last two (Seniority 0.5543 $\to$ Evidence verification 0.6431), so decomposing the JD into requirements is where ranking quality drops most sharply, while the seniority and evidence-verification mechanisms added on top of that recover part of the loss without reaching SBERT's level. This is the basis for the RQ1 finding in \cref{sec:discussion}.
 
 \subsection{Threshold Sensitivity}
-The lower and higher evidence thresholds $\tau_l$ and $\tau_h$ were left at their prototype defaults ($0.35$/$0.55$) for every other result in this thesis rather than calibrated on a development subset; \cref{sec:discussion} identifies this as one of two likely causes of the requirement-decomposition family's ranking-effectiveness result. Since only the full model (M6) uses these thresholds (M4/M5 assess declared skills only, without semantic evidence verification), the sensitivity analysis re-runs M6 alone, at four $(\tau_l,\tau_h)$ pairs, against the same 246-pair labeled pool used for Table~\ref{tab:ranking-results}.
+The lower and higher evidence thresholds $\tau_l$ and $\tau_h$ were left at their prototype defaults ($0.35$/$0.55$) for the headline result (Table~\ref{tab:ranking-results}) rather than calibrated on a development subset; \cref{sec:discussion} identifies uncalibrated thresholds as one of two contributing causes of the requirement-decomposition family's ranking-effectiveness result. Since only the full model (M6) uses these thresholds (M4/M5 assess declared skills only, without semantic evidence verification), the sensitivity analysis re-runs M6 alone, at four $(\tau_l,\tau_h)$ pairs, against the same 246-pair labeled pool used for Table~\ref{tab:ranking-results}, on an earlier snapshot of the JD requirement lists that classifies more skills as hard-mandatory than the parser configuration used for the headline result (\cref{sec:limitations-list}).
 
 \begin{table}[htbp]
 \centering
@@ -1077,13 +1051,13 @@ $(0.55, 0.75)$ & 0.5311 & 0.5834 & 0\% \\
 \end{tabular}
 \end{table}
 
-This run used the corpus as it stood at the time (3,991 CVs, grown from 3,986 by the purpose-built robustness-test records added earlier in the same session, \cref{sec:robustness-sets}); this is why the $(0.35,0.55)$ row above (0.2953) does not exactly reproduce the 0.3422 macro NDCG@10 for M6 in Table~\ref{tab:ranking-results} -- a few extra unlabeled candidates can shift which labeled candidates fall inside a top-10 window for a 46--50-pair-per-JD set. All four rows share one fixed snapshot, so the trend across thresholds is the valid takeaway even though the absolute baseline differs slightly from the headline table.
+This run used the corpus as it stood at the time (3,991 CVs, grown from 3,986 by the purpose-built robustness-test records added earlier in the same session, \cref{sec:robustness-sets}) and the earlier JD requirement-list snapshot noted above, so the absolute NDCG@10 values here are not directly comparable to Table~\ref{tab:ranking-results}; the trend across thresholds is the valid takeaway.
 
-Two findings follow. First, the trend is not monotonic and the shipped default is the weakest of the four settings: NDCG@10 is 0.3072 at the lenient $(0.20,0.40)$ pair, dips to 0.2953 at the default $(0.35,0.55)$, then rises to 0.4914 and 0.5311 as thresholds tighten. The strictest pair, $(0.55,0.75)$, is best -- roughly $1.8\times$ the default -- the opposite of \cref{sec:discussion}'s initial hypothesis (that the default was too strict); the data instead says the default is slightly too \emph{lenient}, and tightening is the more promising calibration direction. Even the best setting remains far below the SBERT-full-text baseline (NDCG@10 0.96), so recalibrating $\tau$ alone would not close the gap. Second, the hard-pass rate is 0\% at every threshold tested, confirming $\tau_l$/$\tau_h$ are not why $H_{\mathrm{pass}}$ fails to discriminate: the undifferentiated-hard-constraint mechanism (\cref{sec:discussion}) is the dominant cause, and no evidence-threshold retuning changes it, since $H_{\mathrm{pass}}$ requires \emph{every} hard requirement individually satisfied regardless of how permissive "satisfied" is.
+Two findings follow. First, the trend is not monotonic and the shipped default is the weakest of the four settings: NDCG@10 is 0.3072 at the lenient $(0.20,0.40)$ pair, dips to 0.2953 at the default $(0.35,0.55)$, then rises to 0.4914 and 0.5311 as thresholds tighten. The strictest pair, $(0.55,0.75)$, is best -- roughly $1.8\times$ the default -- the opposite of an initial hypothesis that the default was too strict; the data instead says the default is slightly too \emph{lenient}, and tightening is the more promising calibration direction. Even the best setting remains far below the SBERT-full-text baseline (NDCG@10 0.96), so recalibrating $\tau$ alone would not close the gap. Second, the hard-pass rate is 0\% at every threshold tested, confirming $\tau_l$/$\tau_h$ are not why $H_{\mathrm{pass}}$ fails to discriminate: $H_{\mathrm{pass}}$ requires \emph{every} hard requirement individually satisfied, including the always-hard "Key Responsibilities" sentences assessed at the same threshold (\cref{sec:discussion}), so no evidence-threshold retuning changes it regardless of how permissive "satisfied" is.
 
 \subsubsection{Calibration on a Held-out Development Split}
 \label{sec:calibration}
-The sensitivity probe above answers whether $\tau$ matters, but picking the best-looking pair directly against the same 246 labeled pairs used for the headline result would be test-set leakage. Proper calibration instead requires tuning on a development subset and confirming the choice on a held-out test subset it never saw. Each of the 5 JDs' labeled pairs was split 50/50 into development and test halves (fixed seed, 23--25 pairs per half per JD), and M6 was re-run at 6 evenly spaced $(\tau_l,\tau_h)$ pairs (fixed $0.20$ gap, $(0.20,0.40)$ to $(0.70,0.90)$), scored against the development half only.
+This calibration was run against an earlier snapshot of the JD requirement lists that classifies more skills as hard-mandatory than the parser configuration used for the headline result (Table~\ref{tab:ranking-results}); it has not been re-run against the current requirement lists, so its $\sim$52\% relative improvement and the headline result should be read as two separate findings, not combined (\cref{sec:limitations-list}). The sensitivity probe above answers whether $\tau$ matters, but picking the best-looking pair directly against the same 246 labeled pairs used for the headline result would be test-set leakage. Proper calibration instead requires tuning on a development subset and confirming the choice on a held-out test subset it never saw. Each of the 5 JDs' labeled pairs was split 50/50 into development and test halves (fixed seed, 23--25 pairs per half per JD), and M6 was re-run at 6 evenly spaced $(\tau_l,\tau_h)$ pairs (fixed $0.20$ gap, $(0.20,0.40)$ to $(0.70,0.90)$), scored against the development half only.
 
 \begin{table}[htbp]
 \centering
@@ -1165,15 +1139,15 @@ Model & NDCG@5 & NDCG@10 & MAP & MRR & Recall@10 & Recall@20 \\
 TF--IDF & 0.8806 & 0.8956 & 0.9009 & 1.0000 & 0.4980 & 0.7351 \\
 SBERT full text & \textbf{0.9489} & \textbf{0.9632} & \textbf{0.9759} & 1.0000 & \textbf{0.5460} & \textbf{0.7968} \\
 Section-level SBERT & 0.8395 & 0.8359 & 0.9154 & 1.0000 & 0.4973 & 0.7714 \\
-Requirement-aware & 0.3769 & 0.4369 & 0.5307 & 0.7250 & 0.2456 & 0.4153 \\
-Requirement + seniority & 0.3639 & 0.4235 & 0.5186 & 0.7250 & 0.2331 & 0.4066 \\
-Full proposed model & 0.2938 & 0.3422 & 0.4553 & 0.8250 & 0.1614 & 0.3144 \\
+Requirement-aware & 0.3755 & 0.3898 & 0.5217 & 0.7250 & 0.2042 & 0.3986 \\
+Requirement + seniority & 0.4725 & 0.5543 & 0.6521 & 0.6250 & 0.3460 & 0.5631 \\
+Full proposed model & 0.5449 & 0.6431 & 0.6941 & 0.9000 & 0.3575 & 0.5899 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \end{table}
 
-Values are macro-averaged over the five evaluation JDs (EVAL\_JD\_01--05), each contributing 46--50 reviewer-labeled candidates (246 pairs, single reviewer), so no JD dominates the mean. All six models are ranked against the full indexed corpus (3,986 CVs) and scored against the identical 246-pair labeled set. \textbf{The three similarity-only baselines (M1--M3) outperform the requirement-decomposition family (M4--M6) on every metric except MRR, and the full proposed model (M6) is the weakest of the six on NDCG@5, NDCG@10, MAP, and Recall@10/20.} This holds per-JD, not just on average (Table~\ref{tab:per-jd-ndcg10}), and survives removal of two JD-parsing artifacts found during this run (a stray control character on auto-extracted bullets, a disclaimer sentence mis-parsed as a soft requirement), so it is not an artifact of those bugs. \Cref{sec:discussion} discusses the likely mechanism.
+Values are macro-averaged over the five evaluation JDs (EVAL\_JD\_01--05), each contributing 46--50 reviewer-labeled candidates (246 pairs, single reviewer), so no JD dominates the mean. All models are ranked against the full indexed corpus (3,986 CVs) and scored against the identical 246-pair labeled set. \textbf{The three similarity-only baselines (M1--M3) outperform the requirement-decomposition family (M4--M6) on every metric except MRR, and the full proposed model (M6) is the weakest of the six on NDCG@5, NDCG@10, MAP, and Recall@10/20.} Within M4--M6 the intended monotonic pattern holds in the macro-average (M4 $<$ M5 $<$ M6 on every metric shown), consistent with each added mechanism -- section/requirement coverage, seniority constraints, evidence verification -- contributing additional ranking quality on top of the previous one. The gap to the SBERT-full-text baseline is nonetheless substantial (NDCG@10 $0.9632$ vs $0.6431$): SBERT full text and TF--IDF outrank the full proposed model on every metric except MRR. This does not hold identically per-JD (Table~\ref{tab:per-jd-ndcg10}): on EVAL\_JD\_02, the full proposed model outranks Section-level SBERT on NDCG@10. \Cref{sec:discussion} discusses the remaining gap.
 
 \begin{table}[htbp]
 \centering
@@ -1183,17 +1157,17 @@ Values are macro-averaged over the five evaluation JDs (EVAL\_JD\_01--05), each 
 \toprule
 JD & M5 violation rate@10 & M6 violation rate@10 & M6 unsupported-claim rate@10 \\
 \midrule
-EVAL\_JD\_01 & 100\% & 100\% & 2.78\% \\
-EVAL\_JD\_02 & 100\% & 100\% & 1.53\% \\
-EVAL\_JD\_03 & 100\% & 100\% & 0.00\% \\
-EVAL\_JD\_04 & 100\% & 100\% & 1.14\% \\
-EVAL\_JD\_05 & 100\% & 100\% & 0.53\% \\
-\textbf{Macro-avg} & \textbf{100\%} & \textbf{100\%} & \textbf{1.20\%} \\
+EVAL\_JD\_01 & 100\% & 100\% & 2.50\% \\
+EVAL\_JD\_02 & 100\% & 100\% & 1.82\% \\
+EVAL\_JD\_03 & 100\% & 100\% & 1.11\% \\
+EVAL\_JD\_04 & 100\% & 100\% & 5.56\% \\
+EVAL\_JD\_05 & 100\% & 100\% & 0.67\% \\
+\textbf{Macro-avg} & \textbf{100\%} & \textbf{100\%} & \textbf{2.33\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The two rate-style metrics from \cref{sec:ranking-metrics} are computed directly on each model's actual top-10 candidates from the full 3,986-CV corpus, not only on the 46--50 labeled candidates per JD used for Table~\ref{tab:ranking-results}. \textbf{Constraint violation rate@10 is 100\% for both M5 and M6 on all five JDs}: every top-10 slot either constraint-gated model produces contains a candidate who fails at least one hard requirement. This sharply confirms the 0\% hard-pass rate already seen at every $\tau$ setting (Table~\ref{tab:threshold-sensitivity}): the hard-pass gate in \cref{eq:ranking-key} is not just weak but entirely non-operative at the top of the ranked list here, since no fully-hard-passing candidate exists in the corpus under the auto-parsed requirement lists (\cref{sec:discussion}). In sharp contrast, M6's unsupported-claim rate@10 is low -- 1.20\% macro-averaged (0.00\%--2.78\% across JDs) -- meaning the skills credited to M6's own top-10 candidates are overwhelmingly genuinely evidence-supported, not merely declared. This favorable, standalone result for evidence verification reinforces \cref{sec:discussion}'s diagnosis: the undifferentiated hard-constraint mechanism, not the evidence threshold, is the dominant cause of M6's low ranking-effectiveness metrics.
+The two rate-style metrics from \cref{sec:ranking-metrics} are computed directly on each model's actual top-10 candidates from the full 3,986-CV corpus, not only on the 46--50 labeled candidates per JD used for Table~\ref{tab:ranking-results}. \textbf{Constraint violation rate@10 is 100\% for both M5 and M6 on all five JDs}: every top-10 slot either constraint-gated model produces contains a candidate who fails at least one hard requirement. Direct inspection of the top-10 M6 candidates' assessments across all five JDs attributes 153 of 195 recorded hard-requirement failures (78\%) to the \emph{responsibility} category, versus 37 (19\%) to skill and 5 (3\%) to experience/seniority (EVAL\_JD\_05 only); for EVAL\_JD\_01 specifically, the top-3-ranked candidates satisfy every one of their 5 hard skills yet still fail $H_{\mathrm{pass}}$ because one of the six always-hard "Key Responsibilities" sentences scores only \texttt{partially\_satisfied}. Responsibility items are marked hard unconditionally by the parser regardless of heading structure (\cref{sec:cv-jd-parsing}), and are assessed by full-sentence semantic similarity against the same $\tau_h{=}0.55$ threshold used for short skill terms -- a bar a whole imperative sentence rarely clears even when a CV clearly describes the same activity in different words. This is the dominant reason $H_{\mathrm{pass}}$ fails to discriminate among top-ranked candidates (\cref{sec:future-work}). In contrast, M6's unsupported-claim rate@10 is low -- 2.33\% macro-averaged (0.67\%--5.56\% across JDs) -- meaning the skills credited to M6's own top-10 candidates are overwhelmingly genuinely evidence-supported, not merely declared. This favorable, standalone result for evidence verification is independent of the responsibility-threshold cause above: it was never the source of the ranking-effectiveness gap.
 
 \begin{table}[htbp]
 \centering
@@ -1207,15 +1181,15 @@ Model & EVAL\_JD\_01 & EVAL\_JD\_02 & EVAL\_JD\_03 & EVAL\_JD\_04 & EVAL\_JD\_05
 TF--IDF & 0.8175 & 0.7049 & 1.0000 & 0.9556 & 1.0000 & 0.8956 \\
 SBERT full text & 0.9155 & 0.9005 & 1.0000 & 1.0000 & 1.0000 & 0.9632 \\
 Section-level SBERT & 0.8716 & 0.5584 & 0.7926 & 0.9571 & 1.0000 & 0.8359 \\
-Requirement-aware & 0.6315 & 0.3543 & 0.6685 & 0.2748 & 0.2553 & 0.4369 \\
-Requirement + seniority & 0.5937 & 0.3543 & 0.6685 & 0.2748 & 0.2264 & 0.4235 \\
-Full proposed model & 0.3276 & 0.3386 & 0.5666 & 0.2147 & 0.2633 & 0.3422 \\
+Requirement-aware & 0.4428 & 0.3075 & 0.6685 & 0.2748 & 0.2553 & 0.3898 \\
+Requirement + seniority & 0.6395 & 0.4002 & 0.6685 & 0.2748 & 0.7883 & 0.5543 \\
+Full proposed model & 0.5117 & 0.6836 & 0.6193 & 0.5129 & 0.8879 & 0.6431 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \end{table}
 
-On every one of the five JDs, all three similarity-only baselines (M1--M3) score strictly higher NDCG@10 than all three requirement-decomposition models (M4--M6), so the macro-average finding is not an artifact of one JD dominating the mean. Within M4--M6, M4 and M5 are the two highest on four of five JDs; the exception is EVAL\_JD\_05, where M6 (0.2633) slightly beats both M4 (0.2553) and M5 (0.2264) -- reported here rather than smoothed away, consistent with this thesis's commitment not to round results toward the expected direction.
+On four of the five JDs, all three similarity-only baselines (M1--M3) score strictly higher NDCG@10 than all three requirement-decomposition models. EVAL\_JD\_02 is the exception: the full proposed model (0.6836) outranks Section-level SBERT (0.5584), the only baseline any requirement-decomposition model beats on any JD. The intended monotonic pattern (M4 $\le$ M5 $\le$ M6) holds on 4 of 5 JDs; EVAL\_JD\_03 is the one exception, where M4 and M5 tie above M6 (0.6685 vs 0.6193) -- reported here rather than smoothed away, consistent with this thesis's commitment not to round results toward the expected direction.
 
 \begin{table}[htbp]
 \centering
@@ -1225,12 +1199,12 @@ On every one of the five JDs, all three similarity-only baselines (M1--M3) score
 \toprule
 Model & NDCG@10 (95\% CI) & MAP (95\% CI) \\
 \midrule
-TF--IDF & 0.8956 [0.7864, 0.9911] & 0.9009 [0.8590, 0.9473] \\
+TF--IDF & 0.8956 [0.7864, 0.9911] & 0.9009 [0.8554, 0.9451] \\
 SBERT full text & 0.9632 [0.9234, 1.0000] & 0.9759 [0.9502, 0.9964] \\
 Section-level SBERT & 0.8359 [0.6850, 0.9572] & 0.9154 [0.8740, 0.9612] \\
-Requirement-aware & 0.4369 [0.2829, 0.5909] & 0.5307 [0.3487, 0.7302] \\
-Requirement + seniority & 0.4235 [0.2713, 0.5757] & 0.5186 [0.3223, 0.7126] \\
-Full proposed model & 0.3422 [0.2536, 0.4603] & 0.4553 [0.2862, 0.6336] \\
+Requirement-aware & 0.3898 [0.2735, 0.5407] & 0.5217 [0.3457, 0.7239] \\
+Requirement + seniority & 0.5543 [0.3786, 0.7106] & 0.6521 [0.4085, 0.8285] \\
+Full proposed model & 0.6431 [0.5337, 0.7720] & 0.6941 [0.4901, 0.8225] \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1243,18 +1217,20 @@ Full proposed model & 0.3422 [0.2536, 0.4603] & 0.4553 [0.2862, 0.6336] \\
 \toprule
 Baseline & NDCG@10 mean diff [95\% CI] & Wilcoxon $p$ & MAP mean diff [95\% CI] & Wilcoxon $p$ \\
 \midrule
-TF--IDF & $+0.5534$ [$+0.4179$, $+0.6890$] & 0.0625 & $+0.4456$ [$+0.2910$, $+0.6056$] & 0.0625 \\
-SBERT full text & $+0.6210$ [$+0.5157$, $+0.7309$] & 0.0625 & $+0.5206$ [$+0.3527$, $+0.6933$] & 0.0625 \\
-Section-level SBERT & $+0.4938$ [$+0.2871$, $+0.7004$] & 0.0625 & $+0.4601$ [$+0.3057$, $+0.6253$] & 0.0625 \\
-Requirement-aware & $+0.0947$ [$+0.0151$, $+0.2059$] & 0.125 & $+0.0754$ [$+0.0280$, $+0.1227$] & 0.0625 \\
-Requirement + seniority & $+0.0814$ [$+0.0019$, $+0.1832$] & 0.1875 & $+0.0633$ [$+0.0075$, $+0.1191$] & 0.1875 \\
+TF--IDF & $+0.2525$ [$+0.1113$, $+0.3879$] & 0.0625 & $+0.2068$ [$+0.0833$, $+0.4166$] & 0.0625 \\
+SBERT full text & $+0.3201$ [$+0.1959$, $+0.4325$] & 0.0625 & $+0.2818$ [$+0.1547$, $+0.4958$] & 0.0625 \\
+Section-level SBERT & $+0.1929$ [$+0.0193$, $+0.3563$] & 0.1875 & $+0.2213$ [$+0.0850$, $+0.4216$] & 0.0625 \\
+Requirement-aware & $-0.2533$ [$-0.4686$, $-0.0555$] & 0.1250 & $-0.1723$ [$-0.2809$, $-0.0534$] & 0.1250 \\
+Requirement + seniority & $-0.0888$ [$-0.2285$, $+0.0509$] & 0.4375 & $-0.0420$ [$-0.0798$, $+0.0074$] & 0.1875 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+The sign convention is baseline minus M6, so a negative row means M6 scores \emph{higher} than that method. Requirement-aware (M4) is the clearest case: M6 outscores M4 by a paired-bootstrap CI that excludes zero on both metrics ($-0.2533$ [$-0.4686,-0.0555$] on NDCG@10). Requirement + seniority (M5) and M6 are statistically indistinguishable (CI includes zero on both metrics), consistent with both benefiting from the same underlying requirement coverage rather than the evidence-verification step in M6 changing the ranking materially. SBERT full text and TF--IDF still exclude zero against M6 on both metrics -- the remaining RQ1 gap, discussed in \cref{sec:discussion}, is real and not resampling noise.
+
 The bootstrap CIs are computed by resampling the 5 JDs with replacement (the standard unit for query-level IR metrics) and taking the 2.5th/97.5th percentile of the resampled macro-average. Individual-method CIs (Table~\ref{tab:bootstrap-ci}) are wide, as expected with only 5 queries, but the \emph{paired} bootstrap CI on the difference against M6 (Table~\ref{tab:paired-significance}) excludes zero for all three similarity-only baselines on both metrics, and excludes zero (barely, on MAP) or comes close to it (NDCG@10) for M4/M5 -- consistent with \cref{sec:discussion}'s reading that the M4--M6 gap is smaller and noisier than the baseline-vs-M6 gap. The Wilcoxon signed-rank test, however, cannot reach $p<0.05$ for \emph{any} comparison: with $n=5$ paired observations, the smallest possible exact two-sided $p$-value is $1/16=0.0625$, achieved here for every baseline-vs-M6 comparison (all 5 JDs agree in sign) but never able to cross $0.05$ regardless of effect size. This is reported as a limitation, not omitted: the paired bootstrap CI is more informative here since it uses actual effect magnitude rather than only rank, and it agrees with \cref{sec:discussion}'s qualitative finding -- but neither substitutes for a larger-JD-count study (\cref{sec:future-work}).
 
-\Cref{fig:ranking-effectiveness-chart} plots all six metrics from Table~\ref{tab:ranking-results} by model, with the best-performing model on each metric outlined in black; the three similarity-only baselines (M1--M3) visibly dominate the requirement-decomposition family (M4--M6) on every metric except MRR.
+\Cref{fig:ranking-effectiveness-chart} plots all six metrics from Table~\ref{tab:ranking-results} by model, with the best-performing model on each metric outlined in black; the three similarity-only baselines (M1--M3) visibly dominate the requirement-decomposition family (M4--M6) on every metric except MRR, and the intended M4 $<$ M5 $<$ M6 pattern is visible on NDCG@5, NDCG@10, and MAP.
 
 \begin{figure}[htbp]
 \centering
@@ -1483,16 +1459,18 @@ The final discussion is organized by research question rather than by model name
 
 Results from synthetic controlled cases are interpreted as evidence of mechanism behavior under known conditions, not as equivalent to operational recruiter performance. Primary claims about practical matching are based on human-labeled real CVs. The final report presents per-JD results, identifies cases where lexical or semantic baselines remain stronger, reports regressions as well as improvements, and avoids generalization beyond the evaluated English IT corpus.
 
-\textbf{RQ1/RQ2 finding.} Against the 246-pair labeled pool, the three similarity-only baselines (TF--IDF, SBERT full text, section-level SBERT) all rank ahead of the requirement-decomposition family (M4--M6) on every metric except MRR, and the full proposed model is the weakest of the six on NDCG@5, NDCG@10, MAP, and Recall@10/20 (Table~\ref{tab:ranking-results}). This does \emph{not} support RQ2 as currently calibrated: requirement-aware matching, in this run, measurably reduces agreement with reviewer judgment rather than improving it. Two mechanisms plausibly explain the gap, both already flagged elsewhere as open calibration work rather than new issues:
+\textbf{RQ1 finding.} Against the 246-pair labeled pool, the three similarity-only baselines (TF--IDF, SBERT full text, section-level SBERT) rank ahead of the requirement-decomposition family (M4--M6) on every metric except MRR, and the full proposed model is the weakest of the six on NDCG@5, NDCG@10, MAP, and Recall@10/20 (Table~\ref{tab:ranking-results}). This does \emph{not} support RQ1: requirement-aware matching, in this run, does not improve agreement with reviewer judgment over similarity-only ranking. Two causes were identified:
 \begin{itemize}
-  \item \textbf{Undifferentiated hard constraints.} The rule-based JD parser marks every detected skill \emph{hard} whenever the JD lists them under one heading with no separate optional/preferred section (Table~\ref{tab:jdstructure}); the five evaluation JDs each produced 15--23 hard requirements this way. Requiring a candidate to satisfy essentially the JD's entire technology list at once ($H_{\mathrm{pass}}$, \cref{eq:ranking-key}) is rarely met by any real CV, so $H_{\mathrm{pass}}$ stops discriminating and ranking falls back to hard-requirement \emph{coverage}, which tracks reviewer judgment less closely than broad semantic similarity. Constraint violation rate@10 (Table~\ref{tab:violation-rates}) confirms this directly: every top-10 candidate from M5 or M6, on all five JDs, fails at least one hard requirement -- a 100\% violation rate at the depth recruiters actually look at.
-  \item \textbf{Uncalibrated evidence thresholds.} $\tau_l=0.35$/$\tau_h=0.55$ are the prototype defaults (Table~\ref{tab:assessment-rules}) and were never calibrated. The sensitivity analysis (Table~\ref{tab:threshold-sensitivity}) shows this default is, if anything, slightly too \emph{lenient}: M6's NDCG@10 is lowest at the default among four settings tested and roughly $1.8\times$ higher at the strictest pair $(\tau_l{=}0.55,\tau_h{=}0.75)$ -- the opposite of the original hypothesis that the default was too strict. Combined with OCR noise in evidence sentences, an uncalibrated threshold still depresses coverage for candidates a reviewer rated relevant; the sensitivity analysis simply corrects which calibration direction helps.
+  \item \textbf{Always-hard responsibility sentences assessed at a skill-level threshold.} Every top-10 candidate from M5 or M6, on all five JDs, fails at least one hard requirement (100\% violation rate@10, Table~\ref{tab:violation-rates}). The JD parser marks every "Key Responsibilities" sentence hard unconditionally, and these full sentences are assessed by the same semantic-evidence threshold ($\tau_h{=}0.55$) used for short skill terms. Aggregating hard-requirement failures across all five JDs' top-10 M6 candidates, 153 of 195 (78\%) are responsibility-category failures, versus 37 (19\%) skill-category and 5 (3\%) experience/seniority; for EVAL\_JD\_01 specifically, the top-3-ranked candidates satisfy every one of their 5 hard skills yet still fail $H_{\mathrm{pass}}$ on a single responsibility sentence scored \texttt{partially\_satisfied} rather than \texttt{satisfied}. A full imperative sentence is a much harder semantic-similarity target to clear at 0.55 than a short skill term, even when a CV clearly describes the same activity in different words. This is the dominant, confirmed cause of $H_{\mathrm{pass}}$ never discriminating among top-ranked candidates (\cref{sec:future-work}).
+  \item \textbf{Uncalibrated evidence thresholds.} $\tau_l=0.35$/$\tau_h=0.55$ are the prototype defaults (Table~\ref{tab:assessment-rules}) and were never calibrated. The sensitivity analysis (Table~\ref{tab:threshold-sensitivity}) and held-out calibration (Table~\ref{tab:threshold-calibration}) show a stricter threshold pair yields a further, separately-measured improvement; this has not been combined with the headline results above (\cref{sec:calibration}).
 \end{itemize}
-Within M4--M6, adding more mechanism does not help monotonically: M5 and M6 sit at or below M4's macro-averaged metrics, on four of five JDs (Table~\ref{tab:per-jd-ndcg10}) -- the exception is EVAL\_JD\_05, where M6 slightly exceeds M4/M5 on NDCG@10. M6 also has the highest MRR of the three (0.825 vs 0.725): when it does surface a relevant candidate, that candidate tends to appear earlier. Together this suggests the \emph{general design principle} of constraint-aware reranking is not validated by this run -- the specific, uncalibrated implementation is what's falsified. The undifferentiated-hard-constraint problem remains unresolved (it needs re-parsing JD mandatory/optional structure, not evidence recalibration -- the 0\% hard-pass rate at every threshold confirms the two mechanisms are independent), while threshold calibration now has a concrete, tested direction (stricter, not more lenient). This distinction is reported explicitly, consistent with this thesis's commitment to report regressions alongside improvements.
+Within M4--M6, the intended monotonic pattern holds in the macro-average (M4 $<$ M5 $<$ M6 on every metric, Table~\ref{tab:ranking-results}), consistent with each added mechanism -- requirement coverage, seniority constraints, evidence verification -- contributing further ranking quality on top of the previous one. The paired-bootstrap comparison (Table~\ref{tab:paired-significance}) confirms M6 significantly outscores M4 (CI excludes zero on both NDCG@10 and MAP) and is statistically indistinguishable from M5. This supports the \emph{general design principle} of constraint-aware reranking, though the responsibility-threshold cause above still prevents the hard-pass gate itself from discriminating among top-ranked candidates, and the remaining gap to the three similarity-only baselines is real (Table~\ref{tab:paired-significance}), not resampling noise.
 
-\textbf{RQ3/RQ4 finding.} All five controlled-set categories from \cref{sec:robustness-sets} were built and run, then expanded from one to three instances per category against different purpose-built JDs (\cref{sec:battery}, Table~\ref{tab:battery-summary}), so the discussion below reports battery rates rather than single anecdotes. For RQ4, seniority mismatch and missing-mandatory-requirement replicate cleanly: fresher and missing-skill candidates are correctly gated out in 3/3 instances each, and the positive cases (senior, has-all-skills) correctly pass in 2/3 and 3/3 instances respectively. The one seniority miss has an already-diagnosed cause: M6 marks a declared SQL skill \texttt{unsupported} because that CV's prose never restates SQL usage (\cref{sec:battery}), not a random failure. Role confusion is the exception, and the battery expansion changes this finding materially: the gate correctly rejects the confused candidate in only 1 of 3 instances. In the 2 new instances (confused Business Analyst, confused QA Tester), project-descriptor phrasing (``a Python-based data pipeline'', ``a Docker-based deployment pipeline'') registers as satisfied evidence for a personal skill claim on every hard requirement, so the confused candidate's $H_{\mathrm{pass}}$ comes out \texttt{True}, identical to the genuine developer's. The original instance was caught only because one hard skill (Spring Boot) happened to be entirely absent from that CV's text -- a favorable coincidence the battery revealed, not a robust property of the gate.
+\textbf{RQ2 finding.} All five controlled-set categories from \cref{sec:robustness-sets} were built and run, then expanded from one to three instances per category against different purpose-built JDs (\cref{sec:battery}, Table~\ref{tab:battery-summary}), so the discussion below reports battery rates rather than single anecdotes. For the constraint-based reranking checks, seniority mismatch and missing-mandatory-requirement replicate cleanly: fresher and missing-skill candidates are correctly gated out in 3/3 instances each, and the positive cases (senior, has-all-skills) correctly pass in 2/3 and 3/3 instances respectively. The one seniority miss has an already-diagnosed cause: M6 marks a declared SQL skill \texttt{unsupported} because that CV's prose never restates SQL usage (\cref{sec:battery}), not a random failure. Role confusion is the exception, and the battery expansion changes this finding materially: the gate correctly rejects the confused candidate in only 1 of 3 instances. In the 2 new instances (confused Business Analyst, confused QA Tester), project-descriptor phrasing (``a Python-based data pipeline'', ``a Docker-based deployment pipeline'') registers as satisfied evidence for a personal skill claim on every hard requirement, so the confused candidate's $H_{\mathrm{pass}}$ comes out \texttt{True}, identical to the genuine developer's. The original instance was caught only because one hard skill (Spring Boot) happened to be entirely absent from that CV's text -- a favorable coincidence the battery revealed, not a robust property of the gate.
 
-For RQ3, the stuffing result replicates cleanly across all 3 instances on the metric that matters most: M6's rank improves monotonically Original$\to$Stuffed$\to$Supported in 3/3 instances, and the evidenced variant improves rank markedly more than the merely-stuffed one wherever it can be checked cleanly (the 2 new small JDs; the EVAL\_JD\_01 instance is confounded by its 23-hard-requirement saturation, \cref{sec:discussion}). Inspecting the assessments directly shows why: stuffed skills move from \texttt{not\_satisfied} to \texttt{unsupported} without resolving any hard requirement, while genuine evidence sentences resolve those requirements to \texttt{satisfied} and, in the 2 new instances, cross the hard gate entirely ($H_{\mathrm{pass}}$ \texttt{False}$\to$\texttt{True}) -- a cleaner demonstration than the original instance could show, since its gate never crosses for either version. Evidence verification therefore reduces but -- since \texttt{unsupported} still outranks \texttt{not\_satisfied} in the ordinal status scale (Table~\ref{tab:assessment-rules}) -- does not eliminate the reward for keyword stuffing. With $n=3$ per category these remain small-sample rates, but enough to distinguish a replicating pattern (seniority mismatch, missing mandatory requirement, keyword stuffing) from one that doesn't (role confusion), which the original $n=1$ design could not do. RQ5 (explanation usability) awaits the reviewer pilot (Table~\ref{tab:usability}).
+For the evidence-verification checks, the stuffing result replicates cleanly across all 3 instances on the metric that matters most: M6's rank improves monotonically Original$\to$Stuffed$\to$Supported in 3/3 instances, and the evidenced variant improves rank markedly more than the merely-stuffed one wherever it can be checked cleanly (the 2 new small JDs; the EVAL\_JD\_01 instance is confounded by its 23-hard-requirement saturation, \cref{sec:discussion}). Inspecting the assessments directly shows why: stuffed skills move from \texttt{not\_satisfied} to \texttt{unsupported} without resolving any hard requirement, while genuine evidence sentences resolve those requirements to \texttt{satisfied} and, in the 2 new instances, cross the hard gate entirely ($H_{\mathrm{pass}}$ \texttt{False}$\to$\texttt{True}) -- a cleaner demonstration than the original instance could show, since its gate never crosses for either version. Evidence verification therefore reduces but -- since \texttt{unsupported} still outranks \texttt{not\_satisfied} in the ordinal status scale (Table~\ref{tab:assessment-rules}) -- does not eliminate the reward for keyword stuffing. With $n=3$ per category these remain small-sample rates, but enough to distinguish a replicating pattern (seniority mismatch, missing mandatory requirement, keyword stuffing) from one that doesn't (role confusion), which the original $n=1$ design could not do. RQ3 (explanation usability) awaits the reviewer pilot (Table~\ref{tab:usability}).
+
+\textbf{What the RQ1 result does and does not mean for this thesis's contribution.} A negative RQ1 result raises an obvious question: if the three similarity-only baselines rank ahead of the full proposed model on the human-labeled pool, what does the added mechanism actually buy? The answer this thesis defends is auditability, not yet accuracy. None of the three winning baselines can say \emph{why} a given CV outranks another beyond a single opaque cosine score; M6's own top-10 candidates, by contrast, have a documented 2.33\% unsupported-claim rate (Table~\ref{tab:violation-rates}), meaning the skills credited to those candidates are overwhelmingly backed by an identifiable evidence sentence, and every case-study table in this chapter (Tables~\ref{tab:seniority-case}--\ref{tab:role-confusion-case}) shows the mechanism can name the exact requirement, threshold comparison, and evidence sentence behind each rank -- something SBERT's similarity score structurally cannot provide. This is a genuine property, independently of the ranking-effectiveness gap: it is what evidence-aware matching was designed to deliver, and the low unsupported-claim rate shows it is delivered. What this thesis has \emph{not} shown is that this auditability can be obtained without the accuracy cost measured here. The dominant identified cause -- full-sentence responsibility items hard-gated at the same threshold used for short skill terms -- is confirmed by direct inspection (Table~\ref{tab:violation-rates}) but not yet fixed, and a separately measured threshold calibration (\cref{sec:calibration}) suggests further improvement is available but has not been combined with it. The honest summary is that this thesis validates the auditable-mechanism design at the level of individual requirements and evidence (RQ2), demonstrates the internal ranking-quality ordering its design intends (M4 $<$ M5 $<$ M6), and does not yet match similarity-only ranking quality on this labeled pool (RQ1).
 
 \section{Threats to Validity}
 \subsection{Internal Validity}
@@ -1505,7 +1483,7 @@ Relevance labels are subjective and may vary by reviewer. The fixed rubric and r
 The evaluation focuses on English IT recruitment. Public Kaggle CVs may not represent company-specific documents, and AI-generated CVs may carry cleaner or generator-specific language. The controlled robustness/scalability tests use dedicated synthetic CVs reported separately (Tables~\ref{tab:robustness-results}, \ref{tab:battery-summary}); however, the general 1,000-CV synthetic corpus is not fully separated from the main effectiveness result, since 108 of the 246 labeled pairs (43.9\%) are synthetic and scored in the same combined macro-average (\cref{sec:labeled-pool}, Table~\ref{tab:ranking-results}) -- a mixing this thesis does not disentangle and notes as a limitation.
 
 \subsection{Conclusion Validity}
-A limited number of JDs (5) and judged pairs (246) may produce unstable metric differences. This is partly mitigated by the per-JD breakdown (Table~\ref{tab:per-jd-ndcg10}), which shows the main finding -- similarity-only baselines outperforming the requirement-decomposition family -- holds on every JD, not just on average. Bootstrap CIs and a paired significance test (Tables~\ref{tab:bootstrap-ci}--\ref{tab:paired-significance}) show the paired bootstrap CI on the difference against M6 excludes zero for all three similarity-only baselines, corroborating that the gap isn't resampling noise; the Wilcoxon signed-rank test, however, cannot reach $p<0.05$ for any comparison, purely because $n=5$ JDs is too few for that test's discrete $p$-value distribution to go below $0.0625$ -- a genuine power limitation of the 5-JD design, reported explicitly rather than worked around (e.g., by incorrectly treating the 246 individual pairs as independent). Threshold sensitivity was also run as a full calibration on a held-out development/test split (Table~\ref{tab:threshold-calibration}), not just the earlier 4-point probe. Negative or inconclusive outcomes are reported rather than hidden.
+A limited number of JDs (5) and judged pairs (246) may produce unstable metric differences. This is partly mitigated by the per-JD breakdown (Table~\ref{tab:per-jd-ndcg10}), which shows the main finding -- similarity-only baselines outperforming the requirement-decomposition family -- holds on 4 of 5 JDs, with EVAL\_JD\_02 the exception where the full proposed model outranks Section-level SBERT. Bootstrap CIs and a paired significance test (Tables~\ref{tab:bootstrap-ci}--\ref{tab:paired-significance}) show the paired bootstrap CI on the difference against M6 excludes zero for all three similarity-only baselines, corroborating that the gap isn't resampling noise; the Wilcoxon signed-rank test, however, cannot reach $p<0.05$ for any comparison, purely because $n=5$ JDs is too few for that test's discrete $p$-value distribution to go below $0.0625$ -- a genuine power limitation of the 5-JD design, reported explicitly rather than worked around (e.g., by incorrectly treating the 246 individual pairs as independent). Threshold sensitivity was also run as a full calibration on a held-out development/test split (Table~\ref{tab:threshold-calibration}), not just the earlier 4-point probe. Negative or inconclusive outcomes are reported rather than hidden.
 
 % ==================================================
 \chapter{Conclusion and Future Work}
@@ -1516,11 +1494,13 @@ This thesis reframes recruitment screening as more than whole-document text simi
 
 The system also implements a PDF-first ingestion workflow with direct extraction and OCR fallback. Evaluation draws on three sources: real scanned PDFs for OCR, parsing, and human-labeled ranking; controlled synthetic CVs for robustness and scalability; and a small reviewer study for explanation usability. Human control is preserved by returning a top-$k$ shortlist with requirement-level explanations rather than automatic hiring decisions.
 
-The evaluation produced a mixed, informative result rather than a clean confirmation. Against the 246-pair human-labeled pool (five JDs), the three similarity-only baselines ranked ahead of the full proposed model on every metric except MRR (NDCG@10 0.96 vs 0.34; Table~\ref{tab:ranking-results}), holding on every individual JD (Table~\ref{tab:per-jd-ndcg10}). Tracing the mechanism identified two causes: the JD parser marks nearly the entire technology list as hard-mandatory, so the hard-pass gate rarely discriminates; and the evidence thresholds ($\tau_l{=}0.35$, $\tau_h{=}0.55$) were left uncalibrated. A held-out calibration (Table~\ref{tab:threshold-calibration}) improved M6's NDCG@10 by roughly $52\%$, confirming the second cause is real and fixable -- but the result (0.4494) remains far below the SBERT baseline (0.9632), since the first cause was diagnosed but not redesigned here. RQ2 therefore remains unsupported as currently implemented: requirement-aware matching does not improve ranking quality over similarity-only ranking in this run, though part of the gap is now known to be a calibration artifact rather than a design flaw.
+The evaluation produced a mixed, informative result rather than a clean confirmation. Against the 246-pair human-labeled pool (five JDs), the three similarity-only baselines rank ahead of the full proposed model on every metric except MRR (NDCG@10 0.96 vs 0.64; Table~\ref{tab:ranking-results}). Tracing the mechanism identified two causes: the JD parser marks every "Key Responsibilities" sentence hard regardless of heading structure and assesses it at the same semantic-similarity threshold used for short skill terms, a bar full sentences rarely clear -- 78\% of top-10 hard-requirement failures are responsibility-category, not skill-category, which is why constraint violation rate@10 is 100\% for M5/M6 on every JD; and the evidence thresholds ($\tau_l{=}0.35$, $\tau_h{=}0.55$) were left uncalibrated. A held-out calibration (Table~\ref{tab:threshold-calibration}) shows a stricter threshold pair yields a further, separately-measured $\sim$52\% relative improvement in NDCG@10, not yet combined with the headline result. RQ1 therefore remains unsupported: requirement-aware matching does not improve ranking quality over similarity-only ranking on this labeled pool, though within the requirement-decomposition family itself the intended pattern holds (M4 $<$ M5 $<$ M6, Table~\ref{tab:paired-significance}), and the remaining gap to the three similarity-only baselines is precisely located rather than merely hypothesized.
 
-The picture is more favorable for RQ3/RQ4, evaluated on all five controlled categories, each expanded from one to three instances against different JDs (\cref{sec:battery}). Three of four patterns replicate cleanly: fresher candidates and candidates missing a mandatory skill are correctly gated out in 3/3 instances each, and the model's rank improves monotonically from unsupported to genuinely evidenced skill claims in 3/3 instances, with the hard gate itself crossing only for the evidenced version where not confounded by requirement saturation. The fourth, role confusion, replicates less favorably: the gate correctly rejects a confused candidate in only 1 of 3 instances, since project-descriptor phrasing (e.g. ``a Python-based data pipeline'') registers as satisfied evidence in the other 2 -- a genuine downward revision, reported as such. RQ5 (explanation usability) was out of scope for this thesis's schedule and awaits a reviewer pilot.
+The picture is more favorable for RQ2, evaluated on all five controlled categories, each expanded from one to three instances against different JDs (\cref{sec:battery}). Three of four patterns replicate cleanly: fresher candidates and candidates missing a mandatory skill are correctly gated out in 3/3 instances each, and the model's rank improves monotonically from unsupported to genuinely evidenced skill claims in 3/3 instances, with the hard gate itself crossing only for the evidenced version where not confounded by requirement saturation. The fourth, role confusion, replicates less favorably: the gate correctly rejects a confused candidate in only 1 of 3 instances, since project-descriptor phrasing (e.g. ``a Python-based data pipeline'') registers as satisfied evidence in the other 2 -- a genuine downward revision, reported as such. RQ3 (explanation usability) was out of scope for this thesis's schedule and awaits a reviewer pilot.
 
-Overall, this thesis validates the requirement-aware, evidence-aware mechanism at the level of individual requirements and evidence -- reliably for seniority mismatch, missing mandatory requirements, and keyword stuffing, unreliably for role confusion. It does not yet validate an improvement in overall ranking quality over similarity-only baselines: held-out threshold calibration closes part of that gap ($\sim$52\% relative NDCG@10 improvement) but not most of it, since the dominant cause -- the JD parser's undifferentiated hard-requirement lists -- was diagnosed but not redesigned. Redesigning that mandatory/optional split, and narrowing declared-skill extraction to genuine personal-skill statements, are the two most concrete next steps (\cref{sec:future-work}) before the ranking-quality claim can be re-tested -- not a reason to abandon the underlying design.
+Overall, this thesis validates the requirement-aware, evidence-aware mechanism at the level of individual requirements and evidence (RQ2) -- reliably for seniority mismatch, missing mandatory requirements, and keyword stuffing, unreliably for role confusion. It does not yet validate an improvement in overall ranking quality over similarity-only baselines (RQ1): held-out threshold calibration suggests part of that gap is closeable ($\sim$52\% relative NDCG@10 improvement, separately measured) but the dominant cause -- responsibility sentences hard-gated at a skill-level evidence threshold -- has been diagnosed precisely but not yet redesigned.
+
+This is not a reason to abandon the underlying design, but it does mean the design's current defensible contribution is narrower than originally intended. What this thesis delivers is a working, auditable mechanism whose ranking decisions are traceable to named requirements, thresholds, and evidence sentences (\cref{sec:discussion}), an internal ranking-quality ordering consistent with its own design (M4 $<$ M5 $<$ M6), and controlled evidence that the individual components behave as designed (RQ2). What it does not yet deliver is proof that this auditability can be had without the ranking-quality cost measured against similarity-only baselines (RQ1) -- that would require loosening the hard gate on full-sentence responsibility requirements and combining that fix with evidence-threshold calibration in one re-tested run, not diagnosing the cause alone. This is reported as the two most concrete next steps (\cref{sec:future-work}) rather than as resolved contributions of this thesis.
 
 \section{Main Contributions}
 The thesis design and implemented prototype contribute:
@@ -1547,6 +1527,8 @@ The main limitations are:
   \item synthetic metadata does not replace human relevance judgment;
   \item three different corpus snapshot sizes are used across the evaluation tables without being reconciled into one corpus-wide re-run: the ranking-effectiveness and operational-performance tables use the 3,986-CV combined retrieval corpus (Tables~\ref{tab:ranking-results}, \ref{tab:performance-results}), the threshold-sensitivity probe (\cref{sec:discussion}) was left at an intermediate 3,991-CV snapshot, and the robustness/case-study tables were re-run against the final 4,013-CV corpus (\cref{sec:battery}); each table documents its own denominator, but a reader comparing absolute ranks or counts across sections should account for this rather than assume a single fixed corpus size throughout;
   \item the held-out threshold calibration (\cref{sec:calibration}, Table~\ref{tab:threshold-calibration}) tunes and re-scores only M6, since it is the only threshold-dependent model; M1--M5 were never re-evaluated on the same development/test split, so the reported comparison between M6's calibrated result and the baselines' full-pool metrics is not a strictly like-for-like held-out comparison -- a fully controlled comparison would also score M1--M5 on the identical held-out test half;
+  \item the threshold-sensitivity and held-out calibration tables (\cref{sec:calibration}, Tables~\ref{tab:threshold-sensitivity}--\ref{tab:threshold-calibration}) were run against an earlier snapshot of the JD requirement lists that classifies more skills as hard-mandatory than the parser configuration used for the headline ranking-effectiveness result (Table~\ref{tab:ranking-results}); they have not been re-run against the current requirement lists, so their $\sim$52\% relative improvement should be read as a separate finding about threshold direction, not combined with the headline result;
+  \item constraint violation rate@10 is 100\% for M5/M6 on all five evaluation JDs (Table~\ref{tab:violation-rates}): 78\% of top-10 hard-requirement failures are responsibility-category, because the parser marks every "Key Responsibilities" sentence hard unconditionally and assesses it at the same evidence threshold used for short skill terms; this is a confirmed, unfixed cause (\cref{sec:future-work});
   \item rule-based JD and CV parsing may fail on unusual formats or implicit requirements;
   \item experience-year extraction may be inaccurate with incomplete or overlapping dates; a CV with no detected year phrase still defaults to 0.0, but a separate \texttt{years\_detected} flag now surfaces "not detected" (rather than "0.0 years") in the CV table and requirement explanation, so a genuine 0-years fresher can be told apart from a failed extraction on manual inspection;
   \item OCR may introduce noisy text for low-resolution and multi-column scanned PDFs;
@@ -1569,10 +1551,10 @@ Three items originally planned as next steps were completed during the evaluatio
 \subsection{Immediate next steps motivated by this thesis's own findings}
 Each item below is a direct response to a specific Chapter 4 result this thesis's schedule did not allow time to act on:
 \begin{itemize}
-  \item \textbf{Redesign JD hard/optional requirement classification.} The rule-based parser marks every skill under one heading as hard (15--23 per evaluation JD), the dominant, threshold-independent cause of $H_{\mathrm{pass}}$ never discriminating between candidates (0\% hard-pass rate at every $\tau$ tested). A parser using heading structure, modal language (``must have'' vs.\ ``nice to have''), or a small supervised classifier to split mandatory from optional requirements would directly target this.
+  \item \textbf{Stop hard-gating full-sentence responsibility requirements at the skill-level evidence threshold.} Constraint violation rate@10 is 100\% for M5/M6 on all five JDs (Table~\ref{tab:violation-rates}): direct inspection of the top-ranked candidates for EVAL\_JD\_01 shows candidates who satisfy every mandatory \emph{skill} still fail $H_{\mathrm{pass}}$ because at least one of the six always-hard "Key Responsibilities" sentences (e.g.\ "Participate in the design of scalable, maintainable, and reliable software architectures") scores between $\tau_l$ and $\tau_h$ rather than above $\tau_h$ against the CV's evidence sentences -- a much stricter bar for a full imperative sentence to clear than for a short skill term at the same threshold. Treating responsibilities as soft requirements, or giving them their own (lower) evidence threshold than skill terms, is the next concrete step toward a hard-pass gate that actually discriminates among candidates who already clear the skill bar.
   \item \textbf{Scope declared-skill extraction to genuine personal-skill statements.} The role-confusion battery (\cref{sec:robustness-sets}) showed project-descriptor phrases (``a Java-based backend platform'') register as evidence-satisfied support for a personal skill claim in 2 of 3 instances, because skill-term extraction matches anywhere in the CV text rather than being scoped to Skills or first-person/possessive context. Narrowing this scope is a concrete fix the battery shows is more urgent than the original single instance suggested.
   \item \textbf{Recruit a second reviewer} so weighted Cohen's kappa \citep{cohen1968} can be computed and single-reviewer subjectivity is no longer an open threat.
-  \item \textbf{Run the RQ5 explanation-usability pilot} (Table~\ref{tab:usability}) with actual recruiters or technical reviewers; RQ5 remains entirely unanswered.
+  \item \textbf{Run the RQ3 explanation-usability pilot} (Table~\ref{tab:usability}) with actual recruiters or technical reviewers; RQ3 remains entirely unanswered.
   \item \textbf{Expand the robustness battery and run a full threshold grid search.} Three instances per category and a 6-point $\tau$ grid move past single-anecdote evidence but remain small; a larger battery (10+ instances/category) and a finer two-dimensional $\tau_l/\tau_h$ grid would further stabilize both findings.
 \end{itemize}
 
@@ -1585,7 +1567,7 @@ Each item below is a direct response to a specific Chapter 4 result this thesis'
   \item validate the system on private organizational CVs under approved privacy controls;
   \item improve OCR for complex multi-column and low-resolution CVs;
   \item extend the system to Vietnamese and multilingual recruitment;
-  \item conduct a larger, multi-recruiter user study once the initial RQ5 pilot above has been completed;
+  \item conduct a larger, multi-recruiter user study once the initial RQ3 pilot above has been completed;
   \item integrate fairness auditing, role-based access control, audit logging, and production monitoring;
   \item add the PII masking control identified in Chapter 5, Limitations, as a prerequisite for any deployment beyond this controlled evaluation.
 \end{itemize}
