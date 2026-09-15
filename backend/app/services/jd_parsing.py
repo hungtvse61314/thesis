@@ -5,11 +5,12 @@ JD_HEADINGS = {
     "mandatory": [
         "required skills", "requirements", "must have", "must-have",
         "mandatory skills", "minimum qualifications", "required qualifications",
-        "core requirements",
+        "core requirements", "mandatory requirements",
     ],
     "optional": [
         "nice to have", "nice-to-have", "preferred skills", "preferred qualifications",
         "bonus", "optional skills", "good to have", "pluses", "plus",
+        "preferred optional skills",
     ],
     "responsibilities": [
         "responsibilities", "key responsibilities", "duties", "what you will do",
@@ -31,7 +32,11 @@ def extract_jd_sections(text: str) -> dict[str, str]:
     sections["general"] = ""
     current = "general"
     for line in lines:
-        normalized = re.sub(r"[^a-z ]", "", line.lower()).strip()
+        # Collapse whitespace left behind by stripped punctuation (e.g. the
+        # "/" in "Preferred / Optional Skills") so such headings still match
+        # a single-spaced alias below instead of silently falling through to
+        # the no-heading-found fallback (see thesis Chapter 4 Discussion).
+        normalized = re.sub(r"\s+", " ", re.sub(r"[^a-z ]", "", line.lower())).strip()
         matched = None
         for key, names in JD_HEADINGS.items():
             if normalized in names or (len(normalized) < 40 and any(normalized.startswith(n) for n in names)):

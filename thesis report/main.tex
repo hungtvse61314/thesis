@@ -184,7 +184,7 @@ Several figures in this thesis were generated with the assistance of AI tools (C
 \begin{itemize}
   \item the conceptual architecture and process diagrams (\cref{fig:problem,fig:architecture,fig:pdfocr,fig:structuredparsing,fig:assessmentreranking,fig:reviewworkflow,fig:evaluationworkflow}) were generated from the researcher's own design descriptions and iteratively corrected for technical accuracy against the actual implementation -- for example, an earlier version of \cref{fig:pdfocr} depicted a text-cleaning step mislabeled in a way that implied personal-data anonymization the implemented system does not perform, and was regenerated to describe the step correctly;
   \item the quantitative result charts (Figures~\ref{fig:ranking-effectiveness-chart}, \ref{fig:robustness-chart}, \ref{fig:ocr-chart}, \ref{fig:performance-chart}, \ref{fig:dataset-chart}, \ref{fig:case-study-chart}) were produced by Python plotting scripts written with AI assistance, but every value plotted was computed directly from this thesis's own recorded experimental results, not generated or estimated by the AI tool;
-  \item the six application screenshots in Chapters 3--4 (\cref{fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype.
+  \item the seven application screenshots in Chapters 3--4 (\cref{fig:app-overview,fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype.
 \end{itemize}
 All analytical content, experimental design, quantitative results, and written discussion are the researcher's own work; AI assistance was confined to the visual generation and correction of the figures listed above.
 
@@ -516,8 +516,10 @@ Approximately 1,000 English IT CVs are generated from structured candidate profi
   \item convert the generated record into a consistent PDF format and retain a machine-readable manifest;
   \item reject empty, duplicated, internally inconsistent, or excessively repetitive outputs;
   \item sample records manually for language quality and profile consistency;
-  \item keep synthetic records separate from real-data effectiveness conclusions.
+  \item retain source-type provenance (\texttt{real}/\texttt{synthetic}) on every record so real and synthetic results \emph{can} be separated at analysis time.
 \end{enumerate}
+
+This last point states intent rather than a fully realized separation: despite retaining provenance, the primary 246-pair human-labeled effectiveness pool itself mixes 138 real and 108 synthetic CVs and is scored as one combined macro-average (\cref{sec:labeled-pool}, Table~\ref{tab:ranking-results}), so synthetic CVs do directly influence the headline ranking-effectiveness result rather than being confined to the separate robustness and scalability sets. This is reported as a deviation from the original design intent, not silently reconciled with it, and is listed as a limitation (\cref{sec:limitations-list}).
 
 The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final role and seniority distribution across the 1,000 generated CVs was not recorded and remains \texttt{Pending external input} (\cref{sec:limitations-list}).
 
@@ -882,7 +884,7 @@ Separate controlled sets are constructed for:
 \toprule
 Subset & Source & Final size & Primary purpose \\
 \midrule
-Real scanned PDF corpus & Kaggle & 2,986 indexed (100\% OCR-extracted; raw pre-filter count \texttt{Pending}) & OCR, parsing, real-data ranking, and error analysis \\
+Real scanned PDF corpus & Kaggle & 2,986 indexed (100\% of \emph{indexed} records OCR-extracted by construction -- files that failed OCR are not indexed and are excluded from this denominator; raw pre-filter count \texttt{Pending}) & OCR, parsing, ranking, and error analysis \\
 Synthetic CV corpus & AI-generated & 1,000 & Controlled robustness and scalability \\
 Combined retrieval corpus & Mixed & 3,986 & Indexing and ranking latency \\
 Human-labeled evaluation pool & Real + synthetic CVs, single reviewer (138 real, 108 synthetic) & 246 labeled pairs across the 5 EVAL\_JD JDs (46--50 each; target 150--250 met) & NDCG, MAP, MRR, Recall (Table~\ref{tab:ranking-results}) \\
@@ -1002,7 +1004,7 @@ Qualitative comments & Pending \\
 \section{Experimental Models}
 The model comparison is performed in three experiment groups:
 \begin{enumerate}
-  \item \textbf{Real-data effectiveness}: human-labeled pairs, reporting ranking metrics and per-JD analysis;
+  \item \textbf{Human-labeled effectiveness}: human-labeled pairs (a mixed real/synthetic pool, \cref{sec:labeled-pool}), reporting ranking metrics and per-JD analysis;
   \item \textbf{Controlled robustness}: seniority mismatch, unsupported claims and keyword-stuffing, missing mandatory requirements, and role confusion;
   \item \textbf{Combined-corpus performance}: indexing, latency, and response-time measurements.
 \end{enumerate}
@@ -1103,6 +1105,8 @@ $(0.70, 0.90)$ & 0.5228 & 0.6212 & 0.4869 \\
 
 The pair $(\tau_l,\tau_h)=(0.50,0.70)$ has the highest development-split NDCG@10 (0.5828) and was selected on that basis alone, without looking at the test half; its held-out test-split score (0.5687) is close to its development value, so the selection generalizes rather than overfits. Against the full 246-pair pool, this calibrated pair reaches macro NDCG@10 of 0.4494 -- a genuine, held-out-validated improvement of roughly $52\%$ over the shipped default's 0.2953 (same corpus snapshot), though still far below the SBERT-full-text baseline's 0.9632. One caveat: $(0.70,0.90)$'s test-split score (0.6212) exceeds $(0.50,0.70)$'s (0.5687), so the exact optimum is somewhat sensitive to which pairs fell into the development half -- expected sampling noise at only 23--25 pairs per JD per half, not a stable ranking of the two settings. The robust conclusion is the broader trend: every setting at $\tau_l \geq 0.40$ outperforms the two most lenient settings on both halves, so a properly calibrated M6 should use a stricter evidence threshold than the current default, consistent with \cref{sec:discussion}.
 
+This calibration is threshold-only, and only M6 has thresholds to tune ($\tau_l$, $\tau_h$); M1--M5 were never re-scored on this same development/test split, since M1--M3 are parameter-free and M4/M5 use declared-only assessment with no evidence threshold. Consequently, the 0.4494-vs-0.9632 comparison above is not a fully like-for-like held-out comparison: the 0.4494 figure benefits from a threshold chosen using half of the very 246-pair pool it is then scored against, while the 0.9632 SBERT figure required no such fitting on any part of that pool. A strictly controlled comparison would score all six models on the identical held-out test half alone; this thesis's schedule did not extend to that additional run, and the gap is reported with this caveat attached rather than presented as a clean apples-to-apples result.
+
 \section{Seniority Mismatch Robustness Test}
 The test set includes JDs with explicit minimum years and seniority levels. Candidate CVs are grouped as Intern/Fresher, Junior, Middle, Senior, Lead, and Architect. The main measurement is whether underqualified candidates appear in the top-$k$ list.
 
@@ -1151,7 +1155,7 @@ The table structures below were fixed before experimentation to reduce selective
 
 \begin{table}[htbp]
 \centering
-\caption{Real-data ranking effectiveness results}
+\caption{Ranking effectiveness on the human-labeled pool (real + synthetic)}
 \label{tab:ranking-results}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lcccccc}
@@ -1255,7 +1259,7 @@ The bootstrap CIs are computed by resampling the 5 JDs with replacement (the sta
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/figure_4_5_ranking_effectiveness_comparison.png}
-\caption{Real-data ranking effectiveness by model}
+\caption{Ranking effectiveness by model (human-labeled pool)}
 \label{fig:ranking-effectiveness-chart}
 \end{figure}
 
@@ -1304,7 +1308,7 @@ For stuffing, all six assessments were also checked against EVAL\_JD\_01's 23 ha
 \toprule
 Metric & Final result \\
 \midrule
-OCR success rate & 100\% of indexed records (2,986/2,986 currently indexed as \texttt{real} show \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted}; raw pre-filter total remains \texttt{Pending}, Table~\ref{tab:dataset-composition}) \\
+OCR success rate & 100\% of \emph{indexed} records (2,986/2,986 currently indexed as \texttt{real} show \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted}); this is tautological by construction, since a file that fails OCR is never indexed and so never enters this denominator -- it is not a claim that 100\% of attempted uploads succeed. Raw pre-filter total and true failure rate remain \texttt{Pending}, Table~\ref{tab:dataset-composition} \\
 OCR failure rate & \texttt{Pending} -- failed uploads are not logged by the current pipeline, so this cannot be recovered retroactively (see Limitations) \\
 Average OCR time per page & 8.08\,s (Tesseract 5.5.2 + Poppler 26.07.0, single CPU core); full benchmark detail in Table~\ref{tab:performance-results} \\
 Skills-section detection rate & 69.3\% (2,070 / 2,986 real CVs) \\
@@ -1475,7 +1479,7 @@ False negative & Requirement parser error & Mandatory skill incorrectly classifi
 
 \section{Discussion}
 \label{sec:discussion}
-The final discussion is organized by research question rather than by model name. Real-data ranking metrics answer whether requirement-aware matching improves ordering on manually judged CV--JD pairs. Constraint violation rate@10 (Table~\ref{tab:violation-rates}) measures whether experience and seniority mismatches are reduced. Unsupported-claim rate@10 and paired keyword-stuffing tests measure whether evidence verification limits ranking inflation. OCR and runtime results establish whether the software pipeline is sufficiently reliable for the experiment. The explanation-usability pilot addresses whether the output is understandable and useful to reviewers.
+The final discussion is organized by research question rather than by model name. Human-labeled ranking metrics answer whether requirement-aware matching improves ordering on manually judged CV--JD pairs. Constraint violation rate@10 (Table~\ref{tab:violation-rates}) measures whether experience and seniority mismatches are reduced. Unsupported-claim rate@10 and paired keyword-stuffing tests measure whether evidence verification limits ranking inflation. OCR and runtime results establish whether the software pipeline is sufficiently reliable for the experiment. The explanation-usability pilot addresses whether the output is understandable and useful to reviewers.
 
 Results from synthetic controlled cases are interpreted as evidence of mechanism behavior under known conditions, not as equivalent to operational recruiter performance. Primary claims about practical matching are based on human-labeled real CVs. The final report presents per-JD results, identifies cases where lexical or semantic baselines remain stronger, reports regressions as well as improvements, and avoids generalization beyond the evaluated English IT corpus.
 
@@ -1530,7 +1534,7 @@ The thesis design and implemented prototype contribute:
   \item deterministic lexicographic constraint-based reranking;
   \item recruiter-facing requirement-level explanations;
   \item a transparent synthetic CV generation and manifest protocol;
-  \item an evaluation design covering real-data effectiveness, controlled robustness, OCR reliability, operational performance, and explanation usability.
+  \item an evaluation design covering human-labeled ranking effectiveness, controlled robustness, OCR reliability, operational performance, and explanation usability.
 \end{enumerate}
 
 \section{Limitations}
@@ -1539,8 +1543,10 @@ The main limitations are:
 \begin{itemize}
   \item public Kaggle data may not fully represent organizational recruitment;
   \item AI-generated CVs may contain stylistic artifacts, overly clean language, or prompt-specific patterns;
-  \item the 246-pair labeled pool mixes real (138) and synthetic (108) CVs (\cref{sec:labeled-pool}), scored as one combined macro-average (Table~\ref{tab:ranking-results}); no real-only/synthetic-only breakdown was done, so model behavior on synthetic vs.\ real candidates specifically cannot be read from the headline result;
+  \item the 246-pair labeled pool mixes real (138) and synthetic (108) CVs (\cref{sec:labeled-pool}), scored as one combined macro-average and reported under a table/section name ("human-labeled effectiveness") chosen to reflect this mix rather than "real-data effectiveness"; no real-only/synthetic-only breakdown was done, so model behavior on synthetic vs.\ real candidates specifically cannot be read from the headline result (Table~\ref{tab:ranking-results});
   \item synthetic metadata does not replace human relevance judgment;
+  \item three different corpus snapshot sizes are used across the evaluation tables without being reconciled into one corpus-wide re-run: the ranking-effectiveness and operational-performance tables use the 3,986-CV combined retrieval corpus (Tables~\ref{tab:ranking-results}, \ref{tab:performance-results}), the threshold-sensitivity probe (\cref{sec:discussion}) was left at an intermediate 3,991-CV snapshot, and the robustness/case-study tables were re-run against the final 4,013-CV corpus (\cref{sec:battery}); each table documents its own denominator, but a reader comparing absolute ranks or counts across sections should account for this rather than assume a single fixed corpus size throughout;
+  \item the held-out threshold calibration (\cref{sec:calibration}, Table~\ref{tab:threshold-calibration}) tunes and re-scores only M6, since it is the only threshold-dependent model; M1--M5 were never re-evaluated on the same development/test split, so the reported comparison between M6's calibrated result and the baselines' full-pool metrics is not a strictly like-for-like held-out comparison -- a fully controlled comparison would also score M1--M5 on the identical held-out test half;
   \item rule-based JD and CV parsing may fail on unusual formats or implicit requirements;
   \item experience-year extraction may be inaccurate with incomplete or overlapping dates; a CV with no detected year phrase still defaults to 0.0, but a separate \texttt{years\_detected} flag now surfaces "not detected" (rather than "0.0 years") in the CV table and requirement explanation, so a genuine 0-years fresher can be told apart from a failed extraction on manual inspection;
   \item OCR may introduce noisy text for low-resolution and multi-column scanned PDFs;
@@ -1551,7 +1557,7 @@ The main limitations are:
   \item the prototype performs no external employment verification or final hiring decisions;
   \item names, emails, phone numbers, and addresses are not masked before ranking, and the original PDF remains viewable to any reviewer with product access; PII masking is required work before any deployment beyond this controlled evaluation;
   \item duplicate-CV detection now also keys on a content hash of the normalized text, so an identical re-upload is rejected; near-duplicates differing only by minor OCR noise or formatting are not detected;
-  \item failed or rejected uploads (wrong file type, empty text, OCR failure) are not logged, so upstream funnel counts (pre-filter totals, OCR failure rate) cannot be reconstructed retroactively for a corpus imported before this limitation was identified.
+  \item failed or rejected uploads (wrong file type, empty text, OCR failure) are not logged, so upstream funnel counts (pre-filter totals, OCR failure rate) cannot be reconstructed retroactively for a corpus imported before this limitation was identified; the "100\% OCR success rate" reported in Tables~\ref{tab:dataset-composition} and \ref{tab:ocr-results} is measured only over records that were already successfully indexed and is tautological by construction, not evidence that every attempted upload succeeds.
 \end{itemize}
 
 \section{Future Work}
