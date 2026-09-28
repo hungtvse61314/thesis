@@ -137,7 +137,7 @@
 {\large for the degree of Master of Software Engineering\par}
 
 \vspace{1.0cm}
-{\large Supervisors:\par}
+{\large Supervisor:\par}
 \vspace{0.35cm}
 {\large Dr. Doan Xuan Huy Minh\par}
 
@@ -180,13 +180,15 @@ This work would not have been possible without the guidance, knowledge, support,
 
 \chapter*{Statement on the Use of AI Tools}
 \addcontentsline{toc}{chapter}{Statement on the Use of AI Tools}
-Several figures in this thesis were generated with the assistance of AI tools (ChatGPT and Claude) rather than drawn manually or produced by a professional designer, and this is disclosed explicitly rather than left unstated. Specifically:
+AI tools (ChatGPT and Claude) were used in this thesis in the ways listed below, and this is disclosed explicitly rather than left unstated:
 \begin{itemize}
-  \item the conceptual architecture and process diagrams (\cref{fig:problem,fig:architecture,fig:pdfocr,fig:structuredparsing,fig:assessmentreranking,fig:reviewworkflow,fig:evaluationworkflow}) were generated from the researcher's own design descriptions and iteratively corrected for technical accuracy against the actual implementation -- for example, an earlier version of \cref{fig:pdfocr} depicted a text-cleaning step mislabeled in a way that implied personal-data anonymization the implemented system does not perform, and was regenerated to describe the step correctly;
-  \item the quantitative result charts (Figures~\ref{fig:ranking-effectiveness-chart}, \ref{fig:robustness-chart}, \ref{fig:ocr-chart}, \ref{fig:performance-chart}, \ref{fig:dataset-chart}, \ref{fig:case-study-chart}) were produced by Python plotting scripts written with AI assistance, but every value plotted was computed directly from this thesis's own recorded experimental results, not generated or estimated by the AI tool;
-  \item the seven application screenshots in Chapters 3--4 (\cref{fig:app-overview,fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype.
+  \item \textbf{Synthetic CV generation.} The approximately 1,000 synthetic English IT CVs (\cref{sec:synthetic-protocol}) were generated with AI assistance (ChatGPT). The exact model version, prompt template, and generation date were not recorded at generation time and cannot be recovered. These CVs are fictional, not real candidate data; 108 of them appear in the 246-pair human-labeled pool (\cref{sec:labeled-pool}), so AI-generated text directly influences the headline ranking result. The AI tools did not produce any relevance label: all 246 labels were assigned by a single human reviewer;
+  \item \textbf{Figures.} The conceptual architecture and process diagrams (\cref{fig:problem,fig:architecture,fig:pdfocr,fig:structuredparsing,fig:assessmentreranking,fig:reviewworkflow,fig:evaluationworkflow}) were generated with AI tools (ChatGPT and Claude) rather than drawn manually or produced by a professional designer, from the researcher's own design descriptions and iteratively corrected for technical accuracy against the actual implementation -- for example, an earlier version of \cref{fig:pdfocr} depicted a text-cleaning step mislabeled in a way that implied personal-data anonymization the implemented system does not perform, and was regenerated to describe the step correctly;
+  \item \textbf{Result charts and screenshots.} The quantitative result charts (Figures~\ref{fig:ranking-effectiveness-chart}, \ref{fig:robustness-chart}, \ref{fig:ocr-chart}, \ref{fig:performance-chart}, \ref{fig:dataset-chart}, \ref{fig:case-study-chart}) were produced by Python plotting scripts written with AI assistance, but every value plotted was computed directly from this thesis's own recorded experimental results, not generated or estimated by the AI tool;
+  \item \textbf{Application screenshots.} The seven application screenshots in Chapters 3--4 (\cref{fig:app-overview,fig:app-upload,fig:app-jd-parse,fig:app-ranking,fig:app-explanation,fig:app-labeling,fig:app-experiments}) were originally AI-generated mockups marked \textsc{Placeholder -- Replace with Screenshot} and have since been replaced with real screenshots of the running prototype;
+  \item \textbf{Software and text support.} Claude (via Claude Code) assisted with parts of the prototype implementation, the experiment and plotting scripts, and the editing, restructuring, and condensing of thesis text, as recorded in the project's version-control history.
 \end{itemize}
-All analytical content, experimental design, quantitative results, and written discussion are the researcher's own work; AI assistance was confined to the visual generation and correction of the figures listed above.
+The research questions, experimental design, relevance labels, and interpretation of the results are the researcher's own; AI-assisted code, text, and figures were reviewed by the researcher, who is responsible for all content.
 
 \tableofcontents
 \listoffigures
@@ -253,7 +255,7 @@ Task & Top-$k$ ranking and recruiter decision support & Automatic hiring or reje
 Matching & Requirement-aware, evidence-aware, constraint-based reranking & External employment or credential verification \\
 Ground truth & Human relevance judgments and controlled robustness metadata & Fully automatic relevance labeling \\
 Models & TF--IDF, SBERT, section-level SBERT, and the proposed mechanism & Large-scale model fine-tuning and production ATS integration \\
-Evaluation & Ranking metrics, ablation, robustness, OCR, latency, and explanation usability & Long-term employee performance prediction \\
+Evaluation & Ranking metrics, ablation, robustness, OCR, latency, and explanation usability (designed, not run) & Long-term employee performance prediction \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -268,7 +270,7 @@ The thesis contributes:
   \item a deterministic lexicographic reranking mechanism that prevents broad similarity from compensating for failed mandatory requirements;
   \item a mixed real-and-synthetic experimental design that separates real-world OCR and human-labeled ranking evaluation from controlled robustness and scalability testing;
   \item recruiter-oriented explanations that present requirement coverage, evidence sentences, gaps, and warnings;
-  \item an evaluation protocol covering effectiveness, ablation, seniority mismatch, keyword stuffing, OCR quality, operational latency, and explanation usability.
+  \item an evaluation protocol covering effectiveness, ablation, seniority mismatch, keyword stuffing, OCR quality, operational latency, and explanation usability (the usability pilot itself was not run).
 \end{enumerate}
 
 The novelty is not a new foundation language model. It is the design and validation of an auditable matching mechanism that changes the unit of comparison from whole-document similarity to individual JD requirements and their supporting CV evidence. This distinction links the algorithmic behavior, software architecture, recruiter workflow, and evaluation criteria to the original recruitment problem.
@@ -306,7 +308,7 @@ The matching mechanism above assumes clean, structured CV and JD text. Two pract
 
 On ingestion, CV documents often contain multiple columns, icons, tables, and irregular headings, which complicates parsing even for text-based PDFs handled by libraries such as PyPDF or pdfplumber. Scanned PDFs require OCR, for which Tesseract provides an established open-source engine architecture \citep{smith2007tesseract}; OCR may introduce character errors, broken lines, and section-boundary problems that propagate into requirement decomposition and evidence retrieval and can therefore affect ranking quality. An ingestion pipeline for this mechanism should accordingly record extraction status, text length, and parsing warnings rather than silently passing degraded text downstream.
 
-On evaluation data, even a reliable pipeline still depends on a corpus that contains enough adversarial and edge cases, such as seniority mismatch or keyword stuffing, to test the mechanism's specific claims; real-world corpora rarely contain enough of these in controlled combinations. Synthetic data can supplement limited real-world corpora by generating controlled combinations of role, seniority, experience, skill evidence, and adversarial cases, but AI-generated text may carry stylistic artifacts, overly clean language, or patterns inherited from the generation prompt, so synthetic CVs are better suited to supporting robustness and scalability analysis than to replacing human judgment on real CVs. Recent work on LLM-driven synthetic data emphasizes the need for transparent generation protocols, quality controls, source separation, and careful interpretation of downstream results \citep{long2024synthetic,tan2024annotation}. Following this guidance, synthetic CVs in this thesis are generated from structured candidate profiles rather than copied from target JDs, and each record retains provenance and scenario metadata so that seniority mismatch, missing mandatory skills, unsupported claims, and keyword-stuffing cases can be tested in a controlled way, while primary claims about real-world matching remain grounded in manually judged CV--JD pairs.
+On evaluation data, even a reliable pipeline still depends on a corpus that contains enough adversarial and edge cases, such as seniority mismatch or keyword stuffing, to test the mechanism's specific claims; real-world corpora rarely contain enough of these in controlled combinations. Synthetic data can supplement limited real-world corpora by generating controlled combinations of role, seniority, experience, skill evidence, and adversarial cases, but AI-generated text may carry stylistic artifacts, overly clean language, or patterns inherited from the generation prompt, so synthetic CVs are better suited to supporting robustness and scalability analysis than to replacing human judgment on real CVs. Recent work on LLM-driven synthetic data emphasizes the need for transparent generation protocols, quality controls, source separation, and careful interpretation of downstream results \citep{long2024synthetic,tan2024annotation}. Following this guidance, synthetic CVs in this thesis are generated from structured candidate profiles rather than copied from target JDs, and each record retains source provenance, while controlled scenario metadata is tracked separately where available, so that seniority mismatch, missing mandatory skills, unsupported claims, and keyword-stuffing cases can be tested in a controlled way, while primary claims about real-world matching remain grounded in manually judged CV--JD pairs.
 
 \section{Comparative Synthesis and Research Gap}
 Table~\ref{tab:related-work} places the method families discussed above side by side. Lexical and dense retrieval methods are effective for candidate discovery but do not directly verify requirement satisfaction; cross-encoders and learning-to-rank methods improve interaction modeling but normally require additional computation or labeled training data that this thesis's scale does not support. The proposed mechanism instead concentrates its added complexity on requirement decomposition, evidence verification, and explicit constraint handling, trading some of the accuracy headroom of a learned reranker for a ranking that remains deterministic and auditable end to end.
@@ -473,12 +475,12 @@ Experiment split (development/evaluation/robustness/scalability) & -- & -- & Not
 \end{tabularx}
 \end{table}
 
-\subsection{Synthetic CV Generation Protocol}
-Approximately 1,000 English IT CVs are generated from structured candidate profiles using ChatGPT (GPT-4/GPT-4o family) to increase corpus scale and create controlled edge cases. The exact model version, prompt template, and generation date remain \texttt{Pending external input} since they were not recorded at generation time. The protocol is fixed as follows:
+\subsection{Synthetic CV Generation Protocol}\label{sec:synthetic-protocol}
+Approximately 1,000 English IT CVs are generated from structured candidate profiles using ChatGPT (GPT-4/GPT-4o family) to increase corpus scale and create controlled edge cases. The exact model version, prompt template, and generation date are \emph{Not recorded}: they were not captured at generation time and cannot be recovered retroactively. The protocol is fixed as follows:
 \begin{enumerate}
   \item define role, seniority, years of experience, responsibilities, evidenced skills, declared-only skills, education, and certifications;
   \item generate CV text without exposing or copying the target evaluation JD;
-  \item convert the generated record into a consistent PDF format and retain a machine-readable manifest;
+  \item convert the generated record into a consistent PDF format and retain the available source provenance;
   \item reject empty, duplicated, internally inconsistent, or excessively repetitive outputs;
   \item sample records manually for language quality and profile consistency;
   \item retain source-type provenance (\texttt{real}/\texttt{synthetic}) on every record so real and synthetic results \emph{can} be separated at analysis time.
@@ -486,7 +488,7 @@ Approximately 1,000 English IT CVs are generated from structured candidate profi
 
 This last point states intent rather than a fully realized separation: despite retaining provenance, the primary 246-pair human-labeled effectiveness pool itself mixes 138 real and 108 synthetic CVs and is scored as one combined macro-average (\cref{sec:labeled-pool}, Table~\ref{tab:ranking-results}), so synthetic CVs do directly influence the headline ranking-effectiveness result rather than being confined to the separate robustness and scalability sets. This is reported as a deviation from the original design intent, not silently reconciled with it, and is listed as a limitation (\cref{sec:limitations-list}).
 
-The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final role and seniority distribution across the 1,000 generated CVs was not recorded and remains \texttt{Pending external input} (\cref{sec:limitations-list}).
+The role matrix includes backend, frontend, full-stack, QA automation, DevOps, data engineering, business analysis, project management, software architecture, and IT support. The seniority matrix includes Intern, Fresher, Junior, Middle, Senior, Lead, and Architect. The final role and seniority distribution across the 1,000 generated CVs was \emph{Not recorded} (\cref{sec:limitations-list}).
 
 \section{Matching and Reranking Engine}
 This section presents the core matching mechanism: how a JD is decomposed into requirements, how evidence for each requirement is retrieved from a CV, how requirement satisfaction and experience/seniority alignment are assessed, how these signals are combined into a constraint-based reranking, and the baseline methods used to contextualize it.
@@ -759,7 +761,7 @@ Constraint engine & Hard/soft validation and seniority checks \\
 Reranking engine & Lexicographic requirement-based ordering; M1--M6 baseline catalogue selectable per call \\
 Explanation service & Requirement states, evidence, gaps, warnings \\
 Dataset provenance service & Source type and extraction status are implemented; scenario metadata and experiment split are designed but not yet implemented \\
-Evaluation service & Reviewer labels (with a labeling UI) and NDCG/MAP/MRR/Recall metrics per baseline are implemented; robustness-set construction, latency benchmarking, and the usability pilot are evaluation activities the researcher runs using these outputs, not automated in-app pipelines \\
+Evaluation service & Reviewer labels (with a labeling UI) and NDCG/MAP/MRR/Recall metrics per baseline are implemented; robustness-set construction, latency benchmarking, are evaluation activities the researcher runs using these outputs, not automated in-app pipelines; the usability pilot was not run \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -800,7 +802,7 @@ The evaluation is designed to answer whether the proposed mechanism improves CV-
   \item reduction of seniority-mismatch false positives;
   \item resistance to keyword stuffing and unsupported skill claims;
   \item PDF extraction and OCR reliability;
-  \item explanation usefulness and error characteristics.
+  \item explanation error characteristics (explanation usefulness to users was designed as a pilot but not run; see RQ3).
 \end{itemize}
 
 
@@ -812,10 +814,10 @@ The evaluation is designed to answer whether the proposed mechanism improves CV-
 \end{figure}
 
 \section{Dataset and Test Corpus}
-The evaluation corpus is split into distinct subsets so that real-world effectiveness, controlled robustness, and scalability are not conflated. Current indexed sizes are in Table~\ref{tab:dataset-composition}; dataset name, URL, and license are in Table~\ref{tab:dataset-fields}. Raw pre-filter counts remain \texttt{Pending external input} until the final corpus audit.
+The evaluation corpus is split into distinct subsets so that real-world effectiveness, controlled robustness, and scalability are not conflated. Current indexed sizes are in Table~\ref{tab:dataset-composition}; dataset name, URL, and license are in Table~\ref{tab:dataset-fields}. Raw pre-filter counts are \emph{Not recorded}, because the pipeline logged only successfully imported files.
 
 \subsection{Real Scanned PDF Corpus}
-The source Kaggle dataset \emph{Resume Dataset PDF} \citep{hadikpresumepdf} (CC0: Public Domain) is a general resume collection spanning many professions, not just IT. Since this thesis's ranking mechanism, requirement dictionary, and evaluation JDs are scoped to IT/software recruitment, only IT/software-relevant resumes were retained on import; CVs from unrelated professions were excluded and never entered the running prototype. The real corpus currently holds 2,986 scanned resume PDFs after this filtering (subject to change after a final corpus audit and duplicate removal). Because records are image-based, OCR is required before parsing. The final report will additionally record the original pre-filter count, English-language count, IT-domain count, duplicate-removal count, and OCR success/failure counts -- none of which the current pipeline logs retroactively (\cref{sec:limitations-list}).
+The source Kaggle dataset \emph{Resume Dataset PDF} \citep{hadikpresumepdf} (CC0: Public Domain) is a general resume collection spanning many professions, not just IT. Since this thesis's ranking mechanism, requirement dictionary, and evaluation JDs are scoped to IT/software recruitment, only IT/software-relevant resumes were retained on import; CVs from unrelated professions were excluded and never entered the running prototype. The real corpus currently holds 2,986 scanned resume PDFs after this filtering (no corpus audit or duplicate removal has been run on these records). Because records are image-based, OCR is required before parsing. The original pre-filter count, English-language count, IT-domain count, duplicate-removal count, and OCR success/failure counts are therefore \emph{Not recorded} or \emph{Not recoverable}: the pipeline did not log them, and they cannot be reconstructed retroactively (\cref{sec:limitations-list}).
 
 The real corpus is used for:
 \begin{itemize}
@@ -828,7 +830,7 @@ The real corpus is used for:
 \subsection{Controlled Synthetic CV Corpus}
 Approximately 1,000 AI-generated English IT CVs expand corpus size and create controlled combinations of role, seniority, years, responsibilities, evidenced skills, unsupported claims, and irrelevant skills. They are used for the dedicated robustness and scalability sets, but not confined to them: 108 of the 246 candidates in the primary human-labeled pool are also synthetic (\cref{sec:labeled-pool}), so synthetic data feeds Table~\ref{tab:ranking-results} directly, not only the robustness tables. Real CVs remain the majority (56.1\%) of that pool, so synthetic data is not the sole evidence of practical effectiveness.
 
-Each synthetic record carries a manifest of role, seniority, years of experience, declared/evidenced/unsupported skills, responsibility profile, scenario type, prompt version, and QC status. The final model name, prompt template, role/seniority distribution, and accepted/rejected counts remain \texttt{Pending external input}.
+Each synthetic record stores its source type, extraction status, and parsed role, seniority, and years of experience; declared/evidenced/unsupported skills are computed per JD--CV pair at ranking time (Table~\ref{tab:provenance}). A per-record generation manifest (scenario type, prompt version, QC status) is \emph{Not recorded}, and so are the exact model name, prompt template, and accepted/rejected counts.
 
 \subsection{Combined Retrieval Corpus}
 The combined retrieval corpus holds all valid real and accepted synthetic CVs -- currently 3,986 records (2,986 real, 1,000 synthetic) -- and is used to measure indexing time, ranking latency, and top-$k$ response time (Table~\ref{tab:performance-results}). The human-labeled pool mixes both sources rather than separating them (138 real, 108 synthetic of the 246 pairs, \cref{sec:labeled-pool}), and Table~\ref{tab:ranking-results} reports one combined macro-average over that mixed pool; a separate real-only/synthetic-only breakdown was not performed and is noted as a gap in \cref{sec:limitations-list}.
@@ -858,7 +860,7 @@ Separate controlled sets are constructed for:
 \toprule
 Subset & Source & Final size & Primary purpose \\
 \midrule
-Real scanned PDF corpus & Kaggle & 2,986 indexed (100\% of \emph{indexed} records OCR-extracted by construction -- files that failed OCR are not indexed and are excluded from this denominator; raw pre-filter count \texttt{Pending}) & OCR, parsing, ranking, and error analysis \\
+Real scanned PDF corpus & Kaggle & 2,986 indexed (100\% of \emph{indexed} records OCR-extracted by construction -- files that failed OCR are not indexed and are excluded from this denominator; raw pre-filter count \emph{Not recorded}) & OCR, parsing, ranking, and error analysis \\
 Synthetic CV corpus & AI-generated & 1,000 & Controlled robustness and scalability \\
 Combined retrieval corpus & Mixed & 3,986 & Indexing and ranking latency \\
 Human-labeled evaluation pool & Real + synthetic CVs, single reviewer (138 real, 108 synthetic) & 246 labeled pairs across the 5 EVAL\_JD JDs (46--50 each; target 150--250 met) & NDCG, MAP, MRR, Recall (Table~\ref{tab:ranking-results}) \\
@@ -885,17 +887,17 @@ Current subset sizes (2,986 real, 1,000 synthetic, 246 labeled pairs, 3 seniorit
 
 \begin{table}[htbp]
 \centering
-\caption{Dataset documentation fields still requiring external input}
+\caption{Dataset documentation fields}
 \label{tab:dataset-fields}
 \begin{tabularx}{\textwidth}{>{\bfseries}p{0.32\textwidth}X}
 \toprule
-Field & Final value \\
+Field & Value \\
 \midrule
 Public dataset name, URL, and license & Done -- \emph{Resume Dataset PDF} \citep{hadikpresumepdf}, \url{https://www.kaggle.com/datasets/hadikp/resume-data-pdf}, CC0: Public Domain \\
-Original scanned PDF count (pre-filter) & Pending -- the system only records CVs that were successfully imported; rejected/pre-filtered files are not logged \\
-OCR failure count & Pending -- failed uploads are dropped rather than logged, so a true failure count cannot be recovered retroactively; capture the upload-response JSON going forward to report this honestly \\
-Duplicates and invalid records removed & Pending -- content-hash duplicate detection was added after the current 2,986 real CVs were already imported, so no historical duplicate count exists for them; new uploads from this point on are deduplicated and rejects are visible in the upload response (see Limitations for exact scope) \\
-Synthetic generator and prompt version & Pending external input \\
+Original scanned PDF count (pre-filter) & Not recorded -- the system only records CVs that were successfully imported; rejected/pre-filtered files are not logged \\
+OCR failure count & Not recoverable -- failed uploads were dropped rather than logged, so a true failure count cannot be recovered retroactively \\
+Duplicates and invalid records removed & Not recoverable -- content-hash duplicate detection was added after the current 2,986 real CVs were already imported, so no historical duplicate count exists for them; new uploads from this point on are deduplicated and rejects are visible in the upload response (see Limitations for exact scope) \\
+Synthetic generator and prompt version & Not recorded -- ChatGPT (GPT-4/GPT-4o family); exact model version, prompt template, and generation date were not captured (\cref{sec:synthetic-protocol}) \\
 Evaluation JDs and roles & Selected: EVAL\_JD\_01 Senior Java Developer, EVAL\_JD\_02 Junior Java Developer, EVAL\_JD\_03 Senior React Developer, EVAL\_JD\_04 Senior .NET Developer, EVAL\_JD\_05 Solution Architect (of 61 JD records in the system, including the 8 purpose-built robustness-battery JDs) \\
 Development/evaluation split & Done for $\tau$-calibration purposes -- fixed-seed 50/50 per-JD split of the 246 labeled pairs into development/test halves (\cref{sec:calibration}, Table~\ref{tab:threshold-calibration}); no separate CV-corpus-level development/evaluation partition beyond this is used \\
 \bottomrule
@@ -903,7 +905,7 @@ Development/evaluation split & Done for $\tau$-calibration purposes -- fixed-see
 \end{table}
 
 \section{Relevance Labeling}
-Reviewer labels use a 0--3 graded scale. Human judgments are the primary ground truth for ranking effectiveness. Synthetic manifest labels are used only to verify controlled scenarios and do not replace reviewer relevance judgments:
+Reviewer labels use a 0--3 graded scale. Human judgments are the primary ground truth for ranking effectiveness. Synthetic scenario labels are used only to verify controlled scenarios and do not replace reviewer relevance judgments:
 \begin{table}[htbp]
 \centering
 \caption{Manual relevance scale}
@@ -953,27 +955,9 @@ Reviewers work from anonymized candidate identifiers, the target JD, and require
 \end{figure}
 
 \subsection{Reviewer Agreement and Explanation Usability}
-If two reviewers are available, weighted Cohen's kappa is reported \citep{cohen1968} for the graded labels. If only one reviewer is available, the report states the reviewer profile, preserves comments, and treats single-reviewer judgment as a limitation.
+All 246 relevance labels came from a single reviewer, so weighted Cohen's kappa \citep{cohen1968} was not computed; the reviewer profile and per-pair comments were preserved, and single-reviewer judgment is treated as a limitation (\cref{sec:limitations-list}).
 
-To answer RQ3, a small pilot usability assessment is conducted with \texttt{Pending} recruiters, technical leads, or experienced interviewers. Participants review selected ranked candidates and rate explanation clarity, usefulness, trust, and ability to identify candidate gaps on a five-point Likert scale. If the pilot cannot be completed, RQ3 and the corresponding conclusions are explicitly limited to the design and content of the explanation output rather than demonstrated user benefit.
-
-\begin{table}[htbp]
-\centering
-\caption{Explanation usability reporting template}
-\label{tab:usability}
-\begin{tabularx}{\textwidth}{X p{0.22\textwidth}}
-\toprule
-Item & Final result \\
-\midrule
-Number and profile of participants & Pending \\
-Explanation clarity (1--5) & Pending \\
-Usefulness for identifying gaps (1--5) & Pending \\
-Trust in requirement-level evidence (1--5) & Pending \\
-Perceived screening support (1--5) & Pending \\
-Qualitative comments & Pending \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\textbf{Explanation usability (RQ3) was not evaluated.} No usability assessment with recruiters, technical leads, or interviewers was conducted, so no participant data or Likert ratings exist and no results table is reported. RQ3 is therefore not answered empirically: this thesis's RQ3 conclusions are limited to the design and content of the requirement-level explanation output (Chapter 3, \cref{fig:app-explanation}), not to demonstrated user benefit. A pilot study is listed as future work (\cref{sec:limitations-list}).
 
 \section{Experimental Models}
 The model comparison is performed in three experiment groups:
@@ -1125,7 +1109,7 @@ The ingestion evaluation reports:
 OCR reliability is evaluated only on the real scanned Kaggle subset. Synthetic text-layer PDFs are excluded from the OCR success rate and are used instead for controlled ranking and scalability tests. OCR is not the primary research contribution, but extraction quality is documented because it directly affects downstream evidence retrieval and ranking.
 
 \section{Result Tables}
-The table structures below were fixed before experimentation to reduce selective reporting. All quantitative cells are populated from the reproducible runs described in this chapter; any cell not yet backed by a completed run is marked \texttt{Pending} explicitly rather than left ambiguous.
+The table structures below were fixed before experimentation to reduce selective reporting. All quantitative cells are populated from the reproducible runs described in this chapter; any cell that could not be populated is marked \emph{Not recorded}, \emph{Not recoverable}, or \emph{Not evaluated}, with the reason stated, rather than left ambiguous.
 
 \begin{table}[htbp]
 \centering
@@ -1284,13 +1268,13 @@ For stuffing, all six assessments were also checked against EVAL\_JD\_01's 23 ha
 \toprule
 Metric & Final result \\
 \midrule
-OCR success rate & 100\% of \emph{indexed} records (2,986/2,986 currently indexed as \texttt{real} show \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted}); this is tautological by construction, since a file that fails OCR is never indexed and so never enters this denominator -- it is not a claim that 100\% of attempted uploads succeed. Raw pre-filter total and true failure rate remain \texttt{Pending}, Table~\ref{tab:dataset-composition} \\
-OCR failure rate & \texttt{Pending} -- failed uploads are not logged by the current pipeline, so this cannot be recovered retroactively (see Limitations) \\
+OCR success rate & 100\% of \emph{indexed} records (2,986/2,986 currently indexed as \texttt{real} show \texttt{pdf\_\allowbreak ocr\_\allowbreak extracted}); this is tautological by construction, since a file that fails OCR is never indexed and so never enters this denominator -- it is not a claim that 100\% of attempted uploads succeed. The raw pre-filter total and true failure rate are \emph{Not recorded} (Table~\ref{tab:dataset-composition}) \\
+OCR failure rate & Not recoverable -- failed uploads were not logged by the pipeline, so this cannot be recovered retroactively (see Limitations) \\
 Average OCR time per page & 8.08\,s (Tesseract 5.5.2 + Poppler 26.07.0, single CPU core); full benchmark detail in Table~\ref{tab:performance-results} \\
 Skills-section detection rate & 69.3\% (2,070 / 2,986 real CVs) \\
 Experience-section detection rate & 56.4\% (1,685 / 2,986 real CVs) \\
-Experience-year correctness on inspected sample & Pending -- requires manual inspection of a drawn sample against the source PDF; the \texttt{years\_\allowbreak detected} flag can prioritize the sample toward CVs where no year phrase was found at all, versus CVs with an explicit but possibly wrong value \\
-Seniority correctness on inspected sample & Pending -- requires manual inspection of a drawn sample against the source PDF \\
+Experience-year correctness on inspected sample & Not evaluated -- would require manual inspection of a drawn sample against the source PDF; the \texttt{years\_\allowbreak detected} flag can prioritize the sample toward CVs where no year phrase was found at all, versus CVs with an explicit but possibly wrong value \\
+Seniority correctness on inspected sample & Not evaluated -- would require manual inspection of a drawn sample against the source PDF \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -1313,7 +1297,7 @@ Seniority correctness on inspected sample & Pending -- requires manual inspectio
 Operation & Corpus / unit & Final result \\
 \midrule
 Text-layer extraction & per CV & 15\,ms avg (synthetic, text-layer PDFs, 5-file sample) \\
-OCR extraction & per page & 8.08\,s avg (real scanned PDFs, 1 page each, 5-file sample; range 1.2--13.7\,s; a larger sample is recommended before citing as final) \\
+OCR extraction & per page & 8.08\,s avg (real scanned PDFs, 1 page each, 5-file sample; range 1.2--13.7\,s; the small benchmark sample limits generalizability) \\
 Parsing and indexing (sections/skills/years/seniority, text already extracted) & per CV & 2.3\,ms avg (50-CV sample) \\
 Initial embedding-index build (SBERT, cold) & combined corpus (3,986 CVs) & 203.4\,s total (51.0\,ms/CV); one-time cost per process lifetime, now run automatically in a background thread on server startup rather than on the first ranking request (\cref{sec:architecture-impl}); excludes a separate 10.0\,s one-time SBERT model load \\
 Ranking & per JD, combined corpus (3,986 CVs), warm cache, mean of 2 repetitions across the 5 evaluation JDs & M6 full model: 10.8--15.1\,s; M5 (requirement+seniority): 14.8--21.0\,s; M4 (requirement-aware): 14.8--21.5\,s -- M4/M5 cost \emph{more} than M6 despite doing less semantic work, because their shared declared-only assessment (\texttt{assess\_\allowbreak requirement\_\allowbreak declared\_\allowbreak only}) runs a per-candidate, per-requirement regex text search over the full CV text, which is more expensive in practice than M6's vectorized embedding cosine similarity; M2/M3 (SBERT-only): 0.06--0.41\,s; M1 (TF--IDF): 4.6--4.9\,s (vectorizer refit every call) \\
@@ -1430,7 +1414,7 @@ Keyword stuffing & Hard gate crosses ($H_{\mathrm{pass}}$ \texttt{False}$\to$\te
 The battery expansion changes one conclusion materially: role confusion is caught in only 1 of 3 tested instances, not the 1-of-1 the original case study alone implied. The other three categories replicate cleanly (3/3 or 2/3, with a specific already-diagnosed cause for the one miss), but role confusion is now a genuine, reproducible weakness rather than a hypothetical near-miss. The mechanism is declared-skill extraction matching a technology term anywhere in the CV text (\cref{sec:future-work} lists narrowing this to genuine personal-skill statements as the fix). This is reported as a downward revision of the earlier, more optimistic single-instance reading, consistent with this thesis's commitment to report what the evidence shows.
 
 \section{Operational Performance}
-Operational measurements are collected on the documented evaluation machine after one warm-up run. The final report states corpus size, hardware, software versions, and whether embedding vectors were precomputed. Results are reported in Table~\ref{tab:performance-results}. The purpose is to establish prototype feasibility, not production-scale throughput.
+Operational measurements are collected on the documented evaluation machine after one warm-up run. This report states corpus size, hardware, software versions, and whether embedding vectors were precomputed. Results are reported in Table~\ref{tab:performance-results}. The purpose is to establish prototype feasibility, not production-scale throughput.
 
 \section{Error Analysis}
 Error analysis inspects both false positives and false negatives and records the responsible pipeline stage.
@@ -1455,9 +1439,9 @@ False negative & Requirement parser error & Mandatory skill incorrectly classifi
 
 \section{Discussion}
 \label{sec:discussion}
-The final discussion is organized by research question rather than by model name. Human-labeled ranking metrics answer whether requirement-aware matching improves ordering on manually judged CV--JD pairs. Constraint violation rate@10 (Table~\ref{tab:violation-rates}) measures whether experience and seniority mismatches are reduced. Unsupported-claim rate@10 and paired keyword-stuffing tests measure whether evidence verification limits ranking inflation. OCR and runtime results establish whether the software pipeline is sufficiently reliable for the experiment. The explanation-usability pilot addresses whether the output is understandable and useful to reviewers.
+This discussion is organized by research question rather than by model name. Human-labeled ranking metrics answer whether requirement-aware matching improves ordering on manually judged CV--JD pairs. Constraint violation rate@10 (Table~\ref{tab:violation-rates}) measures whether experience and seniority mismatches are reduced. Unsupported-claim rate@10 and paired keyword-stuffing tests measure whether evidence verification limits ranking inflation. OCR and runtime results establish whether the software pipeline is sufficiently reliable for the experiment. Explanation usability (RQ3) was not evaluated with users, so no claim is made about whether the output is understandable and useful to reviewers.
 
-Results from synthetic controlled cases are interpreted as evidence of mechanism behavior under known conditions, not as equivalent to operational recruiter performance. Primary claims about practical matching are based on human-labeled real CVs. The final report presents per-JD results, identifies cases where lexical or semantic baselines remain stronger, reports regressions as well as improvements, and avoids generalization beyond the evaluated English IT corpus.
+Results from synthetic controlled cases are interpreted as evidence of mechanism behavior under known conditions, not as equivalent to operational recruiter performance. Primary claims about practical matching are based on the mixed real/synthetic human-labeled pool (138 real and 108 synthetic CVs, scored as one combined macro-average); they are not claims about real CVs alone. This report presents per-JD results, identifies cases where lexical or semantic baselines remain stronger, reports regressions as well as improvements, and avoids generalization beyond the evaluated English IT corpus.
 
 \textbf{RQ1 finding.} Against the 246-pair labeled pool, the three similarity-only baselines (TF--IDF, SBERT full text, section-level SBERT) rank ahead of the requirement-decomposition family (M4--M6) on every metric except MRR, and the full proposed model is the weakest of the six on NDCG@5, NDCG@10, MAP, and Recall@10/20 (Table~\ref{tab:ranking-results}). This does \emph{not} support RQ1: requirement-aware matching, in this run, does not improve agreement with reviewer judgment over similarity-only ranking. Two causes were identified:
 \begin{itemize}
@@ -1468,7 +1452,7 @@ Within M4--M6, the intended monotonic pattern holds in the macro-average (M4 $<$
 
 \textbf{RQ2 finding.} All five controlled-set categories from \cref{sec:robustness-sets} were built and run, then expanded from one to three instances per category against different purpose-built JDs (\cref{sec:battery}, Table~\ref{tab:battery-summary}), so the discussion below reports battery rates rather than single anecdotes. For the constraint-based reranking checks, seniority mismatch and missing-mandatory-requirement replicate cleanly: fresher and missing-skill candidates are correctly gated out in 3/3 instances each, and the positive cases (senior, has-all-skills) correctly pass in 2/3 and 3/3 instances respectively. The one seniority miss has an already-diagnosed cause: M6 marks a declared SQL skill \texttt{unsupported} because that CV's prose never restates SQL usage (\cref{sec:battery}), not a random failure. Role confusion is the exception, and the battery expansion changes this finding materially: the gate correctly rejects the confused candidate in only 1 of 3 instances. In the 2 new instances (confused Business Analyst, confused QA Tester), project-descriptor phrasing (``a Python-based data pipeline'', ``a Docker-based deployment pipeline'') registers as satisfied evidence for a personal skill claim on every hard requirement, so the confused candidate's $H_{\mathrm{pass}}$ comes out \texttt{True}, identical to the genuine developer's. The original instance was caught only because one hard skill (Spring Boot) happened to be entirely absent from that CV's text -- a favorable coincidence the battery revealed, not a robust property of the gate.
 
-For the evidence-verification checks, the stuffing result replicates cleanly across all 3 instances on the metric that matters most: M6's rank improves monotonically Original$\to$Stuffed$\to$Supported in 3/3 instances, and the evidenced variant improves rank markedly more than the merely-stuffed one wherever it can be checked cleanly (the 2 new small JDs; the EVAL\_JD\_01 instance is confounded by its 23-hard-requirement saturation, \cref{sec:discussion}). Inspecting the assessments directly shows why: stuffed skills move from \texttt{not\_satisfied} to \texttt{unsupported} without resolving any hard requirement, while genuine evidence sentences resolve those requirements to \texttt{satisfied} and, in the 2 new instances, cross the hard gate entirely ($H_{\mathrm{pass}}$ \texttt{False}$\to$\texttt{True}) -- a cleaner demonstration than the original instance could show, since its gate never crosses for either version. Evidence verification therefore reduces but -- since \texttt{unsupported} still outranks \texttt{not\_satisfied} in the ordinal status scale (Table~\ref{tab:assessment-rules}) -- does not eliminate the reward for keyword stuffing. With $n=3$ per category these remain small-sample rates, but enough to distinguish a replicating pattern (seniority mismatch, missing mandatory requirement, keyword stuffing) from one that doesn't (role confusion), which the original $n=1$ design could not do. RQ3 (explanation usability) awaits the reviewer pilot (Table~\ref{tab:usability}).
+For the evidence-verification checks, the stuffing result replicates cleanly across all 3 instances on the metric that matters most: M6's rank improves monotonically Original$\to$Stuffed$\to$Supported in 3/3 instances, and the evidenced variant improves rank markedly more than the merely-stuffed one wherever it can be checked cleanly (the 2 new small JDs; the EVAL\_JD\_01 instance is confounded by its 23-hard-requirement saturation, \cref{sec:discussion}). Inspecting the assessments directly shows why: stuffed skills move from \texttt{not\_satisfied} to \texttt{unsupported} without resolving any hard requirement, while genuine evidence sentences resolve those requirements to \texttt{satisfied} and, in the 2 new instances, cross the hard gate entirely ($H_{\mathrm{pass}}$ \texttt{False}$\to$\texttt{True}) -- a cleaner demonstration than the original instance could show, since its gate never crosses for either version. Evidence verification therefore reduces but -- since \texttt{unsupported} still outranks \texttt{not\_satisfied} in the ordinal status scale (Table~\ref{tab:assessment-rules}) -- does not eliminate the reward for keyword stuffing. With $n=3$ per category these remain small-sample rates, but enough to distinguish a replicating pattern (seniority mismatch, missing mandatory requirement, keyword stuffing) from one that doesn't (role confusion), which the original $n=1$ design could not do. RQ3 (explanation usability) was \emph{Not evaluated}, since no reviewer pilot was conducted.
 
 \textbf{What the RQ1 result does and does not mean for this thesis's contribution.} A negative RQ1 result raises an obvious question: if the three similarity-only baselines rank ahead of the full proposed model on the human-labeled pool, what does the added mechanism actually buy? The answer this thesis defends is auditability, not yet accuracy. None of the three winning baselines can say \emph{why} a given CV outranks another beyond a single opaque cosine score; M6's own top-10 candidates, by contrast, have a documented 2.33\% unsupported-claim rate (Table~\ref{tab:violation-rates}), meaning the skills credited to those candidates are overwhelmingly backed by an identifiable evidence sentence, and every case-study table in this chapter (Tables~\ref{tab:seniority-case}--\ref{tab:role-confusion-case}) shows the mechanism can name the exact requirement, threshold comparison, and evidence sentence behind each rank -- something SBERT's similarity score structurally cannot provide. This is a genuine property, independently of the ranking-effectiveness gap: it is what evidence-aware matching was designed to deliver, and the low unsupported-claim rate shows it is delivered. What this thesis has \emph{not} shown is that this auditability can be obtained without the accuracy cost measured here. The dominant identified cause -- full-sentence responsibility items hard-gated at the same threshold used for short skill terms -- is confirmed by direct inspection (Table~\ref{tab:violation-rates}) but not yet fixed, and a separately measured threshold calibration (\cref{sec:calibration}) suggests further improvement is available but has not been combined with it. The honest summary is that this thesis validates the auditable-mechanism design at the level of individual requirements and evidence (RQ2), demonstrates the internal ranking-quality ordering its design intends (M4 $<$ M5 $<$ M6), and does not yet match similarity-only ranking quality on this labeled pool (RQ1).
 
@@ -1492,7 +1476,7 @@ A limited number of JDs (5) and judged pairs (246) may produce unstable metric d
 \section{Conclusion}
 This thesis reframes recruitment screening as more than whole-document text similarity: similarity-only ranking can return false positives when CVs share keywords with a JD but fail mandatory experience, seniority, responsibility, or evidence requirements. The proposed \systemname{} system addresses this by decomposing each JD into atomic requirements, retrieving supporting evidence from CV Work Experience and Projects, validating hard and soft constraints, and reranking candidates with a deterministic lexicographic key.
 
-The system also implements a PDF-first ingestion workflow with direct extraction and OCR fallback. Evaluation draws on three sources: real scanned PDFs for OCR, parsing, and human-labeled ranking; controlled synthetic CVs for robustness and scalability; and a small reviewer study for explanation usability. Human control is preserved by returning a top-$k$ shortlist with requirement-level explanations rather than automatic hiring decisions.
+The system also implements a PDF-first ingestion workflow with direct extraction and OCR fallback. Evaluation draws on two sources: real scanned PDFs for OCR, parsing, and part of the human-labeled ranking pool; and synthetic CVs for the rest of that pool and for the controlled robustness and scalability tests. Explanation usability (RQ3) was not evaluated with users and is left to future work. Human control is preserved by returning a top-$k$ shortlist with requirement-level explanations rather than automatic hiring decisions.
 
 The evaluation produced a mixed, informative result rather than a clean confirmation. Against the 246-pair human-labeled pool (five JDs), the three similarity-only baselines rank ahead of the full proposed model on every metric except MRR (NDCG@10 0.96 vs 0.64; Table~\ref{tab:ranking-results}). Tracing the mechanism identified two causes: the JD parser marks every "Key Responsibilities" sentence hard regardless of heading structure and assesses it at the same semantic-similarity threshold used for short skill terms, a bar full sentences rarely clear -- 78\% of top-10 hard-requirement failures are responsibility-category, not skill-category, which is why constraint violation rate@10 is 100\% for M5/M6 on every JD; and the evidence thresholds ($\tau_l{=}0.35$, $\tau_h{=}0.55$) were left uncalibrated. A held-out calibration (Table~\ref{tab:threshold-calibration}) shows a stricter threshold pair yields a further, separately-measured $\sim$52\% relative improvement in NDCG@10, not yet combined with the headline result. RQ1 therefore remains unsupported: requirement-aware matching does not improve ranking quality over similarity-only ranking on this labeled pool, though within the requirement-decomposition family itself the intended pattern holds (M4 $<$ M5 $<$ M6, Table~\ref{tab:paired-significance}), and the remaining gap to the three similarity-only baselines is precisely located rather than merely hypothesized.
 
@@ -1513,8 +1497,8 @@ The thesis design and implemented prototype contribute:
   \item explicit experience-year and seniority validation;
   \item deterministic lexicographic constraint-based reranking;
   \item recruiter-facing requirement-level explanations;
-  \item a transparent synthetic CV generation and manifest protocol;
-  \item an evaluation design covering human-labeled ranking effectiveness, controlled robustness, OCR reliability, operational performance, and explanation usability.
+  \item a documented synthetic CV generation protocol with explicit source provenance;
+  \item an evaluation design covering human-labeled ranking effectiveness, controlled robustness, OCR reliability, operational performance, and explanation usability (design only; not run).
 \end{enumerate}
 
 \section{Limitations}
@@ -1535,7 +1519,7 @@ The main limitations are:
   \item semantic evidence thresholds require calibration and may vary across roles;
   \item evidence in a CV does not prove a claim is true; the system detects only internal support or its absence;
   \item evidence matching is not fully robust to incidental phrase co-occurrence: the role-confusion case study (Table~\ref{tab:role-confusion-case}) found a PM's project-descriptor phrasing (``a Java-based backend platform'') registered as satisfied evidence for a personal skill claim on 2 of 3 hard requirements, caught only because the third requirement was completely absent from that CV;
-  \item reviewer labels and usability participants may be limited;
+  \item reviewer labels came from a single reviewer, and no usability participants were recruited;
   \item the prototype performs no external employment verification or final hiring decisions;
   \item names, emails, phone numbers, and addresses are not masked before ranking, and the original PDF remains viewable to any reviewer with product access; PII masking is required work before any deployment beyond this controlled evaluation;
   \item duplicate-CV detection now also keys on a content hash of the normalized text, so an identical re-upload is rejected; near-duplicates differing only by minor OCR noise or formatting are not detected;
@@ -1554,7 +1538,7 @@ Each item below is a direct response to a specific Chapter 4 result this thesis'
   \item \textbf{Stop hard-gating full-sentence responsibility requirements at the skill-level evidence threshold.} Constraint violation rate@10 is 100\% for M5/M6 on all five JDs (Table~\ref{tab:violation-rates}): direct inspection of the top-ranked candidates for EVAL\_JD\_01 shows candidates who satisfy every mandatory \emph{skill} still fail $H_{\mathrm{pass}}$ because at least one of the six always-hard "Key Responsibilities" sentences (e.g.\ "Participate in the design of scalable, maintainable, and reliable software architectures") scores between $\tau_l$ and $\tau_h$ rather than above $\tau_h$ against the CV's evidence sentences -- a much stricter bar for a full imperative sentence to clear than for a short skill term at the same threshold. Treating responsibilities as soft requirements, or giving them their own (lower) evidence threshold than skill terms, is the next concrete step toward a hard-pass gate that actually discriminates among candidates who already clear the skill bar.
   \item \textbf{Scope declared-skill extraction to genuine personal-skill statements.} The role-confusion battery (\cref{sec:robustness-sets}) showed project-descriptor phrases (``a Java-based backend platform'') register as evidence-satisfied support for a personal skill claim in 2 of 3 instances, because skill-term extraction matches anywhere in the CV text rather than being scoped to Skills or first-person/possessive context. Narrowing this scope is a concrete fix the battery shows is more urgent than the original single instance suggested.
   \item \textbf{Recruit a second reviewer} so weighted Cohen's kappa \citep{cohen1968} can be computed and single-reviewer subjectivity is no longer an open threat.
-  \item \textbf{Run the RQ3 explanation-usability pilot} (Table~\ref{tab:usability}) with actual recruiters or technical reviewers; RQ3 remains entirely unanswered.
+  \item \textbf{Run the RQ3 explanation-usability pilot} with actual recruiters or technical reviewers, rating explanation clarity, usefulness, trust, and gap identification on a five-point scale; RQ3 remains entirely unanswered.
   \item \textbf{Expand the robustness battery and run a full threshold grid search.} Three instances per category and a 6-point $\tau$ grid move past single-anecdote evidence but remain small; a larger battery (10+ instances/category) and a finer two-dimensional $\tau_l/\tau_h$ grid would further stabilize both findings.
 \end{itemize}
 

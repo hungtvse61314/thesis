@@ -1,0 +1,39 @@
+{
+  "51": {
+    "unsupported_claim_rate_at_10": 0.025,
+    "hard_fail_categories_top10": {
+      "responsibility": 26,
+      "skill": 9
+    }
+  },
+  "52": {
+    "unsupported_claim_rate_at_10": 0.0182,
+    "hard_fail_categories_top10": {
+      "responsibility": 27,
+      "skill": 6
+    }
+  },
+  "53": {
+    "unsupported_claim_rate_at_10": 0.0111,
+    "hard_fail_categories_top10": {
+      "responsibility": 25,
+      "skill": 7
+    }
+  },
+  "54": {
+    "unsupported_claim_rate_at_10": 0.0556,
+    "hard_fail_categories_top10": {
+      "responsibility": 26,
+      "skill": 2
+    }
+  },
+  "55": {
+    "unsupported_claim_rate_at_10": 0.0067,
+    "hard_fail_categories_top10": {
+      "skill": 13,
+      "responsibility": 49,
+      "experience": 2,
+      "seniority": 3
+    }
+  }
+}

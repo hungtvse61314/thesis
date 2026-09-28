@@ -1,0 +1,627 @@
+{
+  "per_jd_results": {
+    "51": {
+      "tfidf": {
+        "ndcg@5": 0.8027,
+        "ndcg@10": 0.8175,
+        "map": 0.8292,
+        "mrr": 1.0,
+        "recall@10": 0.36,
+        "recall@20": 0.64
+      },
+      "sbert_full": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 0.9155,
+        "map": 0.9267,
+        "mrr": 1.0,
+        "recall@10": 0.4,
+        "recall@20": 0.68
+      },
+      "section_sbert": {
+        "ndcg@5": 0.9165,
+        "ndcg@10": 0.8716,
+        "map": 0.8809,
+        "mrr": 1.0,
+        "recall@10": 0.4,
+        "recall@20": 0.64
+      },
+      "requirement_aware": {
+        "ndcg@5": 0.5356,
+        "ndcg@10": 0.4428,
+        "map": 0.5784,
+        "mrr": 1.0,
+        "recall@10": 0.16,
+        "recall@20": 0.44
+      },
+      "requirement_seniority": {
+        "ndcg@5": 0.5639,
+        "ndcg@10": 0.6395,
+        "map": 0.7165,
+        "mrr": 0.5,
+        "recall@10": 0.32,
+        "recall@20": 0.6
+      },
+      "full": {
+        "ndcg@5": 0.4007,
+        "ndcg@10": 0.5117,
+        "map": 0.7676,
+        "mrr": 1.0,
+        "recall@10": 0.28,
+        "recall@20": 0.68
+      }
+    },
+    "52": {
+      "tfidf": {
+        "ndcg@5": 0.6004,
+        "ndcg@10": 0.7049,
+        "map": 0.9037,
+        "mrr": 1.0,
+        "recall@10": 0.4348,
+        "recall@20": 0.7826
+      },
+      "sbert_full": {
+        "ndcg@5": 0.7447,
+        "ndcg@10": 0.9005,
+        "map": 0.9819,
+        "mrr": 1.0,
+        "recall@10": 0.4348,
+        "recall@20": 0.8261
+      },
+      "section_sbert": {
+        "ndcg@5": 0.4746,
+        "ndcg@10": 0.5584,
+        "map": 0.8487,
+        "mrr": 1.0,
+        "recall@10": 0.3913,
+        "recall@20": 0.7391
+      },
+      "requirement_aware": {
+        "ndcg@5": 0.3426,
+        "ndcg@10": 0.3075,
+        "map": 0.5533,
+        "mrr": 1.0,
+        "recall@10": 0.1304,
+        "recall@20": 0.3913
+      },
+      "requirement_seniority": {
+        "ndcg@5": 0.3426,
+        "ndcg@10": 0.4002,
+        "map": 0.7547,
+        "mrr": 1.0,
+        "recall@10": 0.3043,
+        "recall@20": 0.6522
+      },
+      "full": {
+        "ndcg@5": 0.5715,
+        "ndcg@10": 0.6836,
+        "map": 0.815,
+        "mrr": 1.0,
+        "recall@10": 0.3913,
+        "recall@20": 0.6957
+      }
+    },
+    "53": {
+      "tfidf": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 0.9824,
+        "mrr": 1.0,
+        "recall@10": 0.2703,
+        "recall@20": 0.5405
+      },
+      "sbert_full": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 1.0,
+        "mrr": 1.0,
+        "recall@10": 0.2703,
+        "recall@20": 0.5405
+      },
+      "section_sbert": {
+        "ndcg@5": 0.8062,
+        "ndcg@10": 0.7926,
+        "map": 0.9948,
+        "mrr": 1.0,
+        "recall@10": 0.2703,
+        "recall@20": 0.5405
+      },
+      "requirement_aware": {
+        "ndcg@5": 0.6228,
+        "ndcg@10": 0.6685,
+        "map": 0.8857,
+        "mrr": 1.0,
+        "recall@10": 0.2432,
+        "recall@20": 0.4865
+      },
+      "requirement_seniority": {
+        "ndcg@5": 0.6228,
+        "ndcg@10": 0.6685,
+        "map": 0.9031,
+        "mrr": 1.0,
+        "recall@10": 0.2432,
+        "recall@20": 0.5135
+      },
+      "full": {
+        "ndcg@5": 0.4134,
+        "ndcg@10": 0.6193,
+        "map": 0.8559,
+        "mrr": 1.0,
+        "recall@10": 0.2162,
+        "recall@20": 0.4865
+      }
+    },
+    "54": {
+      "tfidf": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 0.9556,
+        "map": 0.9203,
+        "mrr": 1.0,
+        "recall@10": 0.8,
+        "recall@20": 0.9
+      },
+      "sbert_full": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 1.0,
+        "mrr": 1.0,
+        "recall@10": 1.0,
+        "recall@20": 1.0
+      },
+      "section_sbert": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 0.9571,
+        "map": 0.912,
+        "mrr": 1.0,
+        "recall@10": 0.8,
+        "recall@20": 1.0
+      },
+      "requirement_aware": {
+        "ndcg@5": 0.1241,
+        "ndcg@10": 0.2748,
+        "map": 0.2073,
+        "mrr": 0.125,
+        "recall@10": 0.3,
+        "recall@20": 0.3
+      },
+      "requirement_seniority": {
+        "ndcg@5": 0.1241,
+        "ndcg@10": 0.2748,
+        "map": 0.2007,
+        "mrr": 0.125,
+        "recall@10": 0.3,
+        "recall@20": 0.3
+      },
+      "full": {
+        "ndcg@5": 0.4515,
+        "ndcg@10": 0.5129,
+        "map": 0.3019,
+        "mrr": 0.5,
+        "recall@10": 0.4,
+        "recall@20": 0.4
+      }
+    },
+    "55": {
+      "tfidf": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 0.869,
+        "mrr": 1.0,
+        "recall@10": 0.625,
+        "recall@20": 0.8125
+      },
+      "sbert_full": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 0.9708,
+        "mrr": 1.0,
+        "recall@10": 0.625,
+        "recall@20": 0.9375
+      },
+      "section_sbert": {
+        "ndcg@5": 1.0,
+        "ndcg@10": 1.0,
+        "map": 0.9405,
+        "mrr": 1.0,
+        "recall@10": 0.625,
+        "recall@20": 0.9375
+      },
+      "requirement_aware": {
+        "ndcg@5": 0.2524,
+        "ndcg@10": 0.2553,
+        "map": 0.384,
+        "mrr": 0.5,
+        "recall@10": 0.1875,
+        "recall@20": 0.375
+      },
+      "requirement_seniority": {
+        "ndcg@5": 0.7093,
+        "ndcg@10": 0.7883,
+        "map": 0.6855,
+        "mrr": 0.5,
+        "recall@10": 0.5625,
+        "recall@20": 0.75
+      },
+      "full": {
+        "ndcg@5": 0.8875,
+        "ndcg@10": 0.8879,
+        "map": 0.73,
+        "mrr": 1.0,
+        "recall@10": 0.5,
+        "recall@20": 0.6875
+      }
+    }
+  },
+  "per_jd_hardpass_top10": {
+    "51": {
+      "tfidf": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sbert_full": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "section_sbert": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_aware": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_seniority": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "full": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "52": {
+      "tfidf": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sbert_full": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "section_sbert": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_aware": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_seniority": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "full": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "53": {
+      "tfidf": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sbert_full": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "section_sbert": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_aware": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_seniority": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "full": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "54": {
+      "tfidf": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sbert_full": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "section_sbert": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_aware": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_seniority": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "full": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "55": {
+      "tfidf": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sbert_full": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "section_sbert": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_aware": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "requirement_seniority": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "full": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "corpus_size": 3986
+}
