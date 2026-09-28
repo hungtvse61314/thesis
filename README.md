@@ -1,4 +1,4 @@
-# RAEMatch — Defense-ready application
+# RAEMatch — recruitement application
 
 Full-stack prototype for requirement-aware and evidence-aware CV–JD ranking.
 
