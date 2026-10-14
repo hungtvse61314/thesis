@@ -71,3 +71,42 @@ def test_seniority_constraint_reranks():
     rows = rank(jd, [junior, senior], 2)
     assert rows[0]["candidate_id"] == "C2"
     assert rows[0]["hard_pass"] is True
+
+
+def test_descriptor_mention_is_not_skill_evidence():
+    from app.services.ranking import contains_skill_use
+
+    assert not contains_skill_use("Led Agile delivery of a Java-based backend platform.", "java")
+    assert not contains_skill_use("Managed a Docker based deployment pipeline.", "docker")
+    assert contains_skill_use("Developed Java services with Spring Boot.", "java")
+    assert contains_skill_use("Migrated a Java-based tool and wrote Java tests.", "java")
+
+
+def test_declared_skills_are_scoped_to_skills_section():
+    from app.services.ranking import ORIGINAL_CONFIG, REVISED_CONFIG, declared_skills
+
+    candidate = cv("Skills\nScrum Jira\nExperience\nCoordinated a Java-based platform release.")
+    assert "java" in declared_skills(candidate, ORIGINAL_CONFIG)
+    assert "java" not in declared_skills(candidate, REVISED_CONFIG)
+
+
+def test_responsibilities_demoted_to_soft():
+    from app.services.ranking import ORIGINAL_CONFIG, REVISED_CONFIG, _requirements_for_jd
+
+    jd = SimpleNamespace(
+        requirements_json=dumps(
+            [{"text": "Mentor junior developers", "kind": "hard", "category": "responsibility"}]
+        ),
+        minimum_years=0,
+        required_seniority="unknown",
+    )
+    assert _requirements_for_jd(jd, ORIGINAL_CONFIG)[0]["kind"] == "hard"
+    assert _requirements_for_jd(jd, REVISED_CONFIG)[0]["kind"] == "soft"
+
+
+def test_unsupported_scores_like_not_satisfied_in_revised_config():
+    from app.services.ranking import ORIGINAL_CONFIG, REVISED_CONFIG
+
+    assert ORIGINAL_CONFIG.status_value("unsupported") == 1
+    assert REVISED_CONFIG.status_value("unsupported") == 0
+    assert REVISED_CONFIG.status_value("partially_satisfied") == 2

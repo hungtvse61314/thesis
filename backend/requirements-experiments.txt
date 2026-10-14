@@ -1,0 +1,2 @@
+matplotlib==3.9.2
+contourpy<1.3

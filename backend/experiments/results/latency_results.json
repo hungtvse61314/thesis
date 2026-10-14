@@ -1,0 +1,36 @@
+{
+ "corpus_size": 4013,
+ "index_build_seconds": 210.8,
+ "per_method": {
+  "tfidf": {
+   "mean_seconds": 5.25,
+   "min_seconds": 4.62,
+   "max_seconds": 7.67
+  },
+  "sbert_full": {
+   "mean_seconds": 0.12,
+   "min_seconds": 0.08,
+   "max_seconds": 0.23
+  },
+  "section_sbert": {
+   "mean_seconds": 0.2,
+   "min_seconds": 0.17,
+   "max_seconds": 0.3
+  },
+  "requirement_aware": {
+   "mean_seconds": 17.55,
+   "min_seconds": 14.47,
+   "max_seconds": 22.0
+  },
+  "requirement_seniority": {
+   "mean_seconds": 20.05,
+   "min_seconds": 16.7,
+   "max_seconds": 24.5
+  },
+  "full": {
+   "mean_seconds": 13.71,
+   "min_seconds": 10.99,
+   "max_seconds": 16.89
+  }
+ }
+}

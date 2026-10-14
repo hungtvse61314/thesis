@@ -1,0 +1,39 @@
+%%{init: {"flowchart": {"rankSpacing": 36, "nodeSpacing": 22}}}%%
+flowchart TB
+  S[("Frozen snapshot<br/>4,013 CVs · 5 JDs · 246 labels")]:::store
+  subgraph EFF["Ranking effectiveness"]
+    direction TB
+    SP["Per-JD 50/50<br/>dev/test split"]:::proc
+    CAL["Calibrate τl, τh<br/>on dev half"]:::proc
+    RUN["Score M1–M6<br/>test half, full pool,<br/>real vs. synthetic"]:::proc
+    ST["Bootstrap CIs,<br/>paired comparison"]:::proc
+    SP --> CAL --> RUN --> ST
+  end
+  subgraph ROB["Controlled robustness"]
+    direction TB
+    BAT["4 categories<br/>× 3 instances"]:::proc
+    GATE["Hard-gate outcomes,<br/>rank changes"]:::proc
+    BAT --> GATE
+  end
+  subgraph DQ["Data quality, performance"]
+    direction TB
+    OCR["OCR share,<br/>section detection"]:::proc
+    LAT["Indexing and<br/>ranking latency"]:::proc
+    OCR ~~~ LAT
+  end
+  ERR["Error analysis and discussion"]:::out
+  FIN["Findings and limitations"]:::out
+  S --> SP
+  S --> BAT
+  S --> OCR
+  ST --> ERR
+  GATE --> ERR
+  LAT --> ERR
+  ERR --> FIN
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px

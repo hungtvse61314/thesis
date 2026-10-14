@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from functools import lru_cache
 import re
 import numpy as np
@@ -6,14 +7,60 @@ from sklearn.metrics.pairwise import cosine_similarity
 from .text_processing import extract_skills, split_sentences, loads
 from .experience import level_score
 
-LOW_THRESHOLD = 0.35
-HIGH_THRESHOLD = 0.55
+
+@dataclass(frozen=True)
+class RankConfig:
+    """Every tunable of the M4-M6 assessment, so one experiment run is pinned
+    to exactly one configuration (thesis Section 4.x "Revised configuration")."""
+
+    low: float = 0.35
+    high: float = 0.55
+    # None keeps the parsed kind; "soft" demotes every JD responsibility
+    # sentence, which otherwise gates H_pass at a threshold meant for skills.
+    responsibility_kind: str | None = None
+    # "full_text": a skill counts as declared if it appears anywhere in the CV.
+    # "skills_section": only if it appears in the CV's Skills section.
+    declared_scope: str = "full_text"
+    # Reject exact-term evidence that only describes a project ("a Java-based
+    # platform") rather than the candidate's own use of the skill.
+    descriptor_filter: bool = False
+    # Ordinal value of "unsupported"; 0 removes the reward for declaring a
+    # skill without evidence (keyword stuffing).
+    unsupported_value: int = 1
+
+    def status_value(self, status: str) -> int:
+        if status == "unsupported":
+            return self.unsupported_value
+        return STATUS_VALUE[status]
+
+
 STATUS_VALUE = {
     "not_satisfied": 0,
     "unsupported": 1,
     "partially_satisfied": 2,
     "satisfied": 3,
 }
+
+# Configuration used for the original thesis submission (kept for comparison).
+ORIGINAL_CONFIG = RankConfig()
+# Revised configuration; thresholds were selected on the development half of
+# the labeled pool (experiments/run_revision.py, grid (0.20,0.40)..(0.70,0.90)).
+REVISED_CONFIG = RankConfig(
+    low=0.70,
+    high=0.90,
+    responsibility_kind="soft",
+    declared_scope="skills_section",
+    descriptor_filter=True,
+    unsupported_value=0,
+)
+DEFAULT_CONFIG = REVISED_CONFIG
+
+LOW_THRESHOLD = DEFAULT_CONFIG.low
+HIGH_THRESHOLD = DEFAULT_CONFIG.high
+
+DESCRIPTOR_SUFFIX_RE = re.compile(
+    r"\s*-?\s*(?:based|powered|driven|centric|oriented|enabled|backed)\b"
+)
 
 # Experimental model catalogue (thesis Table "Experimental model comparison",
 # M1-M6). Exposed so the API and frontend can list valid `method` values with
@@ -93,6 +140,40 @@ def contains_exact_term(text: str, term: str) -> bool:
         return False
     pattern = rf"(?<!\w){re.escape(term.lower())}(?!\w)"
     return re.search(pattern, text.lower()) is not None
+
+
+def contains_skill_use(text: str, term: str) -> bool:
+    """Like contains_exact_term, but ignores mentions that only qualify a
+    product ("Java-based platform", "Docker-based pipeline")."""
+    if not text or not term:
+        return False
+    low = text.lower()
+    pattern = rf"(?<!\w){re.escape(term.lower())}(?!\w)"
+    return any(
+        not DESCRIPTOR_SUFFIX_RE.match(low, m.end()) for m in re.finditer(pattern, low)
+    )
+
+
+# Skills-section skills per CV, keyed by CV id and guarded by a hash of the
+# parsed sections; computed once per CV instead of once per (CV, requirement).
+_SKILLS_SECTION_CACHE: dict[int, tuple[int, frozenset[str]]] = {}
+
+
+def declared_skills(cv, config: RankConfig) -> frozenset[str] | set[str]:
+    if config.declared_scope == "skills_section":
+        key = hash(cv.sections_json or "")
+        cached = _SKILLS_SECTION_CACHE.get(cv.id)
+        if cached is not None and cached[0] == key:
+            return cached[1]
+        sections = loads(cv.sections_json, {})
+        skills = frozenset(extract_skills(sections.get("skills", "")))
+        _SKILLS_SECTION_CACHE[cv.id] = (key, skills)
+        return skills
+    return {
+        x.strip().lower()
+        for x in loads(cv.skills_json, [])
+        if isinstance(x, str) and x.strip()
+    }
 
 
 def _cv_text_block(cv) -> tuple[list[str], list[str], list[str]]:
@@ -175,17 +256,13 @@ def warm_cv_embedding_cache(cvs: list) -> int:
     return len(pending)
 
 
-def assess_requirement(req: dict, cv, req_embedding=None) -> dict:
+def assess_requirement(req: dict, cv, req_embedding=None, config: RankConfig = DEFAULT_CONFIG) -> dict:
     """Full evidence-aware assessment (M6): semantic evidence retrieval against
     Experience/Projects sentences, with exact-term corroboration."""
     text = req["text"]
     category = req.get("category", "skill")
     kind = req.get("kind", "hard")
-    declared = {
-        x.strip().lower()
-        for x in loads(cv.skills_json, [])
-        if isinstance(x, str) and x.strip()
-    }
+    declared = declared_skills(cv, config)
     req_skills = {
         x.strip().lower() for x in extract_skills(text) if isinstance(x, str) and x.strip()
     }
@@ -255,17 +332,18 @@ def assess_requirement(req: dict, cv, req_embedding=None) -> dict:
             best_sentence = ""
 
     exact_declared = bool(req_skills and any(s in declared for s in req_skills))
+    term_match = contains_skill_use if config.descriptor_filter else contains_exact_term
     exact_evidence = bool(
         req_skills
         and best_sentence
-        and any(contains_exact_term(best_sentence, s) for s in req_skills)
+        and any(term_match(best_sentence, s) for s in req_skills)
     )
 
     valid_evidence = None
-    if exact_evidence or best_score >= HIGH_THRESHOLD:
+    if exact_evidence or best_score >= config.high:
         status = "satisfied"
         valid_evidence = best_sentence
-    elif best_score >= LOW_THRESHOLD:
+    elif best_score >= config.low:
         status = "partially_satisfied"
         valid_evidence = best_sentence
     elif exact_declared:
@@ -284,7 +362,7 @@ def assess_requirement(req: dict, cv, req_embedding=None) -> dict:
     }
 
 
-def assess_requirement_declared_only(req: dict, cv, req_embedding=None) -> dict:
+def assess_requirement_declared_only(req: dict, cv, req_embedding=None, config: RankConfig = DEFAULT_CONFIG) -> dict:
     """Shallow assessment used by M4/M5: checks whether a requirement is
     *declared* in the CV's Skills list, without retrieving or verifying any
     Experience/Project evidence sentence. `req_embedding` is accepted (and
@@ -330,11 +408,7 @@ def assess_requirement_declared_only(req: dict, cv, req_embedding=None) -> dict:
             "evidence": f"Candidate level: {cv.seniority}",
         }
 
-    declared = {
-        x.strip().lower()
-        for x in loads(cv.skills_json, [])
-        if isinstance(x, str) and x.strip()
-    }
+    declared = declared_skills(cv, config)
     req_skills = {
         x.strip().lower() for x in extract_skills(text) if isinstance(x, str) and x.strip()
     } or {text.strip().lower()}
@@ -354,8 +428,13 @@ def assess_requirement_declared_only(req: dict, cv, req_embedding=None) -> dict:
     }
 
 
-def _requirements_for_jd(jd) -> list[dict]:
-    requirements = list(loads(jd.requirements_json, []))
+def _requirements_for_jd(jd, config: RankConfig = DEFAULT_CONFIG) -> list[dict]:
+    requirements = [
+        {**r, "kind": config.responsibility_kind}
+        if config.responsibility_kind and r.get("category") == "responsibility"
+        else r
+        for r in loads(jd.requirements_json, [])
+    ]
     if jd.minimum_years > 0:
         requirements.append(
             {
@@ -473,16 +552,16 @@ def _rank_section_sbert(jd, cvs: list, top_k: int) -> list[dict]:
     return _finalize(rows, top_k)
 
 
-def _rank_requirement_aware(jd, cvs: list, top_k: int, requirements: list[dict]) -> list[dict]:
+def _rank_requirement_aware(jd, cvs: list, top_k: int, requirements: list[dict], config: RankConfig) -> list[dict]:
     """M4: requirement coverage using declared-only assessment, no hard-constraint
     gating and no lexicographic key - candidates are ordered purely by how many
     requirements they declare, tie-broken by full-document similarity."""
     baseline = _baseline_scores(jd.title + " " + jd.description, cvs)
     rows = []
     for cv, b in zip(cvs, baseline):
-        assessments = [assess_requirement_declared_only(r, cv) for r in requirements]
+        assessments = [assess_requirement_declared_only(r, cv, config=config) for r in requirements]
         coverage = (
-            sum(STATUS_VALUE[a["status"]] / 3 for a in assessments) / len(assessments)
+            sum(config.status_value(a["status"]) / 3 for a in assessments) / len(assessments)
             if assessments
             else 0.0
         )
@@ -498,20 +577,20 @@ def _rank_requirement_aware(jd, cvs: list, top_k: int, requirements: list[dict])
     return _finalize(rows, top_k)
 
 
-def _rank_lexicographic(jd, cvs: list, top_k: int, requirements: list[dict], assess, req_embedding_map=None) -> list[dict]:
+def _rank_lexicographic(jd, cvs: list, top_k: int, requirements: list[dict], assess, config: RankConfig, req_embedding_map=None) -> list[dict]:
     """Shared M5/M6 loop: lexicographic key (Hpass, Ch, Eh, Salign, Cs, Es, B)."""
     baseline = _baseline_scores(jd.title + " " + jd.description, cvs)
     rows = []
     for cv, b in zip(cvs, baseline):
         if req_embedding_map is not None:
-            assessments = [assess(r, cv, req_embedding_map.get(r["text"])) for r in requirements]
+            assessments = [assess(r, cv, req_embedding_map.get(r["text"]), config) for r in requirements]
         else:
-            assessments = [assess(r, cv) for r in requirements]
+            assessments = [assess(r, cv, None, config) for r in requirements]
         hard = [a for a in assessments if a["kind"] == "hard"]
         soft = [a for a in assessments if a["kind"] == "soft"]
 
         def sat(a):
-            return STATUS_VALUE[a["status"]] / 3
+            return config.status_value(a["status"]) / 3
 
         def coverage(items):
             return sum(sat(x) for x in items) / len(items) if items else 1.0
@@ -553,7 +632,7 @@ def _rank_lexicographic(jd, cvs: list, top_k: int, requirements: list[dict], ass
     return _finalize(rows, top_k)
 
 
-def rank(jd, cvs, top_k=10, method="full"):
+def rank(jd, cvs, top_k=10, method="full", config: RankConfig = DEFAULT_CONFIG):
     if method not in METHODS:
         method = "full"
 
@@ -570,12 +649,12 @@ def rank(jd, cvs, top_k=10, method="full"):
     if method == "section_sbert":
         return _rank_section_sbert(jd, cvs, top_k)
 
-    requirements = _requirements_for_jd(jd)
+    requirements = _requirements_for_jd(jd, config)
 
     if method == "requirement_aware":
-        return _rank_requirement_aware(jd, cvs, top_k, requirements)
+        return _rank_requirement_aware(jd, cvs, top_k, requirements, config)
     if method == "requirement_seniority":
-        return _rank_lexicographic(jd, cvs, top_k, requirements, assess_requirement_declared_only)
+        return _rank_lexicographic(jd, cvs, top_k, requirements, assess_requirement_declared_only, config)
 
     # method == "full" (M6): batch-embed semantic requirement texts once and
     # reuse each CV's cached embeddings instead of re-encoding per pair.
@@ -586,4 +665,4 @@ def rank(jd, cvs, top_k=10, method="full"):
     req_embedding_map = (
         dict(zip(semantic_texts, semantic_embeddings)) if semantic_embeddings is not None else {}
     )
-    return _rank_lexicographic(jd, cvs, top_k, requirements, assess_requirement, req_embedding_map)
+    return _rank_lexicographic(jd, cvs, top_k, requirements, assess_requirement, config, req_embedding_map)

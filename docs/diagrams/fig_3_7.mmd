@@ -1,0 +1,39 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 24}}}%%
+flowchart TB
+  R["JD requirement r"]:::input
+  XR["<b>Experience</b><br/>years ≥ minimum → satisfied<br/>otherwise → not satisfied"]:::proc
+  SR["<b>Seniority</b><br/>at or above → satisfied<br/>one below / unknown → partially<br/>two or more below → not satisfied"]:::proc
+  subgraph LE["Skill, responsibility, education"]
+    direction TB
+    EV["Best evidence sentence s*<br/>(Experience + Projects)<br/>E = cos(r, s*)"]:::proc
+    T1{"Term used in s*<br/>or E ≥ τh ?"}:::decision
+    ES["satisfied"]:::out
+    T2{"E ≥ τl ?"}:::decision
+    EP["partially<br/>satisfied"]:::decision
+    T3{"Declared<br/>in Skills?"}:::decision
+    EU["unsupported"]:::fail
+    EN["not<br/>satisfied"]:::fail
+    EV --> T1
+    T1 -- yes --> ES
+    T1 -- no --> T2
+    T2 -- yes --> EP
+    T2 -- no --> T3
+    T3 -- yes --> EU
+    T3 -- no --> EN
+  end
+  KEY["<b>Ranking key</b><br/>K = (H<sub>pass</sub>, C<sub>h</sub>, E<sub>h</sub>, S<sub>align</sub>, C<sub>s</sub>, E<sub>s</sub>, B)<br/>ρ: satisfied 3 · partially 2<br/>unsupported 0 · not satisfied 0<br/>H<sub>pass</sub> = 1 only if every hard<br/>requirement is satisfied"]:::store
+  TOPK["Sort lexicographically<br/>→ top-k with explanations"]:::out
+  R --> XR
+  R --> LE
+  R --> SR
+  XR --> KEY
+  LE --> KEY
+  SR --> KEY
+  KEY --> TOPK
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px

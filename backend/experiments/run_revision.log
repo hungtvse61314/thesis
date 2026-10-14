@@ -1,0 +1,49 @@
+{
+ "snapshot": {
+  "db": "raematch.db",
+  "sha256": "4a0f0c213936fbd88cc78489d0c08d8b157bdf4b9bd2db4abf336a5053d7c16b",
+  "corpus_size": 4013,
+  "real": 2986,
+  "synthetic": 1027,
+  "labeled_pairs": 246
+ },
+ "split": {
+  "seed": 20261014,
+  "per_jd": {
+   "51": {
+    "dev": 25,
+    "test": 25
+   },
+   "52": {
+    "dev": 25,
+    "test": 25
+   },
+   "53": {
+    "dev": 25,
+    "test": 25
+   },
+   "54": {
+    "dev": 25,
+    "test": 25
+   },
+   "55": {
+    "dev": 23,
+    "test": 23
+   }
+  }
+ }
+}
+calibration {'low': 0.2, 'high': 0.4, 'dev_ndcg@10': 0.6491, 'test_ndcg@10': 0.6372, 'full_ndcg@10': 0.5489}
+calibration {'low': 0.3, 'high': 0.5, 'dev_ndcg@10': 0.5894, 'test_ndcg@10': 0.6569, 'full_ndcg@10': 0.5113}
+calibration {'low': 0.4, 'high': 0.6, 'dev_ndcg@10': 0.6753, 'test_ndcg@10': 0.6655, 'full_ndcg@10': 0.5755}
+calibration {'low': 0.5, 'high': 0.7, 'dev_ndcg@10': 0.6772, 'test_ndcg@10': 0.6811, 'full_ndcg@10': 0.6009}
+calibration {'low': 0.6, 'high': 0.8, 'dev_ndcg@10': 0.7049, 'test_ndcg@10': 0.7139, 'full_ndcg@10': 0.6155}
+calibration {'low': 0.7, 'high': 0.9, 'dev_ndcg@10': 0.7386, 'test_ndcg@10': 0.7194, 'full_ndcg@10': 0.6175}
+M1 TF-IDF test {'ndcg@5': 0.8797, 'ndcg@10': 0.8816, 'map': 0.8845, 'mrr': 1.0, 'recall@10': 0.7358, 'recall@20': 0.9444} full {'ndcg@5': 0.8806, 'ndcg@10': 0.8956, 'map': 0.9012, 'mrr': 1.0, 'recall@10': 0.498, 'recall@20': 0.7351}
+M2 SBERT full text (MiniLM) test {'ndcg@5': 0.951, 'ndcg@10': 0.9667, 'map': 0.9818, 'mrr': 1.0, 'recall@10': 0.8553, 'recall@20': 1.0} full {'ndcg@5': 0.9489, 'ndcg@10': 0.9632, 'map': 0.9759, 'mrr': 1.0, 'recall@10': 0.546, 'recall@20': 0.7968}
+M3 Section-level SBERT test {'ndcg@5': 0.8855, 'ndcg@10': 0.9382, 'map': 0.9041, 'mrr': 1.0, 'recall@10': 0.8136, 'recall@20': 0.9478} full {'ndcg@5': 0.8395, 'ndcg@10': 0.8359, 'map': 0.9154, 'mrr': 1.0, 'recall@10': 0.4973, 'recall@20': 0.7714}
+M4 Requirement-aware test {'ndcg@5': 0.2423, 'ndcg@10': 0.3687, 'map': 0.4248, 'mrr': 0.3381, 'recall@10': 0.2892, 'recall@20': 0.9145} full {'ndcg@5': 0.3651, 'ndcg@10': 0.406, 'map': 0.5285, 'mrr': 0.725, 'recall@10': 0.2122, 'recall@20': 0.4326}
+M5 Requirement + seniority test {'ndcg@5': 0.4345, 'ndcg@10': 0.5895, 'map': 0.5579, 'mrr': 0.4487, 'recall@10': 0.4947, 'recall@20': 0.9061} full {'ndcg@5': 0.5231, 'ndcg@10': 0.6081, 'map': 0.6589, 'mrr': 0.725, 'recall@10': 0.346, 'recall@20': 0.5704}
+M6 Full proposed model (revised) test {'ndcg@5': 0.6233, 'ndcg@10': 0.7194, 'map': 0.6439, 'mrr': 0.74, 'recall@10': 0.608, 'recall@20': 0.8206} full {'ndcg@5': 0.552, 'ndcg@10': 0.6175, 'map': 0.6923, 'mrr': 0.8182, 'recall@10': 0.3001, 'recall@20': 0.6002}
+M6-orig Full proposed model (original config) test {'ndcg@5': 0.5811, 'ndcg@10': 0.7419, 'map': 0.6712, 'mrr': 0.8, 'recall@10': 0.6364, 'recall@20': 0.8623} full {'ndcg@5': 0.5449, 'ndcg@10': 0.6431, 'map': 0.6941, 'mrr': 0.9, 'recall@10': 0.3575, 'recall@20': 0.5899}
+saved /Users/tranviethung/Documents/My Resources/Master Program/Thesis/raematch_defense_app_completed/backend/experiments/results/revision_results.json

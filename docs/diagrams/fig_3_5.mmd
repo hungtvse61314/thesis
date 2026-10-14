@@ -1,0 +1,30 @@
+%%{init: {"flowchart": {"rankSpacing": 60, "nodeSpacing": 22}}}%%
+flowchart LR
+  JDN["<b>Parsed job description</b><br/>mandatory skills · optional skills<br/>responsibilities (≤ 6)<br/>education · certifications<br/>minimum years · required seniority"]:::input
+  H["<b>Hard requirements</b><br/>mandatory skills,<br/>minimum years, seniority"]:::fail
+  S["<b>Soft requirements</b><br/>optional skills, responsibilities,<br/>education, certifications"]:::out
+  CVN["<b>Parsed CV sections</b><br/>Summary · Skills<br/>Work Experience · Projects<br/>Education · Certifications<br/><i>(last two used only by M3)</i>"]:::input
+  D1["<b>Declared skills</b><br/>from Skills"]:::proc
+  D2["<b>Evidence sentences</b><br/>from Experience + Projects"]:::proc
+  D3["<b>Years of experience</b><br/>+ detected flag"]:::proc
+  D4["<b>Seniority level</b><br/>level keyword, else years"]:::proc
+  M["<b>Requirement-aware<br/>matching</b>"]:::store
+  JDN --> H
+  JDN --> S
+  CVN --> D1
+  CVN --> D2
+  CVN --> D3
+  CVN --> D4
+  H --> M
+  S --> M
+  D1 --> M
+  D2 --> M
+  D3 --> M
+  D4 --> M
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px

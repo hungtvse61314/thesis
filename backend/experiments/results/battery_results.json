@@ -1,0 +1,4499 @@
+{
+ "corpus_size": 4013,
+ "configs": {
+  "original": {
+   "low": 0.35,
+   "high": 0.55,
+   "responsibility_kind": null,
+   "declared_scope": "full_text",
+   "descriptor_filter": false,
+   "unsupported_value": 1
+  },
+  "revised": {
+   "low": 0.7,
+   "high": 0.9,
+   "responsibility_kind": "soft",
+   "declared_scope": "skills_section",
+   "descriptor_filter": true,
+   "unsupported_value": 0
+  }
+ },
+ "cases": [
+  {
+   "category": "seniority",
+   "jd_id": 56,
+   "jd": "ROBUSTNESS_Seniority_Mismatch_Senior_Java_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "fresher": 822,
+      "senior": 1
+     },
+     "sbert_full": {
+      "fresher": 162,
+      "senior": 3
+     },
+     "section_sbert": {
+      "fresher": 192,
+      "senior": 65
+     },
+     "requirement_aware": {
+      "fresher": 290,
+      "senior": 1
+     },
+     "requirement_seniority": {
+      "fresher": 1355,
+      "senior": 1
+     },
+     "full": {
+      "fresher": 2617,
+      "senior": 45
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "fresher": 822,
+      "senior": 1
+     },
+     "sbert_full": {
+      "fresher": 162,
+      "senior": 3
+     },
+     "section_sbert": {
+      "fresher": 192,
+      "senior": 65
+     },
+     "requirement_aware": {
+      "fresher": 253,
+      "senior": 1
+     },
+     "requirement_seniority": {
+      "fresher": 1331,
+      "senior": 1
+     },
+     "full": {
+      "fresher": 2832,
+      "senior": 44
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "unsupported",
+         0.34
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.4837
+        ],
+        [
+         "SQL",
+         "unsupported",
+         0.2332
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         0.2984
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.4954
+        ],
+        [
+         "SQL",
+         "unsupported",
+         0.0659
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "unsupported",
+         0.34
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.4837
+        ],
+        [
+         "SQL",
+         "unsupported",
+         0.2332
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         0.2984
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.4954
+        ],
+        [
+         "SQL",
+         "unsupported",
+         0.0659
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "seniority",
+   "jd_id": 59,
+   "jd": "ROBUSTNESS_Seniority_Mismatch_2_React_Frontend_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "fresher": 136,
+      "senior": 4007
+     },
+     "sbert_full": {
+      "fresher": 493,
+      "senior": 134
+     },
+     "section_sbert": {
+      "fresher": 576,
+      "senior": 151
+     },
+     "requirement_aware": {
+      "fresher": 461,
+      "senior": 19
+     },
+     "requirement_seniority": {
+      "fresher": 564,
+      "senior": 19
+     },
+     "full": {
+      "fresher": 263,
+      "senior": 7
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "fresher": 136,
+      "senior": 4007
+     },
+     "sbert_full": {
+      "fresher": 493,
+      "senior": 134
+     },
+     "section_sbert": {
+      "fresher": 576,
+      "senior": 151
+     },
+     "requirement_aware": {
+      "fresher": 461,
+      "senior": 19
+     },
+     "requirement_seniority": {
+      "fresher": 564,
+      "senior": 19
+     },
+     "full": {
+      "fresher": 233,
+      "senior": 7
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         0.3739
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3543
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         0.4889
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         0.3667
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.2968
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         0.2999
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         0.3739
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3543
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         0.4889
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "React",
+         "satisfied",
+         0.3667
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.2968
+        ],
+        [
+         "TypeScript",
+         "satisfied",
+         0.2999
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "seniority",
+   "jd_id": 60,
+   "jd": "ROBUSTNESS_Seniority_Mismatch_3_Data_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "fresher": 97,
+      "senior": 4008
+     },
+     "sbert_full": {
+      "fresher": 3291,
+      "senior": 1445
+     },
+     "section_sbert": {
+      "fresher": 3245,
+      "senior": 2293
+     },
+     "requirement_aware": {
+      "fresher": 1172,
+      "senior": 18
+     },
+     "requirement_seniority": {
+      "fresher": 1291,
+      "senior": 18
+     },
+     "full": {
+      "fresher": 613,
+      "senior": 3
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "fresher": 97,
+      "senior": 4008
+     },
+     "sbert_full": {
+      "fresher": 3291,
+      "senior": 1445
+     },
+     "section_sbert": {
+      "fresher": 3245,
+      "senior": 2293
+     },
+     "requirement_aware": {
+      "fresher": 1172,
+      "senior": 18
+     },
+     "requirement_seniority": {
+      "fresher": 1291,
+      "senior": 18
+     },
+     "full": {
+      "fresher": 497,
+      "senior": 3
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.3616
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2878
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.371
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.2762
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2442
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.2793
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "fresher": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.3616
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2878
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.371
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "not_satisfied",
+         0.0
+        ]
+       ]
+      },
+      "senior": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.2762
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2442
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.2793
+        ],
+        [
+         "Minimum 5 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "senior",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "missing_mandatory",
+   "jd_id": 57,
+   "jd": "ROBUSTNESS_Missing_Mandatory_Python_Backend_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "has_all": 763,
+      "missing": 712
+     },
+     "sbert_full": {
+      "has_all": 244,
+      "missing": 330
+     },
+     "section_sbert": {
+      "has_all": 184,
+      "missing": 278
+     },
+     "requirement_aware": {
+      "has_all": 15,
+      "missing": 59
+     },
+     "requirement_seniority": {
+      "has_all": 15,
+      "missing": 63
+     },
+     "full": {
+      "has_all": 8,
+      "missing": 62
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "has_all": 763,
+      "missing": 712
+     },
+     "sbert_full": {
+      "has_all": 244,
+      "missing": 330
+     },
+     "section_sbert": {
+      "has_all": 184,
+      "missing": 278
+     },
+     "requirement_aware": {
+      "has_all": 15,
+      "missing": 59
+     },
+     "requirement_seniority": {
+      "has_all": 15,
+      "missing": 63
+     },
+     "full": {
+      "has_all": 8,
+      "missing": 30
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Django",
+         "satisfied",
+         1.0
+        ],
+        [
+         "PostgreSQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Django",
+         "satisfied",
+         1.0
+        ],
+        [
+         "PostgreSQL",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4165
+        ],
+        [
+         "Django",
+         "satisfied",
+         0.7048
+        ],
+        [
+         "PostgreSQL",
+         "satisfied",
+         0.7144
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4165
+        ],
+        [
+         "Django",
+         "satisfied",
+         0.7048
+        ],
+        [
+         "PostgreSQL",
+         "not_satisfied",
+         0.2558
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Django",
+         "satisfied",
+         1.0
+        ],
+        [
+         "PostgreSQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Django",
+         "satisfied",
+         1.0
+        ],
+        [
+         "PostgreSQL",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4165
+        ],
+        [
+         "Django",
+         "satisfied",
+         0.7048
+        ],
+        [
+         "PostgreSQL",
+         "satisfied",
+         0.7144
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4165
+        ],
+        [
+         "Django",
+         "satisfied",
+         0.7048
+        ],
+        [
+         "PostgreSQL",
+         "not_satisfied",
+         0.2558
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "missing_mandatory",
+   "jd_id": 61,
+   "jd": "ROBUSTNESS_Missing_Mandatory_2_DevOps_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "has_all": 4009,
+      "missing": 4010
+     },
+     "sbert_full": {
+      "has_all": 2907,
+      "missing": 2706
+     },
+     "section_sbert": {
+      "has_all": 3044,
+      "missing": 2794
+     },
+     "requirement_aware": {
+      "has_all": 90,
+      "missing": 249
+     },
+     "requirement_seniority": {
+      "has_all": 90,
+      "missing": 238
+     },
+     "full": {
+      "has_all": 29,
+      "missing": 90
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "has_all": 4009,
+      "missing": 4010
+     },
+     "sbert_full": {
+      "has_all": 2907,
+      "missing": 2706
+     },
+     "section_sbert": {
+      "has_all": 3044,
+      "missing": 2794
+     },
+     "requirement_aware": {
+      "has_all": 90,
+      "missing": 249
+     },
+     "requirement_seniority": {
+      "has_all": 90,
+      "missing": 238
+     },
+     "full": {
+      "has_all": 26,
+      "missing": 97
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Terraform",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Terraform",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         0.7042
+        ],
+        [
+         "Terraform",
+         "satisfied",
+         0.7392
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.6161
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         0.7042
+        ],
+        [
+         "Terraform",
+         "partially_satisfied",
+         0.3812
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.6161
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Terraform",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Terraform",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         0.7042
+        ],
+        [
+         "Terraform",
+         "satisfied",
+         0.7392
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.6161
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Kubernetes",
+         "satisfied",
+         0.7042
+        ],
+        [
+         "Terraform",
+         "not_satisfied",
+         0.3812
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.6161
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "missing_mandatory",
+   "jd_id": 62,
+   "jd": "ROBUSTNESS_Missing_Mandatory_3_QA_Automation_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "has_all": 301,
+      "missing": 282
+     },
+     "sbert_full": {
+      "has_all": 1308,
+      "missing": 1241
+     },
+     "section_sbert": {
+      "has_all": 1469,
+      "missing": 1065
+     },
+     "requirement_aware": {
+      "has_all": 1,
+      "missing": 48
+     },
+     "requirement_seniority": {
+      "has_all": 1,
+      "missing": 48
+     },
+     "full": {
+      "has_all": 1,
+      "missing": 20
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "has_all": 301,
+      "missing": 282
+     },
+     "sbert_full": {
+      "has_all": 1308,
+      "missing": 1241
+     },
+     "section_sbert": {
+      "has_all": 1469,
+      "missing": 1065
+     },
+     "requirement_aware": {
+      "has_all": 1,
+      "missing": 48
+     },
+     "requirement_seniority": {
+      "has_all": 1,
+      "missing": 48
+     },
+     "full": {
+      "has_all": 1,
+      "missing": 20
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Cypress",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Cypress",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         0.5015
+        ],
+        [
+         "Java",
+         "satisfied",
+         0.2809
+        ],
+        [
+         "Cypress",
+         "satisfied",
+         0.6786
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         0.5015
+        ],
+        [
+         "Java",
+         "satisfied",
+         0.2809
+        ],
+        [
+         "Cypress",
+         "not_satisfied",
+         0.1616
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Cypress",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Cypress",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "has_all": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         0.5015
+        ],
+        [
+         "Java",
+         "satisfied",
+         0.2809
+        ],
+        [
+         "Cypress",
+         "satisfied",
+         0.6786
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "missing": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Selenium",
+         "satisfied",
+         0.5015
+        ],
+        [
+         "Java",
+         "satisfied",
+         0.2809
+        ],
+        [
+         "Cypress",
+         "not_satisfied",
+         0.1616
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "role_confusion",
+   "jd_id": 58,
+   "jd": "ROBUSTNESS_Role_Confusion_Java_Backend_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "genuine": 4006,
+      "confused": 4007
+     },
+     "sbert_full": {
+      "genuine": 496,
+      "confused": 617
+     },
+     "section_sbert": {
+      "genuine": 500,
+      "confused": 635
+     },
+     "requirement_aware": {
+      "genuine": 37,
+      "confused": 164
+     },
+     "requirement_seniority": {
+      "genuine": 37,
+      "confused": 222
+     },
+     "full": {
+      "genuine": 9,
+      "confused": 117
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "genuine": 4006,
+      "confused": 4007
+     },
+     "sbert_full": {
+      "genuine": 496,
+      "confused": 617
+     },
+     "section_sbert": {
+      "genuine": 500,
+      "confused": 635
+     },
+     "requirement_aware": {
+      "genuine": 35,
+      "confused": 143
+     },
+     "requirement_seniority": {
+      "genuine": 35,
+      "confused": 177
+     },
+     "full": {
+      "genuine": 9,
+      "confused": 1190
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         0.2953
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.3594
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2341
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         0.2664
+        ],
+        [
+         "Spring Boot",
+         "not_satisfied",
+         0.2254
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.165
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spring Boot",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Java",
+         "satisfied",
+         0.2953
+        ],
+        [
+         "Spring Boot",
+         "satisfied",
+         0.3594
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.2341
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Java",
+         "not_satisfied",
+         0.2664
+        ],
+        [
+         "Spring Boot",
+         "not_satisfied",
+         0.2254
+        ],
+        [
+         "SQL",
+         "not_satisfied",
+         0.165
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "role_confusion",
+   "jd_id": 63,
+   "jd": "ROBUSTNESS_Role_Confusion_2_Data_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "genuine": 152,
+      "confused": 4011
+     },
+     "sbert_full": {
+      "genuine": 2909,
+      "confused": 1809
+     },
+     "section_sbert": {
+      "genuine": 2343,
+      "confused": 546
+     },
+     "requirement_aware": {
+      "genuine": 52,
+      "confused": 161
+     },
+     "requirement_seniority": {
+      "genuine": 52,
+      "confused": 82
+     },
+     "full": {
+      "genuine": 20,
+      "confused": 26
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "genuine": 152,
+      "confused": 4011
+     },
+     "sbert_full": {
+      "genuine": 2909,
+      "confused": 1809
+     },
+     "section_sbert": {
+      "genuine": 2343,
+      "confused": 546
+     },
+     "requirement_aware": {
+      "genuine": 52,
+      "confused": 161
+     },
+     "requirement_seniority": {
+      "genuine": 52,
+      "confused": 82
+     },
+     "full": {
+      "genuine": 20,
+      "confused": 1867
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.2793
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.249
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.2947
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.2908
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.4061
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.3787
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Spark",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.2793
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.249
+        ],
+        [
+         "Spark",
+         "satisfied",
+         0.2947
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "not_satisfied",
+         0.2908
+        ],
+        [
+         "SQL",
+         "not_satisfied",
+         0.4061
+        ],
+        [
+         "Spark",
+         "not_satisfied",
+         0.3787
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "role_confusion",
+   "jd_id": 64,
+   "jd": "ROBUSTNESS_Role_Confusion_3_DevOps_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "genuine": 4012,
+      "confused": 4013
+     },
+     "sbert_full": {
+      "genuine": 2861,
+      "confused": 1102
+     },
+     "section_sbert": {
+      "genuine": 3367,
+      "confused": 312
+     },
+     "requirement_aware": {
+      "genuine": 97,
+      "confused": 230
+     },
+     "requirement_seniority": {
+      "genuine": 97,
+      "confused": 148
+     },
+     "full": {
+      "genuine": 16,
+      "confused": 35
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "genuine": 4012,
+      "confused": 4013
+     },
+     "sbert_full": {
+      "genuine": 2861,
+      "confused": 1102
+     },
+     "section_sbert": {
+      "genuine": 3367,
+      "confused": 312
+     },
+     "requirement_aware": {
+      "genuine": 97,
+      "confused": 230
+     },
+     "requirement_seniority": {
+      "genuine": 97,
+      "confused": 148
+     },
+     "full": {
+      "genuine": 14,
+      "confused": 1263
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Linux",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Linux",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         0.5941
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.4694
+        ],
+        [
+         "Linux",
+         "satisfied",
+         0.2639
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         0.5092
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.4637
+        ],
+        [
+         "Linux",
+         "satisfied",
+         0.3423
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Linux",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         1.0
+        ],
+        [
+         "AWS",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Linux",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "genuine": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Docker",
+         "satisfied",
+         0.5941
+        ],
+        [
+         "AWS",
+         "satisfied",
+         0.4694
+        ],
+        [
+         "Linux",
+         "satisfied",
+         0.2639
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "confused": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Docker",
+         "not_satisfied",
+         0.5092
+        ],
+        [
+         "AWS",
+         "not_satisfied",
+         0.4637
+        ],
+        [
+         "Linux",
+         "not_satisfied",
+         0.3423
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "keyword_stuffing",
+   "jd_id": 51,
+   "jd": "EVAL_JD_01_Senior_Java_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "original": 18,
+      "stuffed": 22,
+      "supported": 87
+     },
+     "sbert_full": {
+      "original": 52,
+      "stuffed": 55,
+      "supported": 791
+     },
+     "section_sbert": {
+      "original": 33,
+      "stuffed": 56,
+      "supported": 246
+     },
+     "requirement_aware": {
+      "original": 541,
+      "stuffed": 150,
+      "supported": 161
+     },
+     "requirement_seniority": {
+      "original": 217,
+      "stuffed": 214,
+      "supported": 216
+     },
+     "full": {
+      "original": 290,
+      "stuffed": 289,
+      "supported": 288
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "original": 18,
+      "stuffed": 22,
+      "supported": 87
+     },
+     "sbert_full": {
+      "original": 52,
+      "stuffed": 55,
+      "supported": 791
+     },
+     "section_sbert": {
+      "original": 33,
+      "stuffed": 56,
+      "supported": 246
+     },
+     "requirement_aware": {
+      "original": 488,
+      "stuffed": 123,
+      "supported": 132
+     },
+     "requirement_seniority": {
+      "original": 160,
+      "stuffed": 158,
+      "supported": 159
+     },
+     "full": {
+      "original": 113,
+      "stuffed": 114,
+      "supported": 112
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3843
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3009
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2471
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3461
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         0.6633
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "satisfied",
+         0.5558
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "partially_satisfied",
+         0.3696
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "partially_satisfied",
+         0.4326
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.2187
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.3111
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3843
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3009
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2471
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3461
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         0.6633
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "satisfied",
+         0.5558
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "partially_satisfied",
+         0.3696
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "partially_satisfied",
+         0.4326
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.2187
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.3111
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3387
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3212
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2596
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3612
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+         "satisfied",
+         0.676
+        ],
+        [
+         "Design RESTful APIs and integrations with internal and external systems.",
+         "satisfied",
+         0.5506
+        ],
+        [
+         "Participate in the design of scalable, maintainable, and reliable software architectures.",
+         "partially_satisfied",
+         0.3696
+        ],
+        [
+         "Develop and maintain microservices and service-to-service integrations.",
+         "partially_satisfied",
+         0.4401
+        ],
+        [
+         "Translate business and technical requirements into implementation designs.",
+         "not_satisfied",
+         0.2187
+        ],
+        [
+         "Design and optimize relational database schemas, queries, and data-access logic.",
+         "not_satisfied",
+         0.3369
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         1.0
+        ],
+        [
+         "java",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring",
+         "satisfied",
+         1.0
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         1.0
+        ],
+        [
+         "sql",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3843
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3009
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2471
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3461
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3843
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3009
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2471
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3461
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "git",
+         "satisfied",
+         0.3387
+        ],
+        [
+         "java",
+         "satisfied",
+         0.3212
+        ],
+        [
+         "spring",
+         "satisfied",
+         0.2596
+        ],
+        [
+         "spring boot",
+         "satisfied",
+         0.3612
+        ],
+        [
+         "sql",
+         "unsupported",
+         0.1748
+        ],
+        [
+         "Minimum 5 years experience",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "senior",
+         "partially_satisfied",
+         0.5
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "keyword_stuffing",
+   "jd_id": 65,
+   "jd": "ROBUSTNESS_Stuffing_2_Vue_Frontend_Developer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "original": 110,
+      "stuffed": 115,
+      "supported": 165
+     },
+     "sbert_full": {
+      "original": 720,
+      "stuffed": 597,
+      "supported": 849
+     },
+     "section_sbert": {
+      "original": 247,
+      "stuffed": 233,
+      "supported": 403
+     },
+     "requirement_aware": {
+      "original": 38,
+      "stuffed": 2,
+      "supported": 3
+     },
+     "requirement_seniority": {
+      "original": 37,
+      "stuffed": 2,
+      "supported": 3
+     },
+     "full": {
+      "original": 25,
+      "stuffed": 5,
+      "supported": 1
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "original": 110,
+      "stuffed": 115,
+      "supported": 165
+     },
+     "sbert_full": {
+      "original": 720,
+      "stuffed": 597,
+      "supported": 849
+     },
+     "section_sbert": {
+      "original": 247,
+      "stuffed": 233,
+      "supported": 403
+     },
+     "requirement_aware": {
+      "original": 38,
+      "stuffed": 2,
+      "supported": 3
+     },
+     "requirement_seniority": {
+      "original": 37,
+      "stuffed": 2,
+      "supported": 3
+     },
+     "full": {
+      "original": 21,
+      "stuffed": 20,
+      "supported": 1
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "not_satisfied",
+         0.1317
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "unsupported",
+         0.1317
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         0.6232
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         1.0
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         1.0
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "not_satisfied",
+         0.1317
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "unsupported",
+         0.1317
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Vue",
+         "satisfied",
+         0.4827
+        ],
+        [
+         "JavaScript",
+         "satisfied",
+         0.3635
+        ],
+        [
+         "GraphQL",
+         "satisfied",
+         0.6232
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "category": "keyword_stuffing",
+   "jd_id": 66,
+   "jd": "ROBUSTNESS_Stuffing_3_Data_Engineer",
+   "ranks": {
+    "original": {
+     "tfidf": {
+      "original": 88,
+      "stuffed": 91,
+      "supported": 35
+     },
+     "sbert_full": {
+      "original": 3395,
+      "stuffed": 3497,
+      "supported": 3385
+     },
+     "section_sbert": {
+      "original": 2062,
+      "stuffed": 2006,
+      "supported": 2345
+     },
+     "requirement_aware": {
+      "original": 154,
+      "stuffed": 41,
+      "supported": 40
+     },
+     "requirement_seniority": {
+      "original": 146,
+      "stuffed": 41,
+      "supported": 40
+     },
+     "full": {
+      "original": 62,
+      "stuffed": 29,
+      "supported": 9
+     }
+    },
+    "revised": {
+     "tfidf": {
+      "original": 88,
+      "stuffed": 91,
+      "supported": 35
+     },
+     "sbert_full": {
+      "original": 3395,
+      "stuffed": 3497,
+      "supported": 3385
+     },
+     "section_sbert": {
+      "original": 2062,
+      "stuffed": 2006,
+      "supported": 2345
+     },
+     "requirement_aware": {
+      "original": 154,
+      "stuffed": 41,
+      "supported": 40
+     },
+     "requirement_seniority": {
+      "original": 146,
+      "stuffed": 41,
+      "supported": 40
+     },
+     "full": {
+      "original": 49,
+      "stuffed": 51,
+      "supported": 48
+     }
+    }
+   },
+   "gate": {
+    "original": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "not_satisfied",
+         0.2402
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "unsupported",
+         0.2402
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "satisfied",
+         0.494
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    },
+    "revised": {
+     "requirement_seniority": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "not_satisfied",
+         0.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": true,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         1.0
+        ],
+        [
+         "SQL",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Kafka",
+         "satisfied",
+         1.0
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     },
+     "full": {
+      "original": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "not_satisfied",
+         0.2402
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "stuffed": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "unsupported",
+         0.2402
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      },
+      "supported": {
+       "hard_pass": false,
+       "hard": [
+        [
+         "Python",
+         "satisfied",
+         0.4117
+        ],
+        [
+         "SQL",
+         "satisfied",
+         0.3716
+        ],
+        [
+         "Kafka",
+         "unsupported",
+         0.494
+        ],
+        [
+         "Minimum 3 years experience",
+         "satisfied",
+         1.0
+        ],
+        [
+         "middle",
+         "satisfied",
+         1.0
+        ]
+       ]
+      }
+     }
+    }
+   }
+  }
+ ],
+ "summary_M6": {
+  "original": {
+   "seniority:fresher": "3/3",
+   "seniority:senior": "2/3",
+   "missing_mandatory:has_all": "3/3",
+   "missing_mandatory:missing": "3/3",
+   "role_confusion:genuine": "3/3",
+   "role_confusion:confused": "1/3",
+   "keyword_stuffing:monotonic": "3/3",
+   "keyword_stuffing:no_gain_from_stuffing": "0/3",
+   "keyword_stuffing:gate_only_supported": "2/3"
+  },
+  "revised": {
+   "seniority:fresher": "3/3",
+   "seniority:senior": "2/3",
+   "missing_mandatory:has_all": "3/3",
+   "missing_mandatory:missing": "3/3",
+   "role_confusion:genuine": "3/3",
+   "role_confusion:confused": "3/3",
+   "keyword_stuffing:monotonic": "1/3",
+   "keyword_stuffing:no_gain_from_stuffing": "2/3",
+   "keyword_stuffing:gate_only_supported": "1/3"
+  }
+ }
+}

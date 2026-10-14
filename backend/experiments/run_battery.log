@@ -1,0 +1,36 @@
+seniority 56 {"fresher": 2832, "senior": 44} {'fresher': False, 'senior': False}
+seniority 59 {"fresher": 233, "senior": 7} {'fresher': False, 'senior': True}
+seniority 60 {"fresher": 497, "senior": 3} {'fresher': False, 'senior': True}
+missing_mandatory 57 {"has_all": 8, "missing": 30} {'has_all': True, 'missing': False}
+missing_mandatory 61 {"has_all": 26, "missing": 97} {'has_all': True, 'missing': False}
+missing_mandatory 62 {"has_all": 1, "missing": 20} {'has_all': True, 'missing': False}
+role_confusion 58 {"genuine": 9, "confused": 1190} {'genuine': True, 'confused': False}
+role_confusion 63 {"genuine": 20, "confused": 1867} {'genuine': True, 'confused': False}
+role_confusion 64 {"genuine": 14, "confused": 1263} {'genuine': True, 'confused': False}
+keyword_stuffing 51 {"original": 113, "stuffed": 114, "supported": 112} {'original': False, 'stuffed': False, 'supported': False}
+keyword_stuffing 65 {"original": 21, "stuffed": 20, "supported": 1} {'original': False, 'stuffed': False, 'supported': True}
+keyword_stuffing 66 {"original": 49, "stuffed": 51, "supported": 48} {'original': False, 'stuffed': False, 'supported': False}
+{
+ "original": {
+  "seniority:fresher": "3/3",
+  "seniority:senior": "2/3",
+  "missing_mandatory:has_all": "3/3",
+  "missing_mandatory:missing": "3/3",
+  "role_confusion:genuine": "3/3",
+  "role_confusion:confused": "1/3",
+  "keyword_stuffing:monotonic": "3/3",
+  "keyword_stuffing:no_gain_from_stuffing": "0/3",
+  "keyword_stuffing:gate_only_supported": "2/3"
+ },
+ "revised": {
+  "seniority:fresher": "3/3",
+  "seniority:senior": "2/3",
+  "missing_mandatory:has_all": "3/3",
+  "missing_mandatory:missing": "3/3",
+  "role_confusion:genuine": "3/3",
+  "role_confusion:confused": "3/3",
+  "keyword_stuffing:monotonic": "1/3",
+  "keyword_stuffing:no_gain_from_stuffing": "2/3",
+  "keyword_stuffing:gate_only_supported": "1/3"
+ }
+}

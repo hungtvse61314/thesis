@@ -1,0 +1,39 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 20}}}%%
+flowchart TB
+  subgraph ING["① Ingestion and parsing"]
+    direction LR
+    PDF["PDF CVs"]:::input
+    EXT["Text extraction<br/>+ OCR fallback"]:::proc
+    CVP["CV parsing<br/>sections, skills,<br/>years, seniority"]:::proc
+    JDIN["Job description"]:::input
+    JDP["JD decomposition<br/>hard / soft"]:::proc
+    DB[("SQLite store<br/>CVs · JDs · labels")]:::store
+    PDF --> EXT --> CVP --> DB
+    JDIN --> JDP --> DB
+  end
+  subgraph ENG["② Matching engine"]
+    direction LR
+    EMB["SBERT<br/>embeddings"]:::proc
+    EVI["Evidence<br/>retrieval"]:::proc
+    ASS["Requirement<br/>assessment"]:::proc
+    VAL["Experience,<br/>seniority check"]:::proc
+    RR["Lexicographic<br/>reranking K(d,q)"]:::proc
+    EMB --> EVI --> ASS --> RR
+    VAL --> RR
+  end
+  subgraph UI["③ Review interface (FastAPI + React)"]
+    direction LR
+    TOP["Top-k list,<br/>hard-pass badge"]:::out
+    EXP["Requirement-level<br/>explanation"]:::out
+    LAB["Reviewer label 0–3<br/>and note"]:::store
+    MET["Evaluation<br/>NDCG, MAP,<br/>MRR, Recall"]:::out
+    TOP --> EXP --> LAB --> MET
+  end
+  ING ~~~ ENG ~~~ UI
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px

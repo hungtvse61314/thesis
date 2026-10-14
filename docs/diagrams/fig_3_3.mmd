@@ -1,0 +1,33 @@
+%%{init: {"flowchart": {"rankSpacing": 30, "nodeSpacing": 40}}}%%
+flowchart TB
+  UP["Upload PDF file"]:::input
+  ISPDF{"PDF and<br/>not empty?"}:::decision
+  DIR["Direct text extraction (pypdf)"]:::proc
+  LEN{"≥ 100 chars?"}:::decision
+  OCR["Render pages at 250 dpi<br/>→ Tesseract OCR"]:::proc
+  CLEAN["Clean and normalize text"]:::proc
+  LEN2{"≥ 100 chars?"}:::decision
+  DUP{"Content hash<br/>already indexed?"}:::decision
+  PARSE["Parse sections, skills,<br/>years, seniority"]:::proc
+  SAVE[("Save CV record<br/>with extraction status")]:::store
+  SKIP["Skipped: pdf_only / empty_file"]:::fail
+  REJ["Rejected: text_too_short<br/>(incl. OCR failure)"]:::fail
+  DUPR["Rejected: duplicate_content"]:::fail
+  UP --> ISPDF
+  ISPDF -- no --> SKIP
+  ISPDF -- yes --> DIR --> LEN
+  LEN -- "yes · pdf_text_extracted" --> CLEAN
+  LEN -- no --> OCR
+  OCR -- "pdf_ocr_extracted" --> CLEAN
+  CLEAN --> LEN2
+  LEN2 -- no --> REJ
+  LEN2 -- yes --> DUP
+  DUP -- yes --> DUPR
+  DUP -- no --> PARSE --> SAVE
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px

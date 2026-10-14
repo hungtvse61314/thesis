@@ -1,0 +1,18 @@
+flowchart TB
+  A["Recruiter selects a JD<br/>and a model (M6 by default)"]:::input
+  B["System ranks the full CV corpus"]:::proc
+  C["Top-k list with<br/>hard-pass / constraint-gap badge"]:::out
+  D["Open candidate:<br/>requirement statuses, evidence sentences,<br/>ranking key, original PDF"]:::out
+  E["Reviewer assigns relevance label 0–3<br/>and an optional note"]:::proc
+  F[("Labels stored per<br/>CV–JD pair")]:::store
+  G["Experiments tab: NDCG, MAP,<br/>MRR, Recall per model"]:::out
+  H["Hiring decision made by the recruiter,<br/>outside the system"]:::note
+  A --> B --> C --> D --> E --> F --> G
+  D -.-> H
+  classDef input fill:#EAF2F8,stroke:#1F4E79,stroke-width:1.5px,color:#14304D,font-size:21px
+  classDef proc fill:#FFFFFF,stroke:#2E75B6,stroke-width:1.5px,color:#1A1A1A,font-size:21px
+  classDef decision fill:#FFF3E0,stroke:#C77700,stroke-width:1.5px,color:#5A3500,font-size:21px
+  classDef out fill:#EAF7EE,stroke:#2E7D4F,stroke-width:1.5px,color:#14432A,font-size:21px
+  classDef store fill:#F3ECFA,stroke:#6B4C9A,stroke-width:1.5px,color:#3A2457,font-size:21px
+  classDef fail fill:#FDECEC,stroke:#B23B3B,stroke-width:1.5px,color:#5C1717,font-size:21px
+  classDef note fill:#FAFAFA,stroke:#9AA5AF,stroke-width:1px,stroke-dasharray:4 3,color:#3A444D,font-size:21px
