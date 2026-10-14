@@ -1,0 +1,1010 @@
+[
+ {
+  "jd_id": 51,
+  "title": "EVAL_JD_01_Senior_Java_Developer",
+  "description": "1\nSenior Java Developer\nRemote within Vietnam | Full-time | Synthetic Evaluation Job Description\nRole Summary\nWe are looking for a Senior Java Developer to design, develop, maintain, and improve enterprise backend\napplications and distributed services. The successful candidate should have strong hands-on experience\nwith Java and Spring Boot and be capable of working independently on complex backend components.\nThe role requires more than implementation skills: the candidate is expected to participate in system\ndesign, technical decision-making, production troubleshooting, code review, performance optimization, and\nmentoring less experienced developers.\nMandatory Requirements\n Minimum 5 years of professional software development experience.\n At least 3 years of hands-on Java development in commercial or production systems.\n Strong knowledge of Java 11 or later and object-oriented design principles.\n Strong practical experience with Spring Boot and the wider Spring ecosystem.\n Experience designing and implementing RESTful APIs and backend integrations.\n Strong SQL knowledge and hands-on experience with relational databases.\n Experience developing or maintaining microservice-based applications.\n Experience writing unit tests and integration tests for backend services.\n Experience using Git-based version control in a collaborative development team.\n Evidence of maintaining, supporting, or troubleshooting production applications.\n Ability to independently own complex implementation tasks and participate in technical design.\n Expected seniority: Senior.\nPreferred / Optional Skills\n Docker and containerized deployment.\n Kubernetes.\n Kafka, RabbitMQ, or another messaging platform.\n Redis or distributed caching.\n AWS, Azure, or GCP.\n PostgreSQL or MySQL.\n CI/CD tools such as GitLab CI, Jenkins, or GitHub Actions.\n Domain-driven design or event-driven architecture.\n Application observability, logging, and monitoring.\n Security best practices for backend applications.\nKey Responsibilities\n Design, develop, test, and maintain backend services using Java and Spring Boot.\n Design RESTful APIs and integrations with internal and external systems.\n Participate in the design of scalable, maintainable, and reliable software architectures.\n Develop and maintain microservices and service-to-service integrations.\n Translate business and technical requirements into implementation designs.\n Design and optimize relational database schemas, queries, and data-access logic.\n Troubleshoot production incidents, perform root-cause analysis, and implement corrective actions.\n Improve application performance, reliability, security, and maintainability.\n\n2\n Perform code reviews and enforce software engineering standards.\n Support technical estimation, implementation planning, and delivery discussions.\n Mentor Junior and Middle developers and provide technical guidance.\n Collaborate with frontend developers, QA engineers, DevOps engineers, architects, and product\nstakeholders.\nExpected Seniority / Evidence\nA strong Senior candidate should provide evidence of system or component design, production\ntroubleshooting, technical ownership, performance optimization, code review, architectural discussion,\nmentoring, estimation, or technical planning. A CV that only lists Java-related technologies without\nevidence of senior-level responsibility should not be considered a strong match.\nEducation\nBachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent\npractical experience.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "git",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "java",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring boot",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "sql",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "aws",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "azure",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "gcp",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "jenkins",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kafka",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kubernetes",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "mysql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "postgresql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "rabbitmq",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "redis",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Design, develop, test, and maintain backend services using Java and Spring Boot.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Design RESTful APIs and integrations with internal and external systems.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Participate in the design of scalable, maintainable, and reliable software architectures.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Develop and maintain microservices and service-to-service integrations.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Translate business and technical requirements into implementation designs.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Design and optimize relational database schemas, queries, and data-access logic.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Bachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   },
+   {
+    "text": "practical experience.",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 52,
+  "title": "EVAL_JD_02_Junior_Java_Developer",
+  "description": "1\nJunior Java Developer\nRemote within Vietnam | Full-time | Synthetic Evaluation Job Description\nRole Summary\nWe are looking for a Junior Java Developer to join a software engineering team responsible for building\nand maintaining backend applications and APIs. The role is suitable for candidates with a solid foundation\nin Java who have gained practical experience through employment, internships, university projects,\npersonal projects, or structured technical training. The candidate is not expected to independently design\ncomplex architectures, but should be able to implement well-defined tasks with guidance and demonstrate\nstrong learning ability.\nMandatory Requirements\n Basic to intermediate knowledge of Java.\n Understanding of object-oriented programming and common programming fundamentals.\n Familiarity with Spring Boot or Spring Framework.\n Basic understanding of REST APIs, HTTP, and client-server communication.\n Basic knowledge of SQL and relational databases.\n Familiarity with Git and collaborative source-code management.\n Basic knowledge of software testing and debugging.\n Ability to understand existing source code and follow coding standards.\n 0-2 years of professional software development experience; internship or substantial academic/project\nexperience is acceptable.\n Expected seniority: Junior.\nPreferred / Optional Skills\n Spring Data JPA or Hibernate.\n Maven or Gradle.\n MySQL or PostgreSQL.\n Docker fundamentals.\n Linux command-line basics.\n Basic CI/CD awareness.\n Basic cloud knowledge.\n Basic understanding of microservices.\n JavaScript or frontend development exposure.\nKey Responsibilities\n Implement backend functionality using Java under guidance from senior developers.\n Develop simple RESTful APIs and service methods from clear technical requirements.\n Fix defects and perform basic troubleshooting.\n Write clean, readable, and maintainable code.\n Participate in code reviews and apply reviewer feedback.\n Write and maintain basic unit tests.\n Create or modify SQL queries and perform standard database operations.\n Use Git for branching, commits, merge requests, and team collaboration.\n Participate in Agile/Scrum activities, estimations, and team discussions.\n Support integration testing, bug fixing, and simple technical documentation.\n Collaborate with QA, frontend developers, and other software engineers.\n\n2\nExpected Seniority / Evidence\nSuitable Junior-level evidence includes implementation of assigned features, bug fixing, simple API\ndevelopment, database operations, unit testing, internship work, university projects, or team project\ncontributions. Architecture ownership, mentoring, enterprise system design, or production ownership of\nlarge distributed systems are not mandatory for this role.\nEducation\nBachelor degree or current/final-year study in Computer Science, Software Engineering, Information\nTechnology, or a related field is preferred. Equivalent practical programming experience is accepted.",
+  "minimum_years": 2.0,
+  "required_seniority": "junior",
+  "requirements": [
+   {
+    "text": "git",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "java",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring boot",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "sql",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "javascript",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "linux",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "microservices",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "mysql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "postgresql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Implement backend functionality using Java under guidance from senior developers.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Develop simple RESTful APIs and service methods from clear technical requirements.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Fix defects and perform basic troubleshooting.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Write clean, readable, and maintainable code.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Participate in code reviews and apply reviewer feedback.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Write and maintain basic unit tests.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Bachelor degree or current/final-year study in Computer Science, Software Engineering, Information",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   },
+   {
+    "text": "Technology, or a related field is preferred. Equivalent practical programming experience is accepted.",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 53,
+  "title": "EVAL_JD_03_Senior_React_Developer",
+  "description": "1\nSenior React Developer\nRemote within Vietnam | Full-time | Synthetic Evaluation Job Description\nRole Summary\nWe are looking for a Senior React Developer to design and develop modern web applications with a strong\nfocus on maintainability, usability, performance, and frontend architecture. The candidate should have\nextensive hands-on experience with React and modern JavaScript or TypeScript and should be capable of\nowning frontend features from technical design through implementation, testing, deployment, and\nproduction support.\nMandatory Requirements\n Minimum 5 years of professional software development experience.\n At least 3 years of professional React development experience.\n Strong knowledge of modern JavaScript (ES6+) and browser fundamentals.\n Strong practical experience with TypeScript.\n Strong knowledge of React, functional components, Hooks, and component lifecycle concepts.\n Experience integrating frontend applications with REST APIs.\n Strong knowledge of HTML5 and CSS3, including responsive design.\n Experience with frontend state management in non-trivial applications.\n Experience writing automated frontend tests.\n Experience using Git in a collaborative software development environment.\n Evidence of delivering and supporting production web applications.\n Experience troubleshooting frontend functional or performance issues.\n Expected seniority: Senior.\nPreferred / Optional Skills\n Redux Toolkit, Zustand, or equivalent state-management library.\n React Query or TanStack Query.\n Next.js.\n Jest and React Testing Library.\n Cypress or Playwright.\n Material UI, Ant Design, or Tailwind CSS.\n Vite, Webpack, or modern frontend build tooling.\n GraphQL.\n Docker and containerized frontend delivery.\n AWS or Azure.\n CI/CD pipelines.\n Accessibility standards and responsive design practices.\n Micro-frontend architecture.\nKey Responsibilities\n Design and implement complex frontend features using React and TypeScript.\n Develop reusable, testable, and maintainable UI components.\n Define frontend application structure, component boundaries, and state-management approaches.\n Integrate applications with RESTful backend APIs and collaborate on API contracts.\n Optimize rendering performance, loading behavior, and user experience.\n\n2\n Troubleshoot browser compatibility, functional, and production issues.\n Implement responsive and accessible user interfaces.\n Write unit, component, and integration tests.\n Perform code reviews and improve frontend engineering standards.\n Collaborate closely with UX/UI designers, backend developers, QA, and product stakeholders.\n Participate in technical estimations, frontend architecture discussions, and delivery planning.\n Mentor Junior and Middle frontend developers.\n Support CI/CD and frontend deployment processes.\nExpected Seniority / Evidence\nA strong Senior React candidate should provide evidence of frontend architecture decisions, reusable\ncomponent design, state-management decisions, technical ownership, code review, performance\noptimization, production troubleshooting, or mentoring. Listing React, JavaScript, HTML, and CSS without\nsupporting project or professional evidence is insufficient for a strong match.\nEducation\nBachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent\nprofessional experience.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "git",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "javascript",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "react",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "typescript",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "aws",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "azure",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "cypress",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "graphql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Design and implement complex frontend features using React and TypeScript.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Develop reusable, testable, and maintainable UI components.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Define frontend application structure, component boundaries, and state-management approaches.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Integrate applications with RESTful backend APIs and collaborate on API contracts.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Optimize rendering performance, loading behavior, and user experience.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Troubleshoot browser compatibility, functional, and production issues.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Bachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   },
+   {
+    "text": "professional experience.",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 54,
+  "title": "EVAL_JD_04_Senior_NET_Developer",
+  "description": "1\nSenior .NET Developer\nRemote within Vietnam | Full-time | Synthetic Evaluation Job Description\nRole Summary\nWe are seeking a Senior .NET Developer to design and implement enterprise backend services and\nbusiness applications using C# and modern .NET technologies. The candidate will be responsible for\ntechnical implementation, API design, database interaction, system integration, code quality, production\ntroubleshooting, and selected system-design activities. The successful candidate must demonstrate\npractical experience delivering production software rather than only theoretical knowledge of the .NET\necosystem.\nMandatory Requirements\n Minimum 5 years of professional software development experience.\n At least 3 years of C# and .NET development experience.\n Strong practical experience with C#.\n Strong experience with modern .NET or .NET Core.\n Strong experience developing ASP.NET Core Web APIs.\n Experience designing and implementing RESTful APIs and backend integrations.\n Strong understanding of object-oriented programming and software design principles.\n Experience with Entity Framework Core or an equivalent ORM.\n Strong SQL knowledge and experience with relational databases.\n Experience with Git-based team development.\n Experience writing automated unit and integration tests.\n Evidence of production software development and support.\n Experience debugging and troubleshooting backend applications.\n Expected seniority: Senior.\nPreferred / Optional Skills\n SQL Server or PostgreSQL.\n Microsoft Azure and Azure DevOps.\n Docker.\n Kubernetes.\n Redis.\n RabbitMQ or Kafka.\n Microservice architecture.\n Clean Architecture.\n CQRS and MediatR.\n Domain-driven design.\n OAuth2, OpenID Connect, or token-based security.\n Application Insights or similar observability platforms.\nKey Responsibilities\n Design and develop backend applications using C# and modern .NET.\n Develop RESTful APIs using ASP.NET Core.\n Design application services and reusable backend components.\n Implement data-access layers and relational database integrations.\n\n2\n Participate in microservice and distributed-system development.\n Integrate applications with internal and external systems.\n Implement authentication, authorization, and secure API patterns.\n Write automated unit and integration tests.\n Troubleshoot application and production issues and perform root-cause analysis.\n Optimize application and database performance.\n Participate in technical design and perform code reviews.\n Support CI/CD and automated deployments.\n Mentor less experienced developers and provide technical guidance.\n Collaborate with QA, DevOps, architects, and business stakeholders.\nExpected Seniority / Evidence\nStrong candidates should demonstrate technical ownership, application or service design, database\ndesign, production troubleshooting, performance improvement, code review, security awareness,\nmentoring, or technical guidance. A candidate who lists C# and .NET technologies without evidence of\nsenior-level delivery or responsibility should not be considered a strong Senior match.\nEducation\nBachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent\npractical experience.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "git",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "sql",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "azure",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kafka",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kubernetes",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "postgresql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "rabbitmq",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "redis",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Design and develop backend applications using C# and modern .NET.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Develop RESTful APIs using ASP.NET Core.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Design application services and reusable backend components.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Implement data-access layers and relational database integrations.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Participate in microservice and distributed-system development.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Integrate applications with internal and external systems.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Bachelor degree in Computer Science, Software Engineering, Information Technology, or equivalent",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   },
+   {
+    "text": "practical experience.",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 55,
+  "title": "EVAL_JD_05_Solution_Architect",
+  "description": "1\nSolution Architect\nRemote within Vietnam | Full-time | Synthetic Evaluation Job Description\nRole Summary\nWe are looking for an experienced Solution Architect to design scalable, secure, maintainable, and\ncost-effective software solutions for enterprise applications. The role bridges business requirements,\nsoftware engineering, infrastructure, integration, security, and delivery. The Solution Architect is expected\nto understand both high-level business objectives and low-level technical constraints and translate them\ninto practical architecture decisions. The candidate should have substantial hands-on software engineering\nexperience before moving into architecture responsibilities.\nMandatory Requirements\n Minimum 8 years of professional software engineering experience.\n At least 3 years performing architecture, solution design, technical leadership, or comparable senior\nengineering responsibilities.\n Strong hands-on software development background.\n Demonstrated experience designing enterprise software applications or platforms.\n Strong understanding of distributed systems and system decomposition.\n Strong understanding of REST APIs, API design, and system integration.\n Experience designing or working with microservice architectures.\n Strong understanding of relational databases and data architecture.\n Understanding of asynchronous messaging or event-driven architecture.\n Experience with at least one major cloud platform: AWS, Azure, or GCP.\n Understanding of containers and modern deployment architectures.\n Strong knowledge of software security principles and secure system design.\n Experience considering scalability, availability, reliability, performance, and maintainability.\n Ability to create and explain architecture diagrams and technical design documentation.\n Ability to communicate architecture decisions to technical and non-technical stakeholders.\n Expected seniority: Senior, Lead, or Architect.\nPreferred / Optional Skills\n Java/Spring Boot, .NET, or comparable enterprise backend technology.\n React or modern frontend architecture familiarity.\n Kafka or RabbitMQ.\n Kubernetes and Docker.\n API Gateway patterns.\n OAuth2 or OpenID Connect.\n Redis and distributed caching.\n PostgreSQL, SQL Server, or NoSQL technologies.\n Observability and centralized logging.\n CI/CD and Infrastructure as Code.\n Event-driven architecture.\n Domain-driven design.\n TOGAF or architecture certification.\n Cloud architecture certification.\n Legacy modernization and monolith-to-microservices migration experience.\n\n2\nKey Responsibilities\n Analyze functional and non-functional business requirements and identify architecture drivers.\n Design end-to-end application, integration, data, security, and deployment architectures.\n Evaluate architectural alternatives and make justified technology choices.\n Define system boundaries, services, interfaces, integration mechanisms, and responsibilities.\n Design scalable, resilient, secure, and observable distributed systems.\n Define API and system integration strategies for synchronous and asynchronous communication.\n Support cloud architecture, deployment topology, and infrastructure decisions.\n Review security, availability, performance, scalability, maintainability, and operational requirements.\n Produce architecture diagrams, decision records, and technical design documentation.\n Lead technical discussions with developers, technical leads, product stakeholders, and management.\n Review detailed designs proposed by engineering teams.\n Identify technical risks and recommend mitigation strategies.\n Support estimation, technical planning, and solution feasibility assessment.\n Define architecture standards and engineering guidelines.\n Support development teams in resolving complex technical issues.\n Participate in legacy-system modernization, migration planning, and build-versus-buy decisions.\n Mentor senior engineers and technical leads.\nExpected Seniority / Evidence\nA strong Solution Architect CV should provide explicit evidence of architecture ownership, system\ndecomposition, service-boundary definition, technology selection, integration architecture, cloud\narchitecture, migration strategy, non-functional requirement analysis, security design, performance or\nscalability design, technical risk management, and architecture governance. A Senior Developer who lists\nmany technologies but lacks architecture-level evidence should not be considered a strong match.\nEducation\nBachelor or Master degree in Computer Science, Software Engineering, Information Technology, or a\nrelated discipline. Equivalent substantial professional engineering experience is acceptable.",
+  "minimum_years": 8.0,
+  "required_seniority": "architect",
+  "requirements": [
+   {
+    "text": "aws",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "azure",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "gcp",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "java",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kafka",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "kubernetes",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "microservices",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "postgresql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "rabbitmq",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "react",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "redis",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "spring boot",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "sql",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Analyze functional and non-functional business requirements and identify architecture drivers.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Design end-to-end application, integration, data, security, and deployment architectures.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Evaluate architectural alternatives and make justified technology choices.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Define system boundaries, services, interfaces, integration mechanisms, and responsibilities.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Design scalable, resilient, secure, and observable distributed systems.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Define API and system integration strategies for synchronous and asynchronous communication.",
+    "kind": "hard",
+    "category": "responsibility",
+    "weight": 1.0
+   },
+   {
+    "text": "Bachelor or Master degree in Computer Science, Software Engineering, Information Technology, or a",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   },
+   {
+    "text": "related discipline. Equivalent substantial professional engineering experience is acceptable.",
+    "kind": "soft",
+    "category": "education",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 56,
+  "title": "ROBUSTNESS_Seniority_Mismatch_Senior_Java_Developer",
+  "description": "We are looking for a Senior Java Developer to design production microservices, troubleshoot incidents, and mentor junior engineers.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "Java",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Spring Boot",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "SQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 57,
+  "title": "ROBUSTNESS_Missing_Mandatory_Python_Backend_Developer",
+  "description": "Purpose-built JD for the missing-mandatory-requirement controlled robustness test (thesis Section 4.3, sec:robustness-sets).",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Python",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Django",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "PostgreSQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 58,
+  "title": "ROBUSTNESS_Role_Confusion_Java_Backend_Developer",
+  "description": "Purpose-built JD for the role-confusion controlled robustness test (thesis Section 4.3, sec:robustness-sets).",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Java",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Spring Boot",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "SQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Docker",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 59,
+  "title": "ROBUSTNESS_Seniority_Mismatch_2_React_Frontend_Developer",
+  "description": "Purpose-built JD for robustness battery instance 2 of seniority-mismatch category.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "React",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "JavaScript",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "TypeScript",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Git",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 60,
+  "title": "ROBUSTNESS_Seniority_Mismatch_3_Data_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 3 of seniority-mismatch category.",
+  "minimum_years": 5.0,
+  "required_seniority": "senior",
+  "requirements": [
+   {
+    "text": "Python",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "SQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Spark",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Hadoop",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 61,
+  "title": "ROBUSTNESS_Missing_Mandatory_2_DevOps_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 2 of missing-mandatory-requirement category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Kubernetes",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Terraform",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "AWS",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Python",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 62,
+  "title": "ROBUSTNESS_Missing_Mandatory_3_QA_Automation_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 3 of missing-mandatory-requirement category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Selenium",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Java",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Cypress",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Jenkins",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 63,
+  "title": "ROBUSTNESS_Role_Confusion_2_Data_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 2 of role-confusion category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Python",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "SQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Spark",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Git",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 64,
+  "title": "ROBUSTNESS_Role_Confusion_3_DevOps_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 3 of role-confusion category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Docker",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "AWS",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Linux",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Python",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 65,
+  "title": "ROBUSTNESS_Stuffing_2_Vue_Frontend_Developer",
+  "description": "Purpose-built JD for robustness battery instance 2 of keyword-stuffing category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Vue",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "JavaScript",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "GraphQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "TypeScript",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ },
+ {
+  "jd_id": 66,
+  "title": "ROBUSTNESS_Stuffing_3_Data_Engineer",
+  "description": "Purpose-built JD for robustness battery instance 3 of keyword-stuffing category.",
+  "minimum_years": 3.0,
+  "required_seniority": "middle",
+  "requirements": [
+   {
+    "text": "Python",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "SQL",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Kafka",
+    "kind": "hard",
+    "category": "skill",
+    "weight": 1.0
+   },
+   {
+    "text": "Spark",
+    "kind": "soft",
+    "category": "skill",
+    "weight": 1.0
+   }
+  ]
+ }
+]
